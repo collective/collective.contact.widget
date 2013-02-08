@@ -33,7 +33,7 @@ setup(
     keywords='',
     author='Vincent Fretin',
     author_email='vincentfretin@ecreall.com',
-    url='http://pypi.python.org/pypi/collective.contact',
+    url='http://pypi.python.org/pypi/collective.contact.widget',
     license='GPL',
     packages=find_packages('src', exclude=['ez_setup']),
     namespace_packages=['collective', 'collective.contact'],

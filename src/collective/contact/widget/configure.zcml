@@ -6,8 +6,10 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="collective.contact">
 
-    <i18n:registerTranslations directory="locales" />
+  <i18n:registerTranslations directory="locales" />
 
-    <grok:grok package="." />
+  <include package="five.grok" />
+  <grok:grok package="." />
+  <include file="widgets.zcml" />
 
 </configure>

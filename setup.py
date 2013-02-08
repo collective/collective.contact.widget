@@ -18,7 +18,7 @@ long_description = (
 
 
 setup(
-    name='collective.contact',
+    name='collective.contact.widget',
     version='1.0',
     description="Contact widget",
     long_description=long_description,

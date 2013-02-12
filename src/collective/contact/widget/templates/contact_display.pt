@@ -1,5 +1,5 @@
 <span id="" class=""
-      tal:define="url_tool context/@@plone_tools/url;
+      tal:define="url_tool view/form/context/@@plone_tools/url;
                   portal_url url_tool/portal_url;
                   portal_path url_tool/getPortalPath"
 

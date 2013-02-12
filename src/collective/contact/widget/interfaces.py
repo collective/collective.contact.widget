@@ -30,3 +30,11 @@ class IContactChoice(IRelationChoice):
 class IContactList(IRelationList):
     """A one to many relation.
     """
+
+class IContactWidgetSettings(Interface):
+    """Contact widget settings
+    """
+    def add_contact_infos(widget):
+        """Return a dict, each key, value will be set
+        as attribute on the widget.
+        """

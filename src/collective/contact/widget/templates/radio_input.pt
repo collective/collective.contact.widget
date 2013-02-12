@@ -40,7 +40,7 @@
     <span class="label"><a tal:content="item/label"
       class="link-tooltip"
       tal:omit-tag="python:item['value'] == '--NOVALUE--'"
-      tal:attributes="href python:view.tokenToUrl(item['value'])"
+      tal:attributes="href python:view.tokenToUrl(item)"
       href="">Label</a></span>
   </label>
 </span>

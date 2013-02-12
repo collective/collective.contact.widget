@@ -43,6 +43,7 @@ setup(
     install_requires=[
         'five.grok',
         'setuptools',
+        'plone.formwidget.autocomplete',
     ],
     extras_require={
         'test': [

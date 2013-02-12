@@ -1,4 +1,3 @@
-from AccessControl import getSecurityManager
 from z3c.form.interfaces import IFieldWidget
 from z3c.form.widget import FieldWidget
 from zope.component import getUtility
@@ -9,21 +8,20 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import base_hasattr
 
 from plone.app.layout.viewlets.interfaces import IBelowContent
-from plone.dexterity.interfaces import IDexterityFTI
 from plone.app.layout.viewlets.interfaces import IHtmlHeadLinks
 from plone.formwidget.autocomplete.widget import (
     AutocompleteMultiSelectionWidget,
     AutocompleteSelectionWidget)
 from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
 
-from plone.dexterity.i18n import MessageFactory as DMF
-
 from . import _
 from .interfaces import (
     IContactAutocompleteWidget,
     IContactAutocompleteSelectionWidget,
     IContactAutocompleteMultiSelectionWidget,
-    IContactContent)
+    IContactContent,
+    IContactWidgetSettings,
+    )
 
 class PatchLoadInsideOverlay(grok.Viewlet):
     grok.context(Interface)
@@ -31,6 +29,7 @@ class PatchLoadInsideOverlay(grok.Viewlet):
 
     def render(self):
         return """<script type="text/javascript">
+var ccw = {};
 $(document).ready(function() {
   $(document).bind('formOverlayLoadSuccess', function(e, req, myform, api, pb, ajax_parent) {
     ajax_parent.find('div').slice(0, 1).prepend(ajax_parent.find('.portalMessage').detach());
@@ -42,7 +41,7 @@ $(document).ready(function() {
     var overlay_counter = parseInt(pbo.nt.substring(3, pbo.nt.length));
     o.css({zIndex: 9998+overlay_counter});
   });
-  $.plonepopups.fill_autocomplete = function (el, pbo, noform) {
+  ccw.fill_autocomplete = function (el, pbo, noform) {
     var objpath = el.find('input[name=objpath]');
     if (objpath.length) {
         data = objpath.val().split('|');
@@ -51,14 +50,14 @@ $(document).ready(function() {
         input_box.flushCache();
         // trigger change event on newly added input element
         var input = input_box.parents('.querySelectSearch').parent('div').siblings('.autocompleteInputWidget').find('input').last();
-        $.plonepopups.add_contact_preview(input);
+        ccw.add_contact_preview(input);
         input.trigger('change');
     }
     return noform;
   };
 
   var pendingCall = {timeStamp: null, procID: null};
-  $.plonepopups.add_contact_preview = function (input) {
+  ccw.add_contact_preview = function (input) {
     var path = '/' + input.val().split('/').slice(2).join('/');
     var url = portal_url+path;
     input.siblings('.label')
@@ -123,16 +122,11 @@ class ObjPathViewlet(grok.Viewlet):
                     '|'.join([token, title]))
 
 
-def find_directory(context):
-    catalog = getToolByName(context, 'portal_catalog')
-    results = catalog.unrestrictedSearchResults(portal_type='directory')
-    return results[0].getObject()
-
-
 class ContactBaseWidget(object):
     implements(IContactAutocompleteWidget)
     noValueLabel = _(u'(nothing)')
     autoFill = False
+    close_on_click = True
     display_template = ViewPageTemplateFile('templates/contact_display.pt')
     input_template = ViewPageTemplateFile('templates/contact_input.pt')
     js_callback_template = """
@@ -142,41 +136,20 @@ function (event, data, formatted) {
         formwidget_autocomplete_new_value(input_box,data[0],data[1]);
         // trigger change event on newly added input element
         var input = input_box.parents('.querySelectSearch').parent('div').siblings('.autocompleteInputWidget').find('input').last();
-        $.plonepopups.add_contact_preview(input);
+        $.pb.add_contact_preview(input);
         input.trigger('change');
     }(jQuery));
 }
 """
 
     def tokenToUrl(self, token):
-        portal_url = getToolByName(self.context, 'portal_url')()
-        return "%s/%s" % (portal_url, self.bound_source.tokenToPath(token))
+        return self.bound_source.tokenToUrl(token)
 
     def render(self):
-        source = self.bound_source
-        criteria = source.selectable_filter.criteria
-        self.addlink_enabled = criteria.get('addlink', [True])[0]
-        portal_types = criteria.get('portal_type', [])
-        # During traversal, we are Anonymous User,
-        # so we can't do catalog search in update method.
-        directory = find_directory(self.context)
-        sm = getSecurityManager()
-        if not sm.checkPermission("Add portal content", directory):
-            self.addlink_enabled = False
-        directory_url = directory.absolute_url()
-        if len(portal_types) == 1:
-            self.addnew_url = '%s/++add++%s' % (directory_url, portal_types[0])
-            self.closeOnClick = 'true'
-            fti = getUtility(IDexterityFTI, name=portal_types[0])
-            self.type_name = fti.Title()
-        else:
-            self.addnew_url = "%s/@@add-contact" % directory_url
-            self.closeOnClick = 'false'
-            self.type_name = _(u"Contact")
-
-        self.addlink_label = DMF(u"Add ${name}",
-                mapping={'name': self.type_name})
-
+        settings = getUtility(IContactWidgetSettings)
+        attributes = settings.add_contact_infos(self)
+        for key, value in attributes.items():
+            setattr(self, key, value)
         return super(ContactBaseWidget, self).render()
 
     def js_extra(self):
@@ -187,13 +160,13 @@ $('#%(id)s-autocomplete').find('.addnew'
   filter: common_content_filter+',#viewlet-below-content>*',
   formselector: '#form',
   closeselector: '[name="form.buttons.cancel"]',
-  noform: function(el, pbo) {return $.plonepopups.fill_autocomplete(el, pbo, 'close');},
+  noform: function(el, pbo) {return $.pb.fill_autocomplete(el, pbo, 'close');},
   config: {
       closeOnClick: %(closeOnClick)s,
       closeOnEsc: %(closeOnClick)s
   }
 });
-""" % dict(id=self.id, closeOnClick=self.closeOnClick)
+""" % dict(id=self.id, closeOnClick=self.close_on_click and 'true' or 'false')
 
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget):
     implements(IContactAutocompleteSelectionWidget)

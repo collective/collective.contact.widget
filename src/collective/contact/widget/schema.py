@@ -18,6 +18,7 @@ class ContactChoice(RelationChoice):
     implements(IContactChoice)
 
     def __init__(self, *args, **kwargs):
+        self.addlink = kwargs.pop('addlink', True)
         if not ('values' in kwargs or 'vocabulary' in kwargs or 'source' in kwargs):
             kwargs['source'] = ContactSourceBinder(
                             portal_type=('organization', 'person', 'held_position'))

@@ -1,3 +1,4 @@
+from zope.component.hooks import getSite
 from zope.schema.vocabulary import SimpleTerm
 
 from Products.ZCTextIndex.ParseTree import ParseError
@@ -49,6 +50,11 @@ class ContactSource(ObjPathSource):
         """For token='/Plone/a/b', return '/a/b'
         """
         return '/'+'/'.join(token.split('/')[2:])
+
+    def tokenToUrl(self, token):
+        portal_url = getSite().absolute_url()
+        return "%s/%s" % (portal_url, self.tokenToPath(token))
+#        return self.getTermByToken(token).value.absolute_url()
 
     def search(self, query, limit=20):
         """Copy from plone.formwidget.contenttree.source,

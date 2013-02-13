@@ -107,20 +107,27 @@ $(document).ready(function() {
 """
 
 
-class ObjPathViewlet(grok.Viewlet):
+class TermViewlet(grok.Viewlet):
+    grok.name('term-contact')
     grok.context(IContactContent)
     grok.viewletmanager(IBelowContent)
 
-    def render(self):
+    @property
+    def token(self):
+        return '/'.join(self.context.getPhysicalPath())
 
-        token = '/'.join(self.context.getPhysicalPath())
+    @property
+    def title(self):
         if base_hasattr(self.context, 'get_full_title'):
             title = self.context.get_full_title()
         else:
             title = self.context.Title()
         title = title.decode('utf-8')
+        return title
+
+    def render(self):
         return u"""<input type="hidden" name="objpath" value="%s" />""" % (
-                    '|'.join([token, title]))
+                    '|'.join([self.token, self.title]))
 
 
 class ContactBaseWidget(object):

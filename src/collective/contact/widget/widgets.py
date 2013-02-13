@@ -79,7 +79,7 @@ $(document).ready(function() {
           var tooltip = trigger.tooltip();
           tooltip.show();
           var url = trigger.attr('href');
-          $.get(url, function(data) {
+          $.get(url, {ajax_load: new Date().getTime()}, function(data) {
             tooltip.hide();
             tooltip.getTip().html($('<div />').append(
                     data.replace(/<script(.|\s)*?\/script>/gi, ""))

@@ -161,7 +161,7 @@ $('#%(id)s-autocomplete').find('.addnew'
   filter: common_content_filter+',#viewlet-below-content>*',
   formselector: '#form',
   closeselector: '[name="form.buttons.cancel"]',
-  noform: function(el, pbo) {return $.pb.fill_autocomplete(el, pbo, 'close');},
+  noform: function(el, pbo) {return ccw.fill_autocomplete(el, pbo, 'close');},
   config: {
       closeOnClick: %(closeOnClick)s,
       closeOnEsc: %(closeOnClick)s

@@ -4,7 +4,6 @@ from zope.component import getUtility
 from zope.interface import implementer, implements, Interface
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from five import grok
-from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import base_hasattr
 
 from plone.app.layout.viewlets.interfaces import IBelowContent
@@ -136,7 +135,7 @@ function (event, data, formatted) {
         formwidget_autocomplete_new_value(input_box,data[0],data[1]);
         // trigger change event on newly added input element
         var input = input_box.parents('.querySelectSearch').parent('div').siblings('.autocompleteInputWidget').find('input').last();
-        $.pb.add_contact_preview(input);
+        ccw.add_contact_preview(input);
         input.trigger('change');
     }(jQuery));
 }

@@ -57,10 +57,12 @@ $(document).ready(function() {
 
   var pendingCall = {timeStamp: null, procID: null};
   ccw.add_contact_preview = function (input) {
-    var path = '/' + input.val().split('/').slice(2).join('/');
-    var url = portal_url+path;
-    input.siblings('.label')
-        .wrapInner('<a href="'+url+'" class="link-tooltip">');
+    var path = input.val().split('/').slice(2).join('/');
+    if (path) {
+        var url = portal_url+'/'+path;
+        input.siblings('.label')
+            .wrapInner('<a href="'+url+'" class="link-tooltip">');
+    }
   };
 
   $(document).delegate('.link-tooltip', 'mouseenter', function() {

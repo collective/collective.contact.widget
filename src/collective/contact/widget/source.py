@@ -4,7 +4,7 @@ from zope.schema.vocabulary import SimpleTerm
 from Products.ZCTextIndex.ParseTree import ParseError
 
 from plone.formwidget.contenttree.source import PathSourceBinder, ObjPathSource
-from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import base_hasattr, getToolByName
 
 
 def parse_query(query, path_prefix=""):
@@ -33,6 +33,12 @@ def parse_query(query, path_prefix=""):
 
 class ContactSource(ObjPathSource):
 
+    def __init__(self, context, selectable_filter, navigation_tree_query=None):
+        super(ContactSource, self).__init__(context, selectable_filter, navigation_tree_query)
+        portal_url = getToolByName(getSite(), 'portal_url')
+        self.portal_url = portal_url()
+        self.portal_path = portal_url.getPortalPath()
+
     def getTermByBrain(self, brain, real_value=True):
         if real_value:
             value = brain._unrestrictedGetObject()
@@ -49,12 +55,10 @@ class ContactSource(ObjPathSource):
     def tokenToPath(self, token):
         """For token='/Plone/a/b', return '/a/b'
         """
-        return '/'+'/'.join(token.split('/')[2:])
+        return token.replace(self.portal_path, '', 1)
 
     def tokenToUrl(self, token):
-        portal_url = getSite().absolute_url()
-        return "%s/%s" % (portal_url, self.tokenToPath(token))
-#        return self.getTermByToken(token).value.absolute_url()
+        return token.replace(self.portal_path, self.portal_url, 1)
 
     def search(self, query, limit=20):
         """Copy from plone.formwidget.contenttree.source,

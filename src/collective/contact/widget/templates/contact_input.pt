@@ -5,12 +5,13 @@
            <div style="float:left">
              <tal:block replace="structure view/subform/render" />
            </div>
+           <tal:actions tal:repeat="action view/actions">
            <a class="addnew"
               target="_blank"
-              tal:condition="view/addlink_enabled"
               href="@@add-contact" i18n:translate=""
-              tal:attributes="href view/addnew_url"
-              tal:content="view/addlink_label">Add content type</a>
+              tal:attributes="href action/url"
+              tal:content="action/label">Add content type</a>
+           </tal:actions>
            <div class="visualClear"><!--  --></div>
     </div>
 <!--

@@ -9,7 +9,8 @@
            <a class="addnew"
               target="_blank"
               href="@@add-contact" i18n:translate=""
-              tal:attributes="href action/url"
+              tal:attributes="href action/url;
+                              class action/klass | string:addnew"
               tal:content="action/label">Add content type</a>
            </tal:actions>
            <div class="visualClear"><!--  --></div>

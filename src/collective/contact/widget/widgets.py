@@ -129,6 +129,20 @@ class TermViewlet(grok.Viewlet):
         return u"""<input type="hidden" name="objpath" value="%s" />""" % (
                     '|'.join([self.token, self.title]))
 
+OVERLAY_TEMPLATE = """
+$('#%(id)s-autocomplete').find('.%(klass)s'
+    ).prepOverlay({
+  subtype: 'ajax',
+  filter: common_content_filter+',#viewlet-below-content>*',
+  formselector: '%(formselector)s',
+  closeselector: '%(closeselector)s',
+  noform: function(el, pbo) {return ccw.fill_autocomplete(el, pbo, 'close');},
+  config: {
+      closeOnClick: %(closeOnClick)s,
+      closeOnEsc: %(closeOnClick)s
+  }
+});
+"""
 
 class ContactBaseWidget(object):
     implements(IContactAutocompleteWidget)
@@ -161,20 +175,31 @@ function (event, data, formatted) {
         return super(ContactBaseWidget, self).render()
 
     def js_extra(self):
-        return """
-$('#%(id)s-autocomplete').find('.addnew'
-    ).prepOverlay({
-  subtype: 'ajax',
-  filter: common_content_filter+',#viewlet-below-content>*',
-  formselector: '#form',
-  closeselector: '[name="form.buttons.cancel"]',
-  noform: function(el, pbo) {return ccw.fill_autocomplete(el, pbo, 'close');},
-  config: {
-      closeOnClick: %(closeOnClick)s,
-      closeOnEsc: %(closeOnClick)s
-  }
-});
-""" % dict(id=self.id, closeOnClick=self.close_on_click and 'true' or 'false')
+        content = ""
+        include_default = False
+        for action in self.actions:
+            formselector = action.get('formselector', None)
+            if formselector is None:
+                include_default = True
+            else:
+                closeselector = action.get('closeselector',
+                        '[name="form.buttons.cancel"]')
+                content += OVERLAY_TEMPLATE % dict(
+                        id=self.id,
+                        klass=action['klass'],
+                        formselector=formselector,
+                        closeselector=closeselector,
+                        closeOnClick=self.close_on_click and 'true' or 'false')
+
+        if include_default:
+            content += OVERLAY_TEMPLATE % dict(
+                    id=self.id,
+                    klass='addnew',
+                    formselector='#form',
+                    closeselector='[name="form.buttons.cancel"]',
+                    closeOnClick=self.close_on_click and 'true' or 'false')
+
+        return content
 
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget):
     implements(IContactAutocompleteSelectionWidget)

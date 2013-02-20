@@ -7,6 +7,24 @@ from plone.formwidget.contenttree.source import PathSourceBinder, ObjPathSource
 from Products.CMFPlone.utils import base_hasattr, getToolByName
 
 
+class Term(SimpleTerm):
+    def __init__(self, value, token=None, title=None, brain=None):
+        super(Term, self).__init__(value, token, title)
+        self.brain = brain
+
+    @property
+    def url(self):
+        return self.brain.getURL()
+
+    @property
+    def portal_type(self):
+        return self.brain.portal_type
+
+    @property
+    def extra(self):
+        return u""
+
+
 def parse_query(query, path_prefix=""):
     """Copied from plone.app.vocabularies.catalog.parse_query
     but depth=1 removed.
@@ -47,10 +65,10 @@ class ContactSource(ObjPathSource):
         # TODO avoid to wake up object, create a get_full_title brain metadada
         if base_hasattr(brain.getObject(), "get_full_title"):
             full_title = brain.getObject().get_full_title()
-            return SimpleTerm(value, token=brain.getPath(), title=full_title)
+            return Term(value, token=brain.getPath(), title=full_title, brain=brain)
         else:
-            return SimpleTerm(value, token=brain.getPath(), title=brain.Title or
-                          brain.id)
+            return Term(value, token=brain.getPath(), title=brain.Title or
+                          brain.id, brain=brain)
 
     def tokenToPath(self, token):
         """For token='/Plone/a/b', return '/a/b'

@@ -49,17 +49,16 @@ $(document).ready(function() {
         input_box.flushCache();
         // trigger change event on newly added input element
         var input = input_box.parents('.querySelectSearch').parent('div').siblings('.autocompleteInputWidget').find('input').last();
-        ccw.add_contact_preview(input);
+        var url = data[3];
+        ccw.add_contact_preview(input, url);
         input.trigger('change');
     }
     return noform;
   };
 
   var pendingCall = {timeStamp: null, procID: null};
-  ccw.add_contact_preview = function (input) {
-    var path = input.val().split('/').slice(2).join('/');
-    if (path) {
-        var url = portal_url+'/'+path;
+  ccw.add_contact_preview = function (input, url) {
+    if (url) {
         input.siblings('.label')
             .wrapInner('<a href="'+url+'" class="link-tooltip">');
     }
@@ -125,9 +124,17 @@ class TermViewlet(grok.Viewlet):
         title = title.decode('utf-8')
         return title
 
+    @property
+    def portal_type(self):
+        return self.context.portal_type
+
+    @property
+    def url(self):
+        return self.context.absolute_url()
+
     def render(self):
         return u"""<input type="hidden" name="objpath" value="%s" />""" % (
-                    '|'.join([self.token, self.title]))
+                    '|'.join([self.token, self.title, self.portal_type, self.url]))
 
 OVERLAY_TEMPLATE = """
 $('#%(id)s-autocomplete').find('.%(klass)s'
@@ -158,7 +165,8 @@ function (event, data, formatted) {
         formwidget_autocomplete_new_value(input_box,data[0],data[1]);
         // trigger change event on newly added input element
         var input = input_box.parents('.querySelectSearch').parent('div').siblings('.autocompleteInputWidget').find('input').last();
-        ccw.add_contact_preview(input);
+        var url = data[3];
+        ccw.add_contact_preview(input, url);
         input.trigger('change');
     }(jQuery));
 }
@@ -251,5 +259,5 @@ class AutocompleteSearch(BaseAutocompleteSearch):
         else:
             terms = set()
 
-        return '\n'.join(["%s|%s" % (t.token, t.title or t.token)
+        return '\n'.join(["|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra))
                             for t in sorted(terms, key=lambda t: t.title)])

@@ -62,13 +62,8 @@ class ContactSource(ObjPathSource):
             value = brain._unrestrictedGetObject()
         else:
             value = brain.getPath()[len(self.portal_path):]
-        # TODO avoid to wake up object, create a get_full_title brain metadada
-        if base_hasattr(brain.getObject(), "get_full_title"):
-            full_title = brain.getObject().get_full_title()
-            return Term(value, token=brain.getPath(), title=full_title, brain=brain)
-        else:
-            return Term(value, token=brain.getPath(), title=brain.Title or
-                          brain.id, brain=brain)
+        full_title = brain.get_full_title or brain.Title or brain.id
+        return Term(value, token=brain.getPath(), title=full_title, brain=brain)
 
     def tokenToPath(self, token):
         """For token='/Plone/a/b', return '/a/b'

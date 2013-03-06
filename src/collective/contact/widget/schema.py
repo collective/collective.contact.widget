@@ -9,6 +9,7 @@ class ContactList(RelationList):
     implements(IContactList)
 
     def __init__(self, *args, **kwargs):
+        self.addlink = kwargs.pop('addlink', True)
         if not 'value_type' in kwargs:
             kwargs['value_type'] = ContactChoice()
         super(ContactList, self).__init__(*args, **kwargs)

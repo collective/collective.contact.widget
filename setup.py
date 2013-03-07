@@ -19,7 +19,7 @@ long_description = (
 
 setup(
     name='collective.contact.widget',
-    version='1.0.dev0',
+    version='0.10',
     description="Contact widget",
     long_description=long_description,
     # Get more from http://pypi.python.org/pypi?%3Aaction=list_classifiers

@@ -60,7 +60,7 @@ $(document).ready(function() {
   ccw.add_contact_preview = function (input, url) {
     if (url) {
         input.siblings('.label')
-            .wrapInner('<a href="'+url+'" class="link-tooltip">');
+            .wrapInner('<a href="'+url+'" target="_new" class="link-tooltip">');
     }
   };
 

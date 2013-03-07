@@ -10,7 +10,7 @@
                tal:condition="not:view/readonly"
                tal:repeat="action view/actions">
            <a class="addnew"
-              target="_blank"
+              target="_new"
               href="@@add-contact" i18n:translate=""
               tal:attributes="href action/url;
                               class action/klass | string:addnew"

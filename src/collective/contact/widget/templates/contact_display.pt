@@ -22,6 +22,7 @@
     <li tal:repeat="term view/terms">
         <a tal:content="term/title"
            class="link-tooltip"
+           target="_new"
            tal:define="url python:view.tokenToUrl(term.token)"
            tal:omit-tag="python:not url"
            tal:attributes="href url"

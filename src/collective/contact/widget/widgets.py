@@ -1,6 +1,7 @@
 from z3c.form.interfaces import IFieldWidget
 from z3c.form.widget import FieldWidget
 from zope.component import getUtility
+from zope.i18n import translate
 from zope.interface import implementer, implements, Interface
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from five import grok
@@ -78,7 +79,7 @@ $(document).ready(function() {
       }
       var timeStamp = new Date();
       var tooltipCall = function() {
-          var tip = $('<div class="tooltip pb-ajax" style="display:none">please wait</div>')
+          var tip = $('<div class="tooltip pb-ajax" style="display:none">%s</div>')
                 .insertAfter(trigger);
           trigger.tooltip({relative: true, position: "center right"});
           var tooltip = trigger.tooltip();
@@ -109,7 +110,7 @@ $(document).ready(function() {
   z-index: 99999;
 }
 </style>
-"""
+""" % translate(_(u"please wait"), context=self.request)
 
 
 class TermViewlet(grok.Viewlet):

@@ -5,7 +5,11 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Internationalized two messages.
+  [vincentfretin]
+
 - Don't show tooltip if the mouse left the link.
+  [vincentfretin]
 
 - Don't call tokenToUrl if value is --NOVALUE--.
   [vincentfretin]

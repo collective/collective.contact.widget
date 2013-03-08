@@ -5,7 +5,8 @@ Changelog
 1.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Don't call tokenToUrl if value is --NOVALUE--.
+  [vincentfretin]
 
 
 0.10 (2013-03-07)

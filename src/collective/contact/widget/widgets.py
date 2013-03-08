@@ -173,6 +173,8 @@ function (event, data, formatted) {
 """
 
     def tokenToUrl(self, token):
+        if token == "--NOVALUE--":
+            return ""
         return self.bound_source.tokenToUrl(token)
 
     def render(self):

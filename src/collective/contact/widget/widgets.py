@@ -64,6 +64,12 @@ $(document).ready(function() {
     }
   };
 
+  $(document).delegate('.link-tooltip', 'mouseleave', function() {
+    if (pendingCall.procID) {
+      clearTimeout(pendingCall.procID);
+      pendingCall.procID = null;
+    }
+  });
   $(document).delegate('.link-tooltip', 'mouseenter', function() {
     var trigger = $(this);
     if (!trigger.data('tooltip')) {

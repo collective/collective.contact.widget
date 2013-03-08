@@ -5,6 +5,8 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Don't show tooltip if the mouse left the link.
+
 - Don't call tokenToUrl if value is --NOVALUE--.
   [vincentfretin]
 

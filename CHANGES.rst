@@ -5,7 +5,8 @@ Changelog
 1.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Decode title, returning unicode, to standardize term attributes
+  [sgeulette]
 
 
 0.11 (2013-03-11)

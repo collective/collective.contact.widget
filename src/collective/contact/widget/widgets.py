@@ -268,5 +268,5 @@ class AutocompleteSearch(BaseAutocompleteSearch):
         else:
             terms = set()
 
-        return '\n'.join(["|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra))
+        return u'\n'.join([u"|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra))
                             for t in sorted(terms, key=lambda t: t.title)])

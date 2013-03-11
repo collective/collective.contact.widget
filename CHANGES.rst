@@ -5,6 +5,9 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Fixed UnicodeDecodeError in @@autocomplete-search
+  [vincentfretin]
+
 - Internationalized two messages.
   [vincentfretin]
 

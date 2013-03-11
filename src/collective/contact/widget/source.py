@@ -63,7 +63,7 @@ class ContactSource(ObjPathSource):
         else:
             value = brain.getPath()[len(self.portal_path):]
         full_title = brain.get_full_title or brain.Title or brain.id
-        return Term(value, token=brain.getPath(), title=full_title, brain=brain)
+        return Term(value, token=brain.getPath(), title=full_title.decode('utf8'), brain=brain)
 
     def tokenToPath(self, token):
         """For token='/Plone/a/b', return '/a/b'

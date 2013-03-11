@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.0 (unreleased)
-----------------
+0.11 (2013-03-11)
+-----------------
 
 - Fixed UnicodeDecodeError in @@autocomplete-search
   [vincentfretin]

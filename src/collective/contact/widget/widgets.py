@@ -73,6 +73,10 @@ $(document).ready(function() {
   });
   $(document).delegate('.link-tooltip', 'mouseenter', function() {
     var trigger = $(this);
+    // don't open tooltip in tooltip
+    if (trigger.closest('.tooltip').length) {
+        return;
+    }
     if (!trigger.data('tooltip')) {
       if (pendingCall.procID) {
         clearTimeout(pendingCall.procID);

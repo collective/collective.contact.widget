@@ -5,7 +5,8 @@ Changelog
 1.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Don't open tooltip in tooltip.
+  [vincentfretin]
 
 
 0.12 (2013-03-12)

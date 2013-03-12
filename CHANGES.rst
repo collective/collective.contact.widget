@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.0 (unreleased)
-----------------
+0.12 (2013-03-12)
+-----------------
 
 - Decode title, returning unicode, to standardize term attributes
   [sgeulette]

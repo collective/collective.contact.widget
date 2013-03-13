@@ -5,6 +5,9 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Added hidden and rtf mode templates.
+  [vincentfretin]
+
 - Don't open tooltip in tooltip.
   [vincentfretin]
 

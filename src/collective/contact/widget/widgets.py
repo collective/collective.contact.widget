@@ -1,4 +1,5 @@
 from z3c.form.interfaces import IFieldWidget
+import z3c.form.interfaces
 from z3c.form.widget import FieldWidget
 from zope.component import getUtility
 from zope.i18n import translate
@@ -169,6 +170,8 @@ class ContactBaseWidget(object):
     close_on_click = True
     display_template = ViewPageTemplateFile('templates/contact_display.pt')
     input_template = ViewPageTemplateFile('templates/contact_input.pt')
+    hidden_template = ViewPageTemplateFile('templates/contact_hidden.pt')
+    rtf_template = ViewPageTemplateFile('templates/contact_rtf.pt')
     js_callback_template = """
 function (event, data, formatted) {
     (function($) {
@@ -193,7 +196,14 @@ function (event, data, formatted) {
         attributes = settings.add_contact_infos(self)
         for key, value in attributes.items():
             setattr(self, key, value)
-        return super(ContactBaseWidget, self).render()
+        if self.mode == z3c.form.interfaces.DISPLAY_MODE:
+            return self.display_template(self)
+        elif self.mode == z3c.form.interfaces.HIDDEN_MODE:
+            return self.hidden_template(self)
+        elif self.mode == "rtf":
+            return self.rtf_template(self)
+        else:
+            return self.input_template(self)
 
     def js_extra(self):
         content = ""

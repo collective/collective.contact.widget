@@ -1,0 +1,4 @@
+<tal:block tal:repeat="term view/terms">
+<tal:span tal:content="term/title" />
+<tal:block condition="not:repeat/term/end">, </tal:block>
+</tal:block>

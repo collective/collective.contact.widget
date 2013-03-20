@@ -154,6 +154,7 @@ $('#%(id)s-autocomplete').find('.%(klass)s'
   subtype: 'ajax',
   filter: common_content_filter+',#viewlet-below-content>*',
   formselector: '%(formselector)s',
+  cssclass: 'overlay-contact-addnew',
   closeselector: '%(closeselector)s',
   noform: function(el, pbo) {return ccw.fill_autocomplete(el, pbo, 'close');},
   config: {

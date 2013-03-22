@@ -133,7 +133,7 @@ class TermViewlet(grok.Viewlet):
             title = self.context.get_full_title()
         else:
             title = self.context.Title()
-        title = title.decode('utf-8')
+        title = title and title.decode('utf-8') or u""
         return title
 
     @property

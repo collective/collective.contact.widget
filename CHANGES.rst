@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.0 (unreleased)
-----------------
+1.0rc1 (2013-03-27)
+-------------------
 
 - Added hidden and rtf mode templates.
   [vincentfretin]

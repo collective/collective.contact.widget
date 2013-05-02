@@ -62,8 +62,15 @@ class ContactSource(ObjPathSource):
             value = brain._unrestrictedGetObject()
         else:
             value = brain.getPath()[len(self.portal_path):]
-        full_title = brain.get_full_title or brain.Title or brain.id
-        return Term(value, token=brain.getPath(), title=full_title.decode('utf8'), brain=brain)
+        if brain.get_full_title:
+            full_title = brain.get_full_title
+        elif type(brain.Title) is unicode:
+            full_title = brain.Title
+        elif brain.Title:
+            full_title = unicode(brain.Title, 'utf-8')
+        else:
+            full_title = unicode(brain.id)
+        return Term(value, token=brain.getPath(), title=full_title, brain=brain)
 
     def tokenToPath(self, token):
         """For token='/Plone/a/b', return '/a/b'

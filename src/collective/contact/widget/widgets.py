@@ -6,7 +6,7 @@ from zope.i18n import translate
 from zope.interface import implementer, implements, Interface
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from five import grok
-from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import base_hasattr, safe_unicode
 
 from plone.app.layout.viewlets.interfaces import IBelowContent
 from plone.app.layout.viewlets.interfaces import IHtmlHeadLinks
@@ -133,7 +133,7 @@ class TermViewlet(grok.Viewlet):
             title = self.context.get_full_title()
         else:
             title = self.context.Title()
-        title = title and title.decode('utf-8') or u""
+        title = title and safe_unicode(title) or u""
         return title
 
     @property

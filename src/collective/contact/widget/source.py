@@ -4,7 +4,7 @@ from zope.schema.vocabulary import SimpleTerm
 from Products.ZCTextIndex.ParseTree import ParseError
 
 from plone.formwidget.contenttree.source import PathSourceBinder, ObjPathSource
-from Products.CMFPlone.utils import base_hasattr, getToolByName
+from Products.CMFPlone.utils import getToolByName
 
 
 class Term(SimpleTerm):

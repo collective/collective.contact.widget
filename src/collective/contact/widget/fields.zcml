@@ -1,0 +1,23 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:z3c="http://namespaces.zope.org/z3c">
+
+  <utility
+      name="collective.contact.widget.schema.ContactChoice"
+      component=".factory.ContactChoiceFactory"
+      />
+  <utility
+      name="collective.contact.widget.schema.ContactList"
+      component=".factory.ContactListFactory"
+      />
+
+    <utility
+        name="collective.contact.widget.schema.ContactChoice"
+        component=".factory.ContactChoiceHandler"
+        />
+    <utility
+        name="collective.contact.widget.schema.ContactList"
+        component=".factory.ContactListHandler"
+        />
+
+</configure>

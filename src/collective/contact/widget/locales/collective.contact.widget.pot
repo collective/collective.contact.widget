@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-07-18 23:48+0000\n"
+"POT-Creation-Date: 2013-07-19 01:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,20 @@ msgstr ""
 msgid "(nothing)"
 msgstr ""
 
-#: ../factory.py:19
+#: ../factory.py:27
 msgid "Contact"
 msgstr ""
 
-#: ../factory.py:21
+#: ../interfaces.py:54
+msgid "Contact content types that should be provided by autocompletion"
+msgstr ""
+
+#: ../factory.py:29
 msgid "Contact list"
+msgstr ""
+
+#: ../interfaces.py:53
+msgid "Contact types"
 msgstr ""
 
 #: ../widgets.py:119

@@ -22,7 +22,9 @@
 
     <adapter factory=".factory.getContactTypeChoiceFieldSchema" />
     <adapter factory=".factory.ContactTypeChoiceField" />
-
     <adapter factory=".factory.getContactListTypeChoiceFieldSchema" />
     <adapter factory=".factory.ContactListTypeChoiceField" />
+
+    <utility name="collective.contact.vocabulary.sourcetypes"
+             factory=".factory.ContactTypesVocabulary" />
 </configure>

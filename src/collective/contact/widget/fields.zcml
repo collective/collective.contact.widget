@@ -20,4 +20,9 @@
         component=".factory.ContactListHandler"
         />
 
+    <adapter factory=".factory.getContactTypeChoiceFieldSchema" />
+    <adapter factory=".factory.ContactTypeChoiceField" />
+
+    <adapter factory=".factory.getContactListTypeChoiceFieldSchema" />
+    <adapter factory=".factory.ContactListTypeChoiceField" />
 </configure>

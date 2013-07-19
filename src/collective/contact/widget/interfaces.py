@@ -1,7 +1,8 @@
 from zope.interface import Interface
+from zope.interface import implements
 from z3c.relationfield.interfaces import IRelationChoice, IRelationList
 from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
-
+from zope.schema.interfaces import IField
 
 class IContactContent(Interface):
     """Base class for collective.contact.core content types"""
@@ -31,6 +32,7 @@ class IContactList(IRelationList):
     """A one to many relation.
     """
 
+
 class IContactWidgetSettings(Interface):
     """Contact widget settings
     """
@@ -38,3 +40,12 @@ class IContactWidgetSettings(Interface):
         """Return a dict, each key, value will be set
         as attribute on the widget.
         """
+
+
+class IContactTypeChoiceField(IField):
+    """
+    """
+
+
+class ContactTypeChoiceField(object):
+    implements(IContactTypeChoiceField)

@@ -5,7 +5,7 @@ Changelog
 1.0 (unreleased)
 ----------------
 
-- Declare dependency on z3c.relationfield.
+- Declare dependencies on z3c.relationfield and plone.formwidget.contenttree.
 
 - Remove ploneform-render-widget view for content provider, this is now
   in plone.app.z3cform since 0.7.3.

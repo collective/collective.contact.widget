@@ -45,6 +45,7 @@ setup(
         'five.grok',
         'setuptools',
         'plone.formwidget.autocomplete',
+        'z3c.relationfield',
     ],
     extras_require={
         'test': [

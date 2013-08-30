@@ -5,6 +5,8 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Check do_post_sort attribute on source to be able to disable the sorting.
+
 - Declare dependencies on z3c.relationfield and plone.formwidget.contenttree.
 
 - Remove ploneform-render-widget view for content provider, this is now

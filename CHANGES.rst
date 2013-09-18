@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.0 (unreleased)
+1.0 (2013-09-18)
 ----------------
 
 - Check do_post_sort attribute on source to be able to disable the sorting.

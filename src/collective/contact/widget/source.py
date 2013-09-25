@@ -4,7 +4,7 @@ from zope.schema.vocabulary import SimpleTerm
 from Products.ZCTextIndex.ParseTree import ParseError
 
 from plone.formwidget.contenttree.source import PathSourceBinder, ObjPathSource
-from Products.CMFPlone.utils import getToolByName
+from Products.CMFPlone.utils import getToolByName, safe_unicode
 
 
 class Term(SimpleTerm):
@@ -62,14 +62,7 @@ class ContactSource(ObjPathSource):
             value = brain._unrestrictedGetObject()
         else:
             value = brain.getPath()[len(self.portal_path):]
-        if brain.get_full_title:
-            full_title = brain.get_full_title
-        elif type(brain.Title) is unicode:
-            full_title = brain.Title
-        elif brain.Title:
-            full_title = unicode(brain.Title, 'utf-8')
-        else:
-            full_title = unicode(brain.id)
+        full_title = safe_unicode(brain.get_full_title or brain.Title or brain.id)
         return Term(value, token=brain.getPath(), title=full_title, brain=brain)
 
     def tokenToPath(self, token):

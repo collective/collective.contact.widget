@@ -287,9 +287,12 @@ class AutocompleteSearch(BaseAutocompleteSearch):
             query = "path:%s %s" % (source.tokenToPath(path), query)
 
         if query:
-            terms = set(source.search(query))
+            terms = source.search(query)
         else:
-            terms = set()
+            terms = ()
+
+        if getattr(source, 'do_post_sort', True):
+            terms = sorted(set(terms), key=lambda t: t.title)
 
         return u'\n'.join([u"|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra))
-                            for t in sorted(terms, key=lambda t: t.title)])
+                            for t in terms])

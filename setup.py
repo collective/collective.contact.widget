@@ -19,7 +19,7 @@ long_description = (
 
 setup(
     name='collective.contact.widget',
-    version='1.0.dev0',
+    version='1.1.dev0',
     description="Contact widget",
     long_description=long_description,
     # Get more from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -44,7 +44,9 @@ setup(
     install_requires=[
         'five.grok',
         'setuptools',
+        'plone.formwidget.contenttree',
         'plone.formwidget.autocomplete',
+        'z3c.relationfield',
     ],
     extras_require={
         'test': [

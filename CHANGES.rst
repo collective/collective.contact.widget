@@ -2,11 +2,22 @@ Changelog
 =========
 
 
-1.0 (unreleased)
+1.1 (unreleased)
 ----------------
 
 - We can add contact and contact list fields TTW on dexterity content types.
   [thomasdesvenain]
+
+
+1.0 (2013-09-18)
+----------------
+
+- Check do_post_sort attribute on source to be able to disable the sorting.
+
+- Declare dependencies on z3c.relationfield and plone.formwidget.contenttree.
+
+- Remove ploneform-render-widget view for content provider, this is now
+  in plone.app.z3cform since 0.7.3.
 
 
 1.0rc1 (2013-03-27)

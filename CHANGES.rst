@@ -5,7 +5,8 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- We can add contact and contact list fields TTW on dexterity content types.
+  [thomasdesvenain]
 
 
 1.0 (2013-09-18)

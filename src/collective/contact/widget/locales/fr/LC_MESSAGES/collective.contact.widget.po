@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: collective.contact.widget\n"
-"POT-Creation-Date: 2013-03-08 14:07+0000\n"
+"POT-Creation-Date: 2013-07-19 01:13+0000\n"
 "PO-Revision-Date: 2013-03-08 15:10+0100\n"
 "Last-Translator: Vincent Fretin <vincent.fretin@gmail.com>\n"
 "Language-Team: French\n"
@@ -14,11 +14,27 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.contact.widget\n"
 
-#: ../widgets.py:163
+#: ../widgets.py:170
 msgid "(nothing)"
 msgstr "(aucune)"
 
-#: ../widgets.py:113
+#: ../factory.py:27
+msgid "Contact"
+msgstr "Contact"
+
+#: ../interfaces.py:54
+msgid "Contact content types that should be provided by autocompletion"
+msgstr "Types de contenus contact qui peuvent être proposés par l'autocomplétion"
+
+#: ../factory.py:29
+msgid "Contact list"
+msgstr "Liste de contacts"
+
+#: ../interfaces.py:53
+msgid "Contact types"
+msgstr "Types de contacts"
+
+#: ../widgets.py:119
 msgid "please wait"
 msgstr "veuillez patienter"
 

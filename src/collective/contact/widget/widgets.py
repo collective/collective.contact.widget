@@ -23,6 +23,7 @@ from .interfaces import (
     IContactContent,
     IContactWidgetSettings,
     )
+from zope.component.interfaces import ComponentLookupError
 
 class PatchLoadInsideOverlay(grok.Viewlet):
     grok.context(Interface)
@@ -186,6 +187,13 @@ function (event, data, formatted) {
     }(jQuery));
 }
 """
+
+    @property
+    def bound_source(self):
+        try:
+            return super(ContactBaseWidget, self).bound_source
+        except ComponentLookupError:
+            return []
 
     def tokenToUrl(self, token):
         if token == "--NOVALUE--":

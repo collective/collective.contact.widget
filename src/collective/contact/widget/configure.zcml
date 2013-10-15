@@ -11,5 +11,6 @@
     <include package="five.grok" />
     <grok:grok package="." />
     <include file="widgets.zcml" />
+    <include file="fields.zcml" />
 
 </configure>

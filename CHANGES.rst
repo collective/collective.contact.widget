@@ -5,6 +5,10 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+- Do not break dexterity content type when we don't have a REQUEST 
+  (in async context).
+  [thomasdesvenain]
+
 - We can add contact and contact list fields TTW on dexterity content types.
   [thomasdesvenain]
 

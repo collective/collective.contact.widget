@@ -74,7 +74,8 @@ class ContactTypesVocabulary(object):
 
         site = getSite()
         ttool = getToolByName(site, 'portal_types')
+        request = getattr(site, 'REQUEST', None)
         return SimpleVocabulary([SimpleTerm(contact_type,
                            token=contact_type,
-                           title=translate(ttool[contact_type].Title(), context=site.REQUEST))
+                           title=translate(ttool[contact_type].Title(), context=request))
                 for contact_type in contact_types])

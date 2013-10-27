@@ -1,3 +1,4 @@
+from Acquisition import aq_get
 from zope import component
 from zope import interface
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
@@ -74,7 +75,7 @@ class ContactTypesVocabulary(object):
 
         site = getSite()
         ttool = getToolByName(site, 'portal_types')
-        request = getattr(site, 'REQUEST', None)
+        request = aq_get(site, 'REQUEST', None)
         return SimpleVocabulary([SimpleTerm(contact_type,
                            token=contact_type,
                            title=translate(ttool[contact_type].Title(), context=request))

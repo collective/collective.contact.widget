@@ -13,4 +13,12 @@
     <include file="widgets.zcml" />
     <include file="fields.zcml" />
 
+    <genericsetup:registerProfile
+        name="default"
+        title="collective.contact.widget"
+        directory="profiles/default"
+        description="Installs the collective.contact.widget package"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
 </configure>

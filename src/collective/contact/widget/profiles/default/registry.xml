@@ -1,0 +1,12 @@
+<registry>
+  <record name="collective.js.jqueryui.controlpanel.IJQueryUIPlugins.ui_autocomplete"
+          interface="collective.js.jqueryui.controlpanel.IJQueryUIPlugins"
+          field="ui_autocomplete">
+    <field type="plone.registry.field.Bool">
+      <default>False</default>
+      <required>False</required>
+      <title>Autocomplete</title>
+    </field>
+    <value>False</value>
+  </record>
+</registry>

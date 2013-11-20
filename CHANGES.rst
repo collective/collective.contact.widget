@@ -5,7 +5,11 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Do not break dexterity content type when we don't have a REQUEST 
+- The jqueryui autocomplete plugin conflicts with the jquery autocomplete
+  plugin used by plone.formwidget.autocomplete, disable the jqueryui one.
+  [cedricmessiant]
+
+- Do not break dexterity content type when we don't have a REQUEST
   (in async context).
   [thomasdesvenain]
 

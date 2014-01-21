@@ -149,19 +149,24 @@ class TermViewlet(grok.Viewlet):
         return u"""<input type="hidden" name="objpath" value="%s" />""" % (
                     '|'.join([self.token, self.title, self.portal_type, self.url]))
 
+# Execute prepOverlay only if it hasn't been done yet, this avoid to have a
+# pbo undefined error when you have recursive overlays.
 OVERLAY_TEMPLATE = """
-$('#%(id)s-autocomplete').find('.%(klass)s'
-    ).prepOverlay({
-  subtype: 'ajax',
-  filter: common_content_filter+',#viewlet-below-content>*',
-  formselector: '%(formselector)s',
-  cssclass: 'overlay-contact-addnew',
-  closeselector: '%(closeselector)s',
-  noform: function(el, pbo) {return ccw.fill_autocomplete(el, pbo, 'close');},
-  config: {
-      closeOnClick: %(closeOnClick)s,
-      closeOnEsc: %(closeOnClick)s
-  }
+$('#%(id)s-autocomplete').find('.%(klass)s').each(function() {
+    if ($(this).data('pbo') === undefined) {
+        $(this).prepOverlay({
+          subtype: 'ajax',
+          filter: common_content_filter+',#viewlet-below-content>*',
+          formselector: '%(formselector)s',
+          cssclass: 'overlay-contact-addnew',
+          closeselector: '%(closeselector)s',
+          noform: function(el, pbo) {return ccw.fill_autocomplete(el, pbo, 'close');},
+          config: {
+              closeOnClick: %(closeOnClick)s,
+              closeOnEsc: %(closeOnClick)s
+          }
+        });
+    }
 });
 """
 

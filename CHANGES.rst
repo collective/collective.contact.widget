@@ -5,6 +5,10 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+- Execute prepOverlay only if it hasn't been done yet, this avoid to have a
+  pbo undefined error when you have recursive overlays.
+  [vincentfretin]
+
 - The jqueryui autocomplete plugin conflicts with the jquery autocomplete
   plugin used by plone.formwidget.autocomplete, disable the jqueryui one.
   [cedricmessiant]

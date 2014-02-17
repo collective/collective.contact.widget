@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: collective.contact.widget\n"
-"POT-Creation-Date: 2013-07-19 01:13+0000\n"
+"POT-Creation-Date: 2014-02-17 15:17+0000\n"
 "PO-Revision-Date: 2013-03-08 15:10+0100\n"
 "Last-Translator: Vincent Fretin <vincent.fretin@gmail.com>\n"
 "Language-Team: French\n"
@@ -14,27 +14,36 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.contact.widget\n"
 
-#: ../widgets.py:170
+#: ../widgets.py:83
 msgid "(nothing)"
 msgstr "(aucune)"
 
-#: ../factory.py:27
+#: ../factory.py:35
 msgid "Contact"
 msgstr "Contact"
 
-#: ../interfaces.py:54
+#: ../interfaces.py:35
 msgid "Contact content types that should be provided by autocompletion"
 msgstr "Types de contenus contact qui peuvent être proposés par l'autocomplétion"
 
-#: ../factory.py:29
+#: ../factory.py:37
 msgid "Contact list"
 msgstr "Liste de contacts"
 
-#: ../interfaces.py:53
+#: ../interfaces.py:34
 msgid "Contact types"
 msgstr "Types de contacts"
 
-#: ../widgets.py:119
+#: ../widgets.py:92
+msgid "Fill your search here..."
+msgstr "Saisissez votre recherche..."
+
+#. Default: "If the item doesn't exist, you can add it to the database :"
+#: ../templates/contact_input.pt:17
+msgid "help_widget_add_new_elt"
+msgstr "Si l'élément n'existe pas, vous pouvez l'ajouter à la base :"
+
+#: ../widgets.py:31
 msgid "please wait"
 msgstr "veuillez patienter"
 

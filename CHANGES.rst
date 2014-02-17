@@ -5,6 +5,13 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+- UI improvements :
+  - Add contact link is displayed after user has filled a search.
+  - We have and explicit help message next to contact link.
+  - Contact creation form title is pre-filled with user search.
+  - The search input has a placeholder.
+  [thomasdesvenain]
+
 - Execute prepOverlay only if it hasn't been done yet, this avoid to have a
   pbo undefined error when you have recursive overlays.
   [vincentfretin]

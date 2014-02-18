@@ -1,0 +1,42 @@
+<i18n:domain i18n:domain="collective.contact.widget"
+             xmlns:tal="http://xml.zope.org/namespaces/tal"
+             xmlns:metal="http://xml.zope.org/namespaces/metal"
+             xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+<script tal:omit-tag="string:1" type="text/javascript">
+/* Execute prepOverlay only if it hasn't been done yet, this avoid to have a
+   pbo undefined error when you have recursive overlays. */
+$('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="options/klass"/>').each(function() {
+    var addlink = $(this);
+    var addmsg =  $(this).parents('.addnew-block').first();
+    var widget = $(this).parents('.field').first();
+    var input = widget.find('input[type="text"]');
+    input.attr('placeholder', '<tal:class replace="view/placeholder" i18n:translate=""/>');
+    addmsg.hide();
+    input.keyup(function(){
+      if(input.attr('value').length>=2){
+    	addmsg.show('fast');
+      }
+    })
+    prefill_title = function(elt, pbo){
+    	var value = input.attr('value');
+    	$(elt.target).find('#form-widgets-title').attr('value', value);
+    	$(elt.target).find('#form-widgets-lastname').attr('value', value);
+    }
+    if (addlink.data('pbo') === undefined) {
+        addlink.prepOverlay({
+          subtype: 'ajax',
+          filter: common_content_filter+',#viewlet-below-content>*',
+          formselector: '<tal:class replace="options/formselector"/>',
+          cssclass: 'overlay-contact-addnew',
+          closeselector: '<tal:class replace="options/closeselector"/>',
+          noform: function(el, pbo) {return ccw.fill_autocomplete(el, pbo, 'close');},
+          config: {
+              closeOnClick: <tal:closeOnClick replace="options/closeOnClick"/>,
+              closeOnEsc: <tal:closeOnClick replace="options/closeOnClick"/>,
+              onLoad: prefill_title
+          }
+        });
+    }
+});
+</script>
+</i18n:domain>

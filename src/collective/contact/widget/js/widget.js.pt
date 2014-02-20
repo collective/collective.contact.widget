@@ -56,7 +56,7 @@ $(document).ready(function() {
       }
       var timeStamp = new Date();
       var tooltipCall = function() {
-          var tip = $('<div class="tooltip pb-ajax" style="display:none"><tal:msg i18n:translate="" content="view/wait_msg" /></div>')
+          var tip = $('<div class="tooltip pb-ajax" style="display:none">%(wait_msg)s</div>')
                 .insertAfter(trigger);
           trigger.tooltip({relative: true, position: "center right"});
           var tooltip = trigger.tooltip();

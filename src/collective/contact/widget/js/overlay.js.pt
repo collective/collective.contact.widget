@@ -2,7 +2,6 @@
              xmlns:tal="http://xml.zope.org/namespaces/tal"
              xmlns:metal="http://xml.zope.org/namespaces/metal"
              xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-<script tal:omit-tag="string:1" type="text/javascript">
 /* Execute prepOverlay only if it hasn't been done yet, this avoid to have a
    pbo undefined error when you have recursive overlays. */
 $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="options/klass"/>').each(function() {
@@ -38,5 +37,4 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
         });
     }
 });
-</script>
 </i18n:domain>

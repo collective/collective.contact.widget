@@ -32,7 +32,7 @@ class PatchLoadInsideOverlay(grok.Viewlet):
     tooltip_template = ViewPageTemplateFile('js/widget.js.pt')
 
     def render(self):
-        return self.tooltip_template()
+        return self.tooltip_template() % {'wait_msg': self.wait_msg}
 
 
 class TermViewlet(grok.Viewlet):

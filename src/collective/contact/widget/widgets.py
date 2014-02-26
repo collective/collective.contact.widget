@@ -3,6 +3,7 @@ import z3c.form.interfaces
 from z3c.form.widget import FieldWidget
 from zope.component import getUtility
 from zope.component.interfaces import ComponentLookupError
+from zope.i18n import translate
 from zope.interface import implementer, implements, Interface
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from five import grok
@@ -32,7 +33,8 @@ class PatchLoadInsideOverlay(grok.Viewlet):
     tooltip_template = ViewPageTemplateFile('js/widget.js.pt')
 
     def render(self):
-        return self.tooltip_template() % {'wait_msg': self.wait_msg}
+        return self.tooltip_template() % {
+                'wait_msg': translate(self.wait_msg, context=self.request)}
 
 
 class TermViewlet(grok.Viewlet):

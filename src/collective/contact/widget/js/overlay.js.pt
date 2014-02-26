@@ -11,11 +11,17 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
     var input = widget.find('input[type="text"]');
     input.attr('placeholder', '<tal:class replace="view/placeholder" i18n:translate=""/>');
     addmsg.hide();
-    input.keyup(function(){
+    update_addmsg = function(){
       if(input.attr('value').length>=2){
     	addmsg.show('fast');
       }
-    })
+      if(input.attr('value').length===0){
+    	addmsg.hide('fast');
+      }
+    }
+    input.change(update_addmsg);
+    input.focusout(update_addmsg);
+    input.keyup(update_addmsg);
     prefill_title = function(elt, pbo){
     	var value = input.attr('value');
     	$(elt.target).find('#form-widgets-title').attr('value', value);

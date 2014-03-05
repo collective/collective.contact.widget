@@ -36,8 +36,8 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
           closeselector: '<tal:class replace="options/closeselector"/>',
           noform: function(el, pbo) {return ccw.fill_autocomplete(el, pbo, 'close');},
           config: {
-              closeOnClick: <tal:closeOnClick replace="options/closeOnClick"/>,
-              closeOnEsc: <tal:closeOnClick replace="options/closeOnClick"/>,
+              <tal:if condition="not:options/closeOnClick">closeOnClick: <tal:closeOnClick replace="options/closeOnClick"/>,
+              closeOnEsc: <tal:closeOnClick replace="options/closeOnClick"/>,</tal:if>
               onLoad: prefill_title
           }
         });

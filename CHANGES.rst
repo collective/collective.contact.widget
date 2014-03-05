@@ -5,6 +5,10 @@ Changelog
 1.1 (unreleased)
 ----------------
 
+- Don't include closeOnClick: true in javascript, so it defaults to
+  global configuration.
+  [vincentfretin]
+
 - UI improvements :
   - Add contact link is displayed after user has filled a search.
   - We have and explicit help message next to contact link.

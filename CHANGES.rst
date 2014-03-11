@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.1 (unreleased)
+1.1 (2014-03-11)
 ----------------
 
 - Don't include closeOnClick: true in javascript, so it defaults to

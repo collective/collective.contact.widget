@@ -1,12 +1,11 @@
 Changelog
 =========
 
-
 1.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Add review_state parameter on ContactList and ContactChoice widgets.
+  [cedricmessiant]
 
 1.1 (2014-03-11)
 ----------------

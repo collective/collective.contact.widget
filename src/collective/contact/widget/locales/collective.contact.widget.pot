@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-02-17 15:17+0000\n"
+"POT-Creation-Date: 2014-03-18 07:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.contact.widget\n"
 
-#: ../widgets.py:83
+#: ../widgets.py:73
 msgid "(nothing)"
 msgstr ""
 
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: ../interfaces.py:35
+#: ../interfaces.py:34
 msgid "Contact content types that should be provided by autocompletion"
 msgstr ""
 
@@ -33,12 +33,20 @@ msgstr ""
 msgid "Contact list"
 msgstr ""
 
-#: ../interfaces.py:34
+#: ../interfaces.py:33
 msgid "Contact types"
 msgstr ""
 
-#: ../widgets.py:92
+#: ../widgets.py:94
 msgid "Fill your search here..."
+msgstr ""
+
+#: ../interfaces.py:43
+msgid "Review states"
+msgstr ""
+
+#: ../interfaces.py:44
+msgid "Review states that should be visible"
 msgstr ""
 
 #. Default: "If the item doesn't exist, you can add it to the database :"
@@ -46,7 +54,7 @@ msgstr ""
 msgid "help_widget_add_new_elt"
 msgstr ""
 
-#: ../widgets.py:31
+#: ../widgets.py:32
 msgid "please wait"
 msgstr ""
 

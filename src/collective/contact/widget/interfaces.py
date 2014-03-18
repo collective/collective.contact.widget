@@ -29,7 +29,6 @@ class IContactAutocompleteMultiSelectionWidget(IContactAutocompleteWidget):
 
 class IContactSourceTypes(Interface):
 
-
     source_types = schema.Tuple(
        title=_(u"Contact types"),
        description=_(u"Contact content types that should be provided by autocompletion"),
@@ -38,12 +37,22 @@ class IContactSourceTypes(Interface):
        )
 
 
-class IContactChoice(IContactSourceTypes, IRelationChoice):
+class IContactReviewStates(Interface):
+
+    review_state = schema.Tuple(
+       title=_(u"Review states"),
+       description=_(u"Review states that should be visible"),
+       default=None,
+       value_type=schema.Choice(vocabulary='plone.app.vocabularies.WorkflowStates'),
+       )
+
+
+class IContactChoice(IContactSourceTypes, IContactReviewStates, IRelationChoice):
     """A one to one relation where a choice of target objects is available.
     """
 
 
-class IContactList(IContactSourceTypes, IRelationList):
+class IContactList(IContactSourceTypes, IContactReviewStates, IRelationList):
     """A one to many relation.
     """
 
@@ -58,7 +67,7 @@ class IContactWidgetSettings(Interface):
         """
 
 
-class IContactTypeChoiceField(IContactSourceTypes, IField):
+class IContactTypeChoiceField(IContactSourceTypes, IContactReviewStates, IField):
     """
     """
 

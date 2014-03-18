@@ -13,8 +13,9 @@ class ContactList(RelationList):
     def __init__(self, *args, **kwargs):
         self.addlink = kwargs.pop('addlink', True)
         self.source_types = kwargs.pop('source_types',
-                                    self.source_types or None)
-        self.review_state = kwargs.pop('review_state', self.review_state)
+                                       self.source_types or None)
+        self.review_state = kwargs.pop('review_state',
+                                       self.review_state or None)
         if not 'value_type' in kwargs:
             kwargs['value_type'] = ContactChoice(source_types=self.source_types,
                                                  review_state=self.review_state)
@@ -37,8 +38,9 @@ class ContactChoice(RelationChoice):
     def __init__(self, *args, **kwargs):
         self.addlink = kwargs.pop('addlink', True)
         self.source_types = kwargs.pop('source_types',
-                                    self.source_types or None)
-        self.review_state = kwargs.pop('review_state', self.review_state)
+                                       self.source_types or None)
+        self.review_state = kwargs.pop('review_state',
+                                       self.review_state or None)
         if not ('values' in kwargs or 'vocabulary' in kwargs or 'source' in kwargs):
             kwargs['source'] = ContactSourceBinder(
                 review_state=self.review_state,

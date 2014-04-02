@@ -5,7 +5,9 @@ Changelog
 1.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- We can give as source param a 'relations' value to filter on contents
+  related to an other content.
+  [thomasdesvenain]
 
 
 1.1 (2014-03-11)

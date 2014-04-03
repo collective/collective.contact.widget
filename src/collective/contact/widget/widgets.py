@@ -180,17 +180,17 @@ class AutocompleteSearch(BaseAutocompleteSearch):
             else:
                 query = ''
 
+        relations = self.request.get('relations', None)
         # Update the widget before accessing the source.
         # The source was only bound without security applied
         # during traversal before.
         self.context.update()
         source = self.context.bound_source
-
         if path is not None:
             query = "path:%s %s" % (source.tokenToPath(path), query)
 
-        if query:
-            terms = source.search(query)
+        if query or relations:
+            terms = source.search(query, relations=relations)
         else:
             terms = ()
 

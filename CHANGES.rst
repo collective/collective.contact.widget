@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-1.2 (unreleased)
+1.2 (2014-06-02)
 ----------------
 
 - We can give as source param a 'relations' value to filter on contents

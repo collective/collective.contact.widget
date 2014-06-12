@@ -57,6 +57,18 @@ class ContactSource(ObjPathSource):
         self.portal_url = portal_url()
         self.portal_path = portal_url.getPortalPath()
 
+    def isBrainSelectable(self, brain):
+        if brain is None:
+            return False
+
+        # Don't check if the brain satisfy criteria to avoid a LookupError
+        # for an existing value on an object that doesn't satisfy the criteria
+        # anymore
+        #index_data = self.catalog.getIndexDataForRID(brain.getRID())
+        #return self.selectable_filter(brain, index_data)
+
+        return True
+
     def getTermByBrain(self, brain, real_value=True):
         if real_value:
             value = brain._unrestrictedGetObject()

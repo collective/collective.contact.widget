@@ -166,7 +166,6 @@ def ContactAutocompleteMultiFieldWidget(field, request):
 
 class AutocompleteSearch(BaseAutocompleteSearch):
     def __call__(self):
-
         # We want to check that the user was indeed allowed to access the
         # form for this widget. We can only this now, since security isn't
         # applied yet during traversal.

@@ -5,7 +5,8 @@ Changelog
 1.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- UI : improve prefill of add new contact overlay form.
+  [thomasdesvenain]
 
 
 1.2 (2014-06-02)

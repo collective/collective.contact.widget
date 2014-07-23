@@ -13,13 +13,12 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
     addmsg.hide();
     update_addmsg = function(){
       if(input.attr('value').length>=2){
-    	addmsg.show('fast');
+    	addmsg.show();
       }
       if(input.attr('value').length===0){
-    	addmsg.hide('fast');
+    	addmsg.hide();
       }
     }
-    input.change(update_addmsg);
     input.focusout(update_addmsg);
     input.keyup(update_addmsg);
     prefill_title = function(elt, pbo){

@@ -10,7 +10,6 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
     var widget = $(this).parents('.field').first();
     var input = widget.find('input[type="text"]');
     input.attr('placeholder', '<tal:class replace="view/placeholder" i18n:translate=""/>');
-    addmsg.hide();
     update_addmsg = function(){
       if(input.attr('value').length>=2){
     	addmsg.show();
@@ -19,6 +18,7 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
     	addmsg.hide();
       }
     }
+    input.each(update_addmsg) // do not hide if value is set from request
     input.focusout(update_addmsg);
     input.keyup(update_addmsg);
     prefill_title = function(elt, pbo){

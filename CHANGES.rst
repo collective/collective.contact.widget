@@ -2,8 +2,8 @@ Changelog
 =========
 
 
-1.3 (unreleased)
-----------------
+1.2.1 (2014-09-10)
+------------------
 
 - UI : improve prefill of add new contact overlay form.
   [thomasdesvenain]

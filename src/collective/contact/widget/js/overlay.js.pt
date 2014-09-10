@@ -41,11 +41,10 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
 
 	    	/* prefill person on create contact view and apply search */
 	    	prefill_person = function(){
-	    	  $(elt.target).find('#oform-widgets-person-widgets-query').attr('value', value);
-	    	  $(elt.target).find('#oform-widgets-person-widgets-query').change();
-	    	  $(elt.target).find('#oform-widgets-person-widgets-query').focus();
-	    	  $(elt.target).find('#oform-widgets-person-widgets-query').click();
-	    	  $(elt.target).find('#oform-widgets-person-widgets-query').trigger('click');
+	    	  var query_input = $(elt.target).find('#oform-widgets-person-widgets-query');
+	    	  // now, the magick formula
+	    	  query_input.click().focus().val(value).click();
+	    	  // et voilà !
 	    	}
 	    	window.setTimeout(prefill_person, 100);
 	    }

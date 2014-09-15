@@ -61,16 +61,15 @@ class IContactWidgetSettings(Interface):
     """Contact widget settings
     """
 
-    def add_contact_infos(widget):
+    def add_contact_infos(self, widget):
         """Return a dict, each key, value will be set
         as attribute on the widget.
         """
 
 
-class IContactTypeChoiceField(IContactSourceTypes, IContactReviewStates, IField):
+class IContactChoiceField(IContactSourceTypes, IContactReviewStates, IField):
     """
     """
 
-
-class ContactTypeChoiceField(object):
-    implements(IContactTypeChoiceField)
+class ContactChoiceField(object):
+    implements(IContactChoiceField)

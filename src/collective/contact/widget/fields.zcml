@@ -20,11 +20,12 @@
         component=".factory.ContactListHandler"
         />
 
-    <adapter factory=".factory.getContactTypeChoiceFieldSchema" />
-    <adapter factory=".factory.ContactTypeChoiceField" />
-    <adapter factory=".factory.getContactListTypeChoiceFieldSchema" />
-    <adapter factory=".factory.ContactListTypeChoiceField" />
+    <adapter factory=".factory.getContactChoiceFieldSchema" />
+    <adapter factory=".factory.ContactChoiceField" />
+    <adapter factory=".factory.getContactListChoiceFieldSchema" />
+    <adapter factory=".factory.ContactListChoiceField" />
 
     <utility name="collective.contact.vocabulary.sourcetypes"
              factory=".factory.ContactTypesVocabulary" />
+
 </configure>

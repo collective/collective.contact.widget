@@ -1,5 +1,6 @@
 from Acquisition import aq_get
 from zope import component
+from zope.component.hooks import getSite
 from zope import interface
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 from zope.schema.interfaces import IVocabularyFactory
@@ -11,11 +12,11 @@ from plone.schemaeditor.fields import FieldFactory
 from plone.supermodel.exportimport import BaseHandler
 from plone.schemaeditor.interfaces import IFieldEditFormSchema
 
-from collective.contact.widget.interfaces import IContactChoice, IContactList
-from collective.contact.widget.interfaces import IContactTypeChoiceField
+from collective.contact.widget.interfaces import (
+        IContactChoice, IContactList,
+        IContactChoiceField)
 from collective.contact.widget import schema
 from collective.contact.widget import _
-from zope.component.hooks import getSite
 
 
 class ContactHandler(BaseHandler):
@@ -40,12 +41,12 @@ ContactListHandler = ContactHandler(schema.ContactList)
 
 @interface.implementer(IFieldEditFormSchema)
 @component.adapter(IContactChoice)
-def getContactTypeChoiceFieldSchema(field):
-    return IContactTypeChoiceField
+def getContactChoiceFieldSchema(field):
+    return IContactChoiceField
 
 
-class ContactTypeChoiceField(object):
-    interface.implements(IContactTypeChoiceField)
+class ContactChoiceField(object):
+    interface.implements(IContactChoiceField)
     component.adapts(IContactChoice)
 
     def __init__(self, field):
@@ -54,12 +55,12 @@ class ContactTypeChoiceField(object):
 
 @interface.implementer(IFieldEditFormSchema)
 @component.adapter(IContactList)
-def getContactListTypeChoiceFieldSchema(field):
-    return IContactTypeChoiceField
+def getContactListChoiceFieldSchema(field):
+    return IContactChoiceField
 
 
-class ContactListTypeChoiceField(object):
-    interface.implements(IContactTypeChoiceField)
+class ContactListChoiceField(object):
+    interface.implements(IContactChoiceField)
     component.adapts(IContactList)
 
     def __init__(self, field):

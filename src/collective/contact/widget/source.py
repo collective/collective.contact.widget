@@ -1,10 +1,17 @@
+from copy import deepcopy
+from Acquisition import aq_inner
 from zope.component.hooks import getSite
+from zope.component import getUtility
+from zope.intid.interfaces import IIntIds
 from zope.schema.vocabulary import SimpleTerm
 
 from Products.ZCTextIndex.ParseTree import ParseError
 
 from plone.formwidget.contenttree.source import PathSourceBinder, ObjPathSource
 from Products.CMFPlone.utils import getToolByName, safe_unicode
+from zc.relation.interfaces import ICatalog
+from plone import api
+from plone.uuid.interfaces import IUUID
 
 
 class Term(SimpleTerm):
@@ -51,7 +58,15 @@ def parse_query(query, path_prefix=""):
 
 class ContactSource(ObjPathSource):
 
+    relations = None
+
     def __init__(self, context, selectable_filter, navigation_tree_query=None):
+        """relations params is a dictionary : {relation_name: related_to_path}
+        it filters on all results that have a relation with the content
+        """
+        selectable_filter = deepcopy(selectable_filter)
+        if 'relations' in selectable_filter.criteria:
+            self.relations = selectable_filter.criteria.pop('relations')[0]
         super(ContactSource, self).__init__(context, selectable_filter, navigation_tree_query)
         portal_url = getToolByName(getSite(), 'portal_url')
         self.portal_url = portal_url()
@@ -85,7 +100,7 @@ class ContactSource(ObjPathSource):
     def tokenToUrl(self, token):
         return token.replace(self.portal_path, self.portal_url, 1)
 
-    def search(self, query, limit=20):
+    def search(self, query, relations=None, limit=20):
         """Copy from plone.formwidget.contenttree.source,
         to be able to use a modified version of parse_query.
         """
@@ -100,6 +115,27 @@ class ContactSource(ObjPathSource):
                        for brain in self.catalog(**catalog_query))
         except ParseError:
             return []
+
+        rels = deepcopy(self.relations or {})
+        rels.update(relations or {})
+        if rels:
+            catalog = getUtility(ICatalog)
+            intids = getUtility(IIntIds)
+            for relation, related_to_path in rels.items():
+                source_object = aq_inner(api.content.get(related_to_path))
+                if not source_object:
+                    continue
+
+                related_uids = []
+                for rel in catalog.findRelations(
+                                    dict(to_id=intids.getId(aq_inner(source_object)),
+                                         from_attribute=relation)
+                                    ):
+                    obj = intids.queryObject(rel.from_id)
+                    if obj:
+                        related_uids.append(IUUID(obj))
+
+                results = [r for r in results if r.brain.UID in related_uids]
 
         return results
 

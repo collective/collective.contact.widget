@@ -1,11 +1,26 @@
 Changelog
 =========
 
-1.2 (unreleased)
-----------------
+1.2.2 (unreleased)
+------------------
 
 - Add review_state parameter on ContactList and ContactChoice widgets.
   [cedricmessiant]
+
+1.2.1 (2014-09-10)
+------------------
+
+- UI : improve prefill of add new contact overlay form.
+  [thomasdesvenain]
+
+
+1.2 (2014-06-02)
+----------------
+
+- We can give as source param a 'relations' value to filter on contents
+  related to an other content.
+  [thomasdesvenain]
+
 
 1.1 (2014-03-11)
 ----------------

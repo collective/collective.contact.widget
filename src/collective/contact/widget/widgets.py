@@ -166,7 +166,6 @@ def ContactAutocompleteMultiFieldWidget(field, request):
 
 class AutocompleteSearch(BaseAutocompleteSearch):
     def __call__(self):
-
         # We want to check that the user was indeed allowed to access the
         # form for this widget. We can only this now, since security isn't
         # applied yet during traversal.
@@ -180,17 +179,17 @@ class AutocompleteSearch(BaseAutocompleteSearch):
             else:
                 query = ''
 
+        relations = self.request.get('relations', None)
         # Update the widget before accessing the source.
         # The source was only bound without security applied
         # during traversal before.
         self.context.update()
         source = self.context.bound_source
-
         if path is not None:
             query = "path:%s %s" % (source.tokenToPath(path), query)
 
-        if query:
-            terms = source.search(query)
+        if query or relations:
+            terms = source.search(query, relations=relations)
         else:
             terms = ()
 

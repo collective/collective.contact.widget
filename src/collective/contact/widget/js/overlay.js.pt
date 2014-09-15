@@ -10,22 +10,44 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
     var widget = $(this).parents('.field').first();
     var input = widget.find('input[type="text"]');
     input.attr('placeholder', '<tal:class replace="view/placeholder" i18n:translate=""/>');
-    addmsg.hide();
     update_addmsg = function(){
       if(input.attr('value').length>=2){
-    	addmsg.show('fast');
+    	addmsg.show();
       }
       if(input.attr('value').length===0){
-    	addmsg.hide('fast');
+    	addmsg.hide();
       }
     }
-    input.change(update_addmsg);
+    input.each(update_addmsg) // do not hide if value is set from request
     input.focusout(update_addmsg);
     input.keyup(update_addmsg);
     prefill_title = function(elt, pbo){
     	var value = input.attr('value');
-    	$(elt.target).find('#form-widgets-title').attr('value', value);
-    	$(elt.target).find('#form-widgets-lastname').attr('value', value);
+    	if(value){
+	    	$(elt.target).find('#form-widgets-title').attr('value', value);
+
+	    	$(elt.target).find('#form-widgets-lastname').each(function(){
+	    		var lastname_input = jQuery(this);
+	    		var firstname_input = $(elt.target).find('#form-widgets-firstname');
+	    		var splitname = value.split(' ');
+	    		if(splitname.length==1){
+	    			lastname_input.attr('value', splitname[0]);
+	    		}
+	    		else if(splitname.length>1){
+	    			firstname_input.attr('value', splitname[0]);
+	    			lastname_input.attr('value', splitname.slice(1,splitname.length).join(' '));
+	    		}
+	    	})
+
+	    	/* prefill person on create contact view and apply search */
+	    	prefill_person = function(){
+	    	  var query_input = $(elt.target).find('#oform-widgets-person-widgets-query');
+	    	  // now, the magick formula
+	    	  query_input.click().focus().val(value).click();
+	    	  // et voilà !
+	    	}
+	    	window.setTimeout(prefill_person, 100);
+	    }
     }
     if (addlink.data('pbo') === undefined) {
         addlink.prepOverlay({

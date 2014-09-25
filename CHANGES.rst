@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.2 (unreleased)
+1.2.2 (2014-09-25)
 ------------------
 
 - Add review_state parameter on ContactList and ContactChoice widgets.

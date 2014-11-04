@@ -4,7 +4,8 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix ContactSource search if no review_state parameter
+  [ebrehault]
 
 
 1.2.2 (2014-09-25)

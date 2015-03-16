@@ -100,7 +100,7 @@ class ContactSource(ObjPathSource):
     def tokenToUrl(self, token):
         return token.replace(self.portal_path, self.portal_url, 1)
 
-    def search(self, query, relations=None, limit=20):
+    def search(self, query, relations=None, limit=50):
         """Copy from plone.formwidget.contenttree.source,
         to be able to use a modified version of parse_query.
         """

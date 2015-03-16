@@ -4,6 +4,9 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+- Increase results to 50 items.
+  [vincentfretin]
+
 - jQuery 1.9 compatibility.
   [vincentfretin]
 

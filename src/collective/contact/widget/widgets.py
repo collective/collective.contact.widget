@@ -72,6 +72,7 @@ class ContactBaseWidget(object):
     implements(IContactAutocompleteWidget)
     noValueLabel = _(u'(nothing)')
     autoFill = False
+    maxResults = 50
     close_on_click = True
     display_template = ViewPageTemplateFile('templates/contact_display.pt')
     input_template = ViewPageTemplateFile('templates/contact_input.pt')

@@ -11,10 +11,10 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
     var input = widget.find('input[type="text"]');
     input.attr('placeholder', '<tal:class replace="view/placeholder" i18n:translate=""/>');
     update_addmsg = function(){
-      if(input.attr('value').length>=2){
+      if(input.val().length>=2){
     	addmsg.show();
       }
-      if(input.attr('value').length===0){
+      if(input.val().length===0){
     	addmsg.hide();
       }
     }
@@ -22,20 +22,20 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
     input.focusout(update_addmsg);
     input.keyup(update_addmsg);
     prefill_title = function(elt, pbo){
-    	var value = input.attr('value');
+    	var value = input.val();
     	if(value){
-	    	$(elt.target).find('#form-widgets-title').attr('value', value);
+	    	$(elt.target).find('#form-widgets-title').val(value);
 
 	    	$(elt.target).find('#form-widgets-lastname').each(function(){
 	    		var lastname_input = jQuery(this);
 	    		var firstname_input = $(elt.target).find('#form-widgets-firstname');
 	    		var splitname = value.split(' ');
 	    		if(splitname.length==1){
-	    			lastname_input.attr('value', splitname[0]);
+	    			lastname_input.val(splitname[0]);
 	    		}
 	    		else if(splitname.length>1){
-	    			firstname_input.attr('value', splitname[0]);
-	    			lastname_input.attr('value', splitname.slice(1,splitname.length).join(' '));
+	    			firstname_input.val(splitname[0]);
+	    			lastname_input.val(splitname.slice(1,splitname.length).join(' '));
 	    		}
 	    	})
 

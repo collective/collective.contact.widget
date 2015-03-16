@@ -4,6 +4,9 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+- jQuery 1.9 compatibility.
+  [vincentfretin]
+
 - Fix ContactSource search if no review_state parameter
   [ebrehault]
 

@@ -48,13 +48,13 @@ $(document).ready(function() {
     }
   };
 
-  $(document).delegate('.link-tooltip', 'mouseleave', function() {
+  $(document).on('mouseleave', '.link-tooltip', function() {
     if (pendingCall.procID) {
       clearTimeout(pendingCall.procID);
       pendingCall.procID = null;
     }
   });
-  $(document).delegate('.link-tooltip', 'mouseenter', function() {
+  $(document).on('mouseenter', '.link-tooltip', function() {
     var trigger = $(this);
     // don't open tooltip in tooltip
     if (trigger.closest('.tooltip').length) {

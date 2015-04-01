@@ -1,8 +1,4 @@
 <ul id="" class=""
-      tal:define="url_tool view/form/context/@@plone_tools/url;
-                  portal_url url_tool/portal_url;
-                  portal_path url_tool/getPortalPath"
-
       tal:attributes="id view/id;
                       class view/klass;
                       style view/style;

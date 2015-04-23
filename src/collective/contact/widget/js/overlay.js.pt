@@ -24,8 +24,7 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
     prefill_title = function(elt, pbo){
     	var value = input.val();
     	if(value){
-	    	$(elt.target).find('#form-widgets-title').val(value);
-
+        $(elt.target).find("input[id$='-title']").val(value);
 	    	$(elt.target).find('#form-widgets-lastname').each(function(){
 	    		var lastname_input = jQuery(this);
 	    		var firstname_input = $(elt.target).find('#form-widgets-firstname');

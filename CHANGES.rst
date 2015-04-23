@@ -4,6 +4,9 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+- Use a more generic selector for title so that it also works with behaviors.
+  [cedricmessiant]
+
 - Use prelabel variable in template (so that you can override it in custom
   settings, see collective.contact.core).
   [cedricmessiant]

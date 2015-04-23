@@ -4,6 +4,10 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+- Use prelabel variable in template (so that you can override it in custom
+  settings, see collective.contact.core).
+  [cedricmessiant]
+
 - Increase results to 50 items.
   [vincentfretin]
 

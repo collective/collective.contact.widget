@@ -14,9 +14,7 @@
             tal:condition="not:view/readonly"
             tal:repeat="action view/actions">
         <div class="addnew-block">
-          <span i18n:translate="help_widget_add_new_elt">
-          If the item doesn't exist, you can add it to the database :
-          </span>
+          <span tal:content="action/prelabel" tal:condition="action/prelabel" />
           <a target="_new"
              tal:attributes="class action/klass | string:addnew;
                              href action/url;"

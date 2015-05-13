@@ -2,9 +2,9 @@
 collective.contact.widget
 =========================
 
-This module provides a widget for contacts.
+This add-on is part of the ``collective.contact.*`` suite. For an overview and a demo of these suite, see `collective.contact.demo <https://github.com/collective/collective.contact.demo>`__.
 
-For an overview and a demo of `collective.contact.*` suite, see `collective.contact.demo <https://github.com/collective/collective.contact.demo>`__ package.
+This module provides a widget for contacts.
 
 You can add contact fields to your schema, like this ::
 

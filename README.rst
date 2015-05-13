@@ -2,6 +2,10 @@
 collective.contact.widget
 =========================
 
+This module provides a widget for contacts.
+
+For an overview and a demo of `collective.contact.*` suite, see `collective.contact.demo <https://github.com/collective/collective.contact.demo>`__ package.
+
 You can add contact fields to your schema, like this ::
 
 	class IMyProject(Interface):

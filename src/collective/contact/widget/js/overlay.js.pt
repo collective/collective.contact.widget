@@ -37,15 +37,6 @@ $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="opt
 	    			lastname_input.val(splitname.slice(1,splitname.length).join(' '));
 	    		}
 	    	})
-
-	    	/* prefill person on create contact view and apply search */
-	    	prefill_person = function(){
-	    	  var query_input = $(elt.target).find('#oform-widgets-person-widgets-query');
-	    	  // now, the magick formula
-	    	  query_input.click().focus().val(value).click();
-	    	  // et voilà !
-	    	}
-	    	window.setTimeout(prefill_person, 100);
 	    }
     }
     if (addlink.data('pbo') === undefined) {

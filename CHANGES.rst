@@ -4,6 +4,10 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
+- Remove prefill_person when clicking on Create Contact link (this behavior is
+  too difficult to understand for end users).
+  [cedricmessiant]
+
 - Use a more generic selector for title so that it also works with behaviors.
   [cedricmessiant]
 

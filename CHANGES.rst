@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.2.3 (unreleased)
-------------------
+1.4 (2015-06-02)
+----------------
 
 - Remove prefill_person when clicking on Create Contact link (this behavior is
   too difficult to understand for end users).

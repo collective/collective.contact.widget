@@ -4,7 +4,8 @@ Changelog
 1.5 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add a querySelectSearchInput class to the input field.
+  [vincentfretin]
 
 
 1.4 (2015-06-02)

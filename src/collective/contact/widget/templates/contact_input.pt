@@ -6,7 +6,7 @@
         <div tal:attributes="id string:${view/id}-input-fields" class="autocompleteInputWidget"
              tal:content="structure view/renderQueryWidget">
         </div>
-        <div style="float:left; margin-right: 1em;"
+        <div class="querySelectSearchInput" style="float:left; margin-right: 1em;"
              tal:condition="not:view/readonly">
           <tal:block replace="structure view/subform/render" />
         </div>

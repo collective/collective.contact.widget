@@ -23,7 +23,7 @@ from collective.contact.widget.interfaces import (
     IContactAutocompleteMultiSelectionWidget,
     IContactContent,
     IContactWidgetSettings,
-    )
+)
 
 
 class PatchLoadInsideOverlay(grok.Viewlet):
@@ -34,7 +34,7 @@ class PatchLoadInsideOverlay(grok.Viewlet):
 
     def render(self):
         return self.tooltip_template() % {
-                'wait_msg': translate(self.wait_msg, context=self.request)}
+            'wait_msg': translate(self.wait_msg, context=self.request)}
 
 
 class TermViewlet(grok.Viewlet):
@@ -65,7 +65,7 @@ class TermViewlet(grok.Viewlet):
 
     def render(self):
         return u"""<input type="hidden" name="objpath" value="%s" />""" % (
-                    '|'.join([self.token, self.title, self.portal_type, self.url]))
+            '|'.join([self.token, self.title, self.portal_type, self.url]))
 
 
 class ContactBaseWidget(object):
@@ -128,22 +128,23 @@ function (event, data, formatted) {
             if formselector is None:
                 include_default = True
             else:
-                closeselector = action.get('closeselector',
-                        '[name="form.buttons.cancel"]')
+                closeselector = action.get(
+                    'closeselector', '[name="form.buttons.cancel"]')
                 content += self.overlay_template(**dict(
-                        klass=action['klass'],
-                        formselector=formselector,
-                        closeselector=closeselector,
-                        closeOnClick=self.close_on_click and 'true' or 'false'))
+                    klass=action['klass'],
+                    formselector=formselector,
+                    closeselector=closeselector,
+                    closeOnClick=self.close_on_click and 'true' or 'false'))
 
         if include_default:
             content += self.overlay_template(**dict(
-                    klass='addnew',
-                    formselector='#form',
-                    closeselector='[name="form.buttons.cancel"]',
-                    closeOnClick=self.close_on_click and 'true' or 'false'))
+                klass='addnew',
+                formselector='#form',
+                closeselector='[name="form.buttons.cancel"]',
+                closeOnClick=self.close_on_click and 'true' or 'false'))
 
         return content
+
 
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget):
     implements(IContactAutocompleteSelectionWidget)
@@ -198,4 +199,4 @@ class AutocompleteSearch(BaseAutocompleteSearch):
             terms = sorted(set(terms), key=lambda t: t.title)
 
         return u'\n'.join([u"|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra))
-                            for t in terms])
+                          for t in terms])

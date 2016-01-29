@@ -148,11 +148,11 @@ function (event, data, formatted) {
 
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget):
     implements(IContactAutocompleteSelectionWidget)
+    display_template = ViewPageTemplateFile('templates/contact_display_single.pt')
 
 
 class ContactAutocompleteMultiSelectionWidget(ContactBaseWidget, AutocompleteMultiSelectionWidget):
     implements(IContactAutocompleteMultiSelectionWidget)
-    display_template = ViewPageTemplateFile('templates/contact_display_single.pt')
 
 
 @implementer(IFieldWidget)

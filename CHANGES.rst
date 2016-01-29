@@ -6,7 +6,8 @@ Changelog
 
 - Add a querySelectSearchInput class to the input field.
   [vincentfretin]
-
+- Fix buildout
+  [sgeulette]
 
 1.4 (2015-06-02)
 ----------------

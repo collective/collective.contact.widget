@@ -44,6 +44,7 @@ setup(
     install_requires=[
         'five.grok',
         'setuptools',
+        'plone.api',
         'plone.formwidget.contenttree',
         'plone.formwidget.autocomplete',
         'z3c.relationfield',

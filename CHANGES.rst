@@ -6,6 +6,8 @@ Changelog
 
 - Add a querySelectSearchInput class to the input field.
   [vincentfretin]
+- Add display template for single selection field
+  [sgeulette]
 - Fix buildout
   [sgeulette]
 

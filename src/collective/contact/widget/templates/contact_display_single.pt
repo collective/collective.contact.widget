@@ -1,0 +1,28 @@
+<span id="" class=""
+      tal:define="term python:view.terms and [t for t in view.terms][0] or 0"
+      tal:attributes="id view/id;
+                      class view/klass;
+                      style view/style;
+                      title view/title;
+                      lang view/lang;
+                      onclick view/onclick;
+                      ondblclick view/ondblclick;
+                      onmousedown view/onmousedown;
+                      onmouseup view/onmouseup;
+                      onmouseover view/onmouseover;
+                      onmousemove view/onmousemove;
+                      onmouseout view/onmouseout;
+                      onkeypress view/onkeypress;
+                      onkeydown view/onkeydown;
+                      onkeyup view/onkeyup"
+        >
+    <tal:cond condition="python:term and not(term.token.startswith('#error-'))">
+        <a tal:content="term/title"
+           class="link-tooltip"
+           target="_new"
+           tal:define="url python:view.tokenToUrl(term.token)"
+           tal:omit-tag="python:not url"
+           tal:attributes="href url"
+           />
+    </tal:cond>
+</span>

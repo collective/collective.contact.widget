@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5 (unreleased)
+1.5 (2016-03-04)
 ----------------
 
 - Add a querySelectSearchInput class to the input field.

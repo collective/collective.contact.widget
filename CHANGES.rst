@@ -4,7 +4,8 @@ Changelog
 1.6 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fix an exception with plone.formwidget.contenttree >= 1.0.9.
+  [pcdummy]
 
 
 1.5 (2016-03-04)

@@ -60,14 +60,18 @@ class ContactSource(ObjPathSource):
 
     relations = None
 
-    def __init__(self, context, selectable_filter, navigation_tree_query=None):
+    def __init__(self, context, selectable_filter, navigation_tree_query=None,
+                 default=None, defaultFactory=None, **kw):
         """relations params is a dictionary : {relation_name: related_to_path}
         it filters on all results that have a relation with the content
         """
         selectable_filter = deepcopy(selectable_filter)
         if 'relations' in selectable_filter.criteria:
             self.relations = selectable_filter.criteria.pop('relations')[0]
-        super(ContactSource, self).__init__(context, selectable_filter, navigation_tree_query)
+        super(ContactSource, self).__init__(
+            context, selectable_filter, navigation_tree_query,
+            default, defaultFactory, **kw
+        )
         portal_url = getToolByName(getSite(), 'portal_url')
         self.portal_url = portal_url()
         self.portal_path = portal_url.getPortalPath()

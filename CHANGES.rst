@@ -4,7 +4,8 @@ Changelog
 1.6 (unreleased)
 ----------------
 
-- Fix an exception with plone.formwidget.contenttree >= 1.0.9.
+- Fix an exception with plone.formwidget.contenttree >= 1.0.11 that introduced
+  support for providing defaults to contenttrees.
   [pcdummy]
 
 

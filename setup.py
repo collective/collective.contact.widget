@@ -45,7 +45,7 @@ setup(
         'five.grok',
         'setuptools',
         'plone.api',
-        'plone.formwidget.contenttree',
+        'plone.formwidget.contenttree >= 1.0.11',
         'plone.formwidget.autocomplete',
         'z3c.relationfield',
     ],

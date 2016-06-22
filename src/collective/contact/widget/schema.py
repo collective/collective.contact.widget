@@ -1,4 +1,5 @@
 from zope.interface import implements
+from zope.schema._bootstrapinterfaces import RequiredMissing
 from z3c.relationfield.schema import RelationChoice, RelationList
 
 from .interfaces import IContactChoice, IContactList
@@ -28,6 +29,11 @@ class ContactList(RelationList):
             portal_type=self.source_types or ('held_position', 'person', 'organization'))
         if hasattr(self.value_type, '_bound_source'):
             del self.value_type._bound_source
+
+    def validate(self, value):
+        super(ContactList, self).validate(value)
+        if not value and self.required:
+            raise RequiredMissing(self.__name__)
 
 
 class ContactChoice(RelationChoice):

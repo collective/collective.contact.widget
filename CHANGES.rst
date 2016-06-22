@@ -4,7 +4,8 @@ Changelog
 1.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Ensure that the required property for ContactList field works correctly
+  [mpeeters]
 
 
 1.6 (2016-03-31)

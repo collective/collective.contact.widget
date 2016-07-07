@@ -78,6 +78,29 @@ class ContactBaseWidget(object):
     input_template = ViewPageTemplateFile('templates/contact_input.pt')
     hidden_template = ViewPageTemplateFile('templates/contact_hidden.pt')
     rtf_template = ViewPageTemplateFile('templates/contact_rtf.pt')
+
+    # JavaScript template
+    js_template = """\
+    (function($) {
+        $().ready(function() {
+            $('#%(id)s-input-fields').data('klass','%(klass)s').data('title','%(title)s').data('input_type','%(input_type)s').data('multiple', %(multiple)s);
+            $('#%(id)s-buttons-search').remove();
+            $('#%(id)s-widgets-query').autocomplete('%(url)s', {
+                autoFill: %(autoFill)s,
+                minChars: %(minChars)d,
+                max: %(maxResults)d,
+                mustMatch: %(mustMatch)s,
+                matchContains: %(matchContains)s,
+                matchSubset: false,
+                formatItem: %(formatItem)s,
+                formatResult: %(formatResult)s,
+                parse: %(parseFunction)s
+            }).result(%(js_callback)s);
+            %(js_extra)s
+        });
+    })(jQuery);
+    """
+
     js_callback_template = """
 function (event, data, formatted) {
     (function($) {

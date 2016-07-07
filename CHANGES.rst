@@ -4,6 +4,10 @@ Changelog
 1.7 (unreleased)
 ----------------
 
+- Set matchSubset: false to fix autocomplete behavior with accents and not
+  doing a new ajax request.
+  [vincentfretin]
+
 - Ensure that the required property for ContactList field works correctly
   [mpeeters]
 

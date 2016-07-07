@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.7 (unreleased)
+1.7 (2016-07-07)
 ----------------
 
 - Set matchSubset: false to fix autocomplete behavior with accents and not

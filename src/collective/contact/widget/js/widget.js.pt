@@ -55,6 +55,8 @@ $(document).ready(function() {
     }
   });
   $(document).on('mouseenter', '.link-tooltip', function() {
+    var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.warning,dl.portalMessage.info';
+
     var trigger = $(this);
     // don't open tooltip in tooltip
     if (trigger.closest('.tooltip').length) {

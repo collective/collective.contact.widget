@@ -5,6 +5,8 @@
 /* Execute prepOverlay only if it hasn't been done yet, this avoid to have a
    pbo undefined error when you have recursive overlays. */
 $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="options/klass"/>').each(function() {
+    var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.warning,dl.portalMessage.info';
+
     var addlink = $(this);
     var addmsg =  $(this).parents('.addnew-block').first();
     var widget = $(this).parents('.field').first();

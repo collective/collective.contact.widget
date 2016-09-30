@@ -211,7 +211,7 @@ class AutocompleteSearch(BaseAutocompleteSearch):
         # during traversal before.
         self.context.update()
         source = self.context.bound_source
-        if path is not None:
+        if path is not None and len(path) > 0:
             query = "path:%s %s" % (source.tokenToPath(path), query)
 
         if query or relations:

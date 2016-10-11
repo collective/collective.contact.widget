@@ -5,7 +5,7 @@ Changelog
 ----------------
 
 - ContactChoice can now be used as master field when
-  plone.formwidget.masterselect is installed.
+  plone.formwidget.masterselect >= 1.6 is installed.
   [vincentfretin]
 
 

@@ -15,6 +15,17 @@ from plone.formwidget.autocomplete.widget import (
     AutocompleteMultiSelectionWidget,
     AutocompleteSelectionWidget)
 from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
+try:
+    from plone.formwidget.masterselect.widget import MasterSelect as BaseMasterSelect
+    from plone.formwidget.masterselect.interfaces import IMasterSelectWidget
+    class MasterSelect(BaseMasterSelect):
+        grok.implements(IMasterSelectWidget)
+        def getSlaves(self):
+            for slave in self.field.slave_fields:
+                yield slave.copy()
+except ImportError:
+    class MasterSelect(object):
+        pass
 
 from collective.contact.widget import _
 from collective.contact.widget.interfaces import (
@@ -169,7 +180,7 @@ function (event, data, formatted) {
         return content
 
 
-class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget):
+class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget, MasterSelect):
     implements(IContactAutocompleteSelectionWidget)
     display_template = ViewPageTemplateFile('templates/contact_display_single.pt')
 

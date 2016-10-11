@@ -4,7 +4,9 @@ Changelog
 1.8 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- ContactChoice can now be used as master field when
+  plone.formwidget.masterselect is installed.
+  [vincentfretin]
 
 
 1.7 (2016-07-07)

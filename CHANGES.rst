@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.8 (unreleased)
+1.8 (2016-10-21)
 ----------------
 
 - ContactChoice can now be used as master field when

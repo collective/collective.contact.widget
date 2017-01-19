@@ -12,7 +12,7 @@ from Products.CMFPlone.utils import getToolByName, safe_unicode
 from zc.relation.interfaces import ICatalog
 from plone import api
 from plone.uuid.interfaces import IUUID
-
+from collective.contact.widget import logger
 
 class Term(SimpleTerm):
     def __init__(self, value, token=None, title=None, brain=None):
@@ -137,7 +137,13 @@ class ContactSource(ObjPathSource):
                                     dict(to_id=intids.getId(aq_inner(source_object)),
                                          from_attribute=relation)
                                     ):
-                    obj = intids.queryObject(rel.from_id)
+                    try:
+                        obj = intids.queryObject(rel.from_id)
+                    except KeyError:
+                        logger.error("Related object is missing for relation to %s: %s",
+                                     source_object, str(rel.__dict__))
+                        obj = None
+
                     if obj:
                         related_uids.append(IUUID(obj))
 

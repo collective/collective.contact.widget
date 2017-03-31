@@ -4,8 +4,9 @@ Changelog
 1.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Prevent fatal error on autocomplete if by chance a held position related to a position or an organisation has been removed
+  but the relation always exist. An error is logged.
+  [thomasdesvenain]
 
 1.8 (2016-10-21)
 ----------------

@@ -116,6 +116,10 @@ class ContactSource(ObjPathSource):
         if limit and 'sort_limit' not in catalog_query:
             catalog_query['sort_limit'] = limit
 
+        if self.relations:
+            # we apply limit after restriction on relations
+            limit = catalog_query.pop('sort_limit', limit)
+
         try:
             results = (self.getTermByBrain(brain, real_value=False)
                        for brain in self.catalog(**catalog_query))
@@ -124,7 +128,9 @@ class ContactSource(ObjPathSource):
 
         rels = deepcopy(self.relations or {})
         rels.update(relations or {})
-        if rels:
+        if not rels:
+            return results
+        else:
             catalog = getUtility(ICatalog)
             intids = getUtility(IIntIds)
             for relation, related_to_path in rels.items():
@@ -132,24 +138,29 @@ class ContactSource(ObjPathSource):
                 if not source_object:
                     continue
 
-                related_uids = []
-                for rel in catalog.findRelations(
-                                    dict(to_id=intids.getId(aq_inner(source_object)),
-                                         from_attribute=relation)
-                                    ):
+                related_uids = set()
+                found_relations = catalog.findRelations(
+                    dict(to_id=intids.getId(aq_inner(source_object)),
+                         from_attribute=relation)
+                )
+                for rel in found_relations:
                     try:
                         obj = intids.queryObject(rel.from_id)
+                        related_uids.add(IUUID(obj))
                     except KeyError:
                         logger.error("Related object is missing for relation to %s: %s",
                                      source_object, str(rel.__dict__))
-                        obj = None
 
-                    if obj:
-                        related_uids.append(IUUID(obj))
+            def get_results():
+                counter = 0
+                for r in results:
+                    if r.brain.UID in related_uids:
+                        yield r
+                        counter += 1
+                        if counter == limit:
+                            return
 
-                results = [r for r in results if r.brain.UID in related_uids]
-
-        return results
+            return get_results()
 
 
 class ContactSourceBinder(PathSourceBinder):

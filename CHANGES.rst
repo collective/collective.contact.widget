@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.9 (unreleased)
+1.9 (2017-05-30)
 ----------------
 
 - Prevent fatal error on autocomplete if by chance a held position related to a position or an organisation has been removed

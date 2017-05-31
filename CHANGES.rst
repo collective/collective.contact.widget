@@ -10,6 +10,9 @@ Changelog
 1.9 (2017-05-30)
 ----------------
 
+- Fix optimization issue when vocabulary is restricted by a relation.
+  [thomasdesvenain]
+
 - Prevent fatal error on autocomplete if by chance a held position related to a position or an organisation has been removed
   but the relation always exist. An error is logged.
   [thomasdesvenain]

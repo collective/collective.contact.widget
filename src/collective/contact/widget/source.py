@@ -133,12 +133,12 @@ class ContactSource(ObjPathSource):
         else:
             catalog = getUtility(ICatalog)
             intids = getUtility(IIntIds)
+            related_uids = set()
             for relation, related_to_path in rels.items():
                 source_object = aq_inner(api.content.get(related_to_path))
                 if not source_object:
                     continue
 
-                related_uids = set()
                 found_relations = catalog.findRelations(
                     dict(to_id=intids.getId(aq_inner(source_object)),
                          from_attribute=relation)

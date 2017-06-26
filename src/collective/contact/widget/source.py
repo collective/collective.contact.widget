@@ -151,6 +151,9 @@ class ContactSource(ObjPathSource):
                         logger.error("Related object is missing for relation to %s: %s",
                                      source_object, str(rel.__dict__))
 
+            if not related_uids:
+                return []
+            
             def get_results():
                 counter = 0
                 for r in results:

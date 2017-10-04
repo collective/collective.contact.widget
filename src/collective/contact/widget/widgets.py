@@ -233,5 +233,8 @@ class AutocompleteSearch(BaseAutocompleteSearch):
         if getattr(source, 'do_post_sort', True):
             terms = sorted(set(terms), key=lambda t: t.title)
 
+        response = self.request.response
+        response.setHeader('Content-type', 'text/plain')
+
         return u'\n'.join([u"|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra))
                           for t in terms])

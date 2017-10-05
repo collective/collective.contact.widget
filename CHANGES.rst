@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.10 (unreleased)
+1.10 (2017-10-05)
 -----------------
 
 - Set Content-type 'text/plain' headers to autocomplete request. This prevent "<!DOCTYPE html" tag.

@@ -1,4 +1,5 @@
 from Acquisition import aq_get
+from plone.app.dexterity.browser.types import TypeSchemaContext
 from zope import component
 from zope.component.hooks import getSite
 from zope import interface
@@ -81,3 +82,10 @@ class ContactTypesVocabulary(object):
                            token=contact_type,
                            title=translate(ttool[contact_type].Title(), context=request))
                 for contact_type in contact_types])
+
+
+# allow contact fields on dexterity types editor
+TypeSchemaContext.allowedFields = TypeSchemaContext.allowedFields + [
+    u'collective.contact.widget.schema.ContactChoice',
+    u'collective.contact.widget.schema.ContactList',
+]

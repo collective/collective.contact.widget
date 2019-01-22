@@ -1,10 +1,10 @@
 Changelog
 =========
 
-1.8 (unreleased)
+2.0 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Plone 5 compatible.
 
 
 1.7 (2016-07-07)

@@ -41,7 +41,8 @@ class ContactChoice(RelationChoice):
     source_types = None
     review_state = None
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, slave_fields=(), *args, **kwargs):
+        self.slave_fields = slave_fields
         self.addlink = kwargs.pop('addlink', True)
         self.source_types = kwargs.pop('source_types',
                                        self.source_types or None)

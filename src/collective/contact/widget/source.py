@@ -12,7 +12,7 @@ from Products.CMFPlone.utils import getToolByName, safe_unicode
 from zc.relation.interfaces import ICatalog
 from plone import api
 from plone.uuid.interfaces import IUUID
-
+from collective.contact.widget import logger
 
 class Term(SimpleTerm):
     def __init__(self, value, token=None, title=None, brain=None):
@@ -119,6 +119,10 @@ class ContactSource(ObjPathSource):
         if limit and 'sort_limit' not in catalog_query:
             catalog_query['sort_limit'] = limit
 
+        if self.relations:
+            # we apply limit after restriction on relations
+            limit = catalog_query.pop('sort_limit', limit)
+
         try:
             results = (self.getTermByBrain(brain, real_value=False)
                        for brain in self.catalog(**catalog_query))
@@ -127,26 +131,42 @@ class ContactSource(ObjPathSource):
 
         rels = deepcopy(self.relations or {})
         rels.update(relations or {})
-        if rels:
+        if not rels:
+            return results
+        else:
             catalog = getUtility(ICatalog)
             intids = getUtility(IIntIds)
+            related_uids = set()
             for relation, related_to_path in rels.items():
                 source_object = aq_inner(api.content.get(related_to_path))
                 if not source_object:
                     continue
 
-                related_uids = []
-                for rel in catalog.findRelations(
-                                    dict(to_id=intids.getId(aq_inner(source_object)),
-                                         from_attribute=relation)
-                                    ):
-                    obj = intids.queryObject(rel.from_id)
-                    if obj:
-                        related_uids.append(IUUID(obj))
+                found_relations = catalog.findRelations(
+                    dict(to_id=intids.getId(aq_inner(source_object)),
+                         from_attribute=relation)
+                )
+                for rel in found_relations:
+                    try:
+                        obj = intids.queryObject(rel.from_id)
+                        related_uids.add(IUUID(obj))
+                    except KeyError:
+                        logger.error("Related object is missing for relation to %s: %s",
+                                     source_object, str(rel.__dict__))
 
-                results = [r for r in results if r.brain.UID in related_uids]
+            if not related_uids:
+                return []
+            
+            def get_results():
+                counter = 0
+                for r in results:
+                    if r.brain.UID in related_uids:
+                        yield r
+                        counter += 1
+                        if counter == limit:
+                            return
 
-        return results
+            return get_results()
 
 
 class ContactSourceBinder(PathSourceBinder):

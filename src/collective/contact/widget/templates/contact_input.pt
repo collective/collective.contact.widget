@@ -25,4 +25,8 @@
         <div class="visualClear"><!--  --></div>
     </div>
     <script type="text/javascript" tal:content="structure view/js"></script>
+    <!-- MasterSelect javascript -->
+    <script type="text/javascript"
+                      tal:content="structure view/getInlineJS|nothing">
+    </script>
 </i18n:domain>

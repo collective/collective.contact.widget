@@ -1,10 +1,36 @@
 Changelog
 =========
 
+
 2.0 (unreleased)
 ----------------
 
 - Plone 5 compatible.
+
+
+1.10 (2017-10-05)
+-----------------
+
+- Set Content-type 'text/plain' headers to autocomplete request. This prevent "<!DOCTYPE html" tag.
+  [bsuttor]
+
+
+1.9 (2017-05-30)
+----------------
+
+- Fix optimization issue when vocabulary is restricted by a relation.
+  [thomasdesvenain]
+
+- Prevent fatal error on autocomplete if by chance a held position related to a position or an organisation has been removed
+  but the relation always exist. An error is logged.
+  [thomasdesvenain]
+
+1.8 (2016-10-21)
+----------------
+
+- ContactChoice can now be used as master field when
+  plone.formwidget.masterselect >= 1.6 is installed.
+  [vincentfretin]
 
 
 1.7 (2016-07-07)
@@ -168,4 +194,3 @@ Changelog
 
 - Initial release.
   [vincentfretin]
-

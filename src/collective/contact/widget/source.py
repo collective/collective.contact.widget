@@ -1,18 +1,19 @@
 from copy import deepcopy
+
+from collective.contact.widget import logger
+
 from Acquisition import aq_inner
-from zope.component.hooks import getSite
+from Products.CMFPlone.utils import getToolByName, safe_unicode
+from Products.ZCTextIndex.ParseTree import ParseError
+from plone import api
+from plone.formwidget.contenttree.source import PathSourceBinder, ObjPathSource, CustomFilter
+from plone.uuid.interfaces import IUUID
+from zc.relation.interfaces import ICatalog
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.intid.interfaces import IIntIds
 from zope.schema.vocabulary import SimpleTerm
 
-from Products.ZCTextIndex.ParseTree import ParseError
-
-from plone.formwidget.contenttree.source import PathSourceBinder, ObjPathSource
-from Products.CMFPlone.utils import getToolByName, safe_unicode
-from zc.relation.interfaces import ICatalog
-from plone import api
-from plone.uuid.interfaces import IUUID
-from collective.contact.widget import logger
 
 class Term(SimpleTerm):
     def __init__(self, value, token=None, title=None, brain=None):
@@ -51,16 +52,15 @@ def parse_query(query, path_prefix=""):
     if 'path' in query:
         if query['SearchableText'] == '':
             del query['SearchableText']
-#            query["path"]["depth"] = 1
+        # query["path"]["depth"] = 1
         query["path"]["query"] = path_prefix + query["path"]["query"]
     return query
 
 
 class ContactSource(ObjPathSource):
-
     relations = None
 
-    def __init__(self, context, selectable_filter, navigation_tree_query=None,
+    def __init__(self, context, selectable_filter,
                  default=None, defaultFactory=None, **kw):
         """relations params is a dictionary : {relation_name: related_to_path}
         it filters on all results that have a relation with the content
@@ -69,9 +69,10 @@ class ContactSource(ObjPathSource):
         if 'relations' in selectable_filter.criteria:
             self.relations = selectable_filter.criteria.pop('relations')[0]
         super(ContactSource, self).__init__(
-            context, selectable_filter, navigation_tree_query,
+            context, selectable_filter, {},
             default, defaultFactory, **kw
         )
+        self.selectable_filter = selectable_filter
         portal_url = getToolByName(getSite(), 'portal_url')
         self.portal_url = portal_url()
         self.portal_path = portal_url.getPortalPath()
@@ -83,8 +84,8 @@ class ContactSource(ObjPathSource):
         # Don't check if the brain satisfy criteria to avoid a LookupError
         # for an existing value on an object that doesn't satisfy the criteria
         # anymore
-        #index_data = self.catalog.getIndexDataForRID(brain.getRID())
-        #return self.selectable_filter(brain, index_data)
+        # index_data = self.catalog.getIndexDataForRID(brain.getRID())
+        # return self.selectable_filter(brain, index_data)
 
         return True
 
@@ -156,7 +157,7 @@ class ContactSource(ObjPathSource):
 
             if not related_uids:
                 return []
-            
+
             def get_results():
                 counter = 0
                 for r in results:
@@ -170,4 +171,15 @@ class ContactSource(ObjPathSource):
 
 
 class ContactSourceBinder(PathSourceBinder):
-    path_source = ContactSource
+
+    def __init__(self, default=None, defaultFactory=None, **kw):
+        self.selectable_filter = CustomFilter(**kw)
+        self.default = default
+        self.defaultFactory = defaultFactory
+
+    def __call__(self, context):
+        return ContactSource(
+            context,
+            selectable_filter=self.selectable_filter,
+            default=self.default,
+            defaultFactory=self.defaultFactory)

@@ -110,10 +110,11 @@ class ContactSource(ObjPathSource):
         to be able to use a modified version of parse_query.
         """
         catalog_query = self.selectable_filter.criteria.copy()
-        if catalog_query.get('review_state', None) == [None]:
-            del catalog_query['review_state']
-        if 'review_state' in catalog_query and not catalog_query['review_state']:
-            del catalog_query['review_state']
+
+        for criterion in ('review_state', 'portal_type'):
+            if criterion in catalog_query and (
+                    not catalog_query[criterion] or catalog_query[criterion] == [None]):
+                del catalog_query[criterion]
 
         catalog_query.update(parse_query(query, self.portal_path))
 

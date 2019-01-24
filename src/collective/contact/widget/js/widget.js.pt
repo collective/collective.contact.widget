@@ -9,6 +9,7 @@ $(document).ready(function() {
     ajax_parent.find('div').slice(0, 1).prepend(ajax_parent.find('.portalMessage').detach());
   });
   $(document).bind('loadInsideOverlay', function(e, el, responseText, errorText, api) {
+    jQuery.tools.overlay.conf.oneInstance = false;
     var el = $(el);
     var o = el.closest('.overlay-ajax');
     var pbo = o.data('pbo');

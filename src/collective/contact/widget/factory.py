@@ -85,7 +85,8 @@ class ContactTypesVocabulary(object):
 
 
 # allow contact fields on dexterity types editor
-TypeSchemaContext.allowedFields = TypeSchemaContext.allowedFields + [
-    u'collective.contact.widget.schema.ContactChoice',
-    u'collective.contact.widget.schema.ContactList',
-]
+if TypeSchemaContext.allowedFields is not None:
+    TypeSchemaContext.allowedFields = TypeSchemaContext.allowedFields + [
+        u'collective.contact.widget.schema.ContactChoice',
+        u'collective.contact.widget.schema.ContactList',
+    ]

@@ -4,6 +4,7 @@
              xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 <script type="text/javascript">
 var ccw = {};
+var ccw_select2_selected_new_value;
 $(document).ready(function() {
   $(document).bind('formOverlayLoadSuccess', function(e, req, myform, api, pb, ajax_parent) {
     ajax_parent.find('div').slice(0, 1).prepend(ajax_parent.find('.portalMessage').detach());
@@ -40,6 +41,9 @@ $(document).ready(function() {
         input.trigger('change');
     }
     return noform;
+  };
+  ccw_select2_selected_new_value = function (e) {
+      formwidget_autocomplete_new_value($(e.target), e.choice.id, e.choice.text);
   };
   var pendingCall = {timeStamp: null, procID: null};
   ccw.add_contact_preview = function (input, url) {

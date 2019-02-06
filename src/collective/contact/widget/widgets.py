@@ -1,25 +1,29 @@
-from z3c.form.interfaces import IFieldWidget
 import z3c.form.interfaces
-from z3c.form.widget import FieldWidget
-from zope.component import getUtility
-from zope.component.interfaces import ComponentLookupError
-from zope.i18n import translate
-from zope.interface import implementer, implements, Interface
-from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from five import grok
-
 from Products.CMFPlone.utils import base_hasattr, safe_unicode
+from five import grok
+from plone.app.content.utils import json_dumps
 from plone.app.layout.viewlets.interfaces import IBelowContent
 from plone.app.layout.viewlets.interfaces import IHtmlHeadLinks
 from plone.formwidget.autocomplete.widget import (
     AutocompleteMultiSelectionWidget,
     AutocompleteSelectionWidget)
 from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
+from z3c.form.interfaces import IFieldWidget
+from z3c.form.widget import FieldWidget
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
+from zope.component import getUtility
+from zope.component.interfaces import ComponentLookupError
+from zope.i18n import translate
+from zope.interface import implementer, implements, Interface
+
 try:
     from plone.formwidget.masterselect.widget import MasterSelect as BaseMasterSelect
     from plone.formwidget.masterselect.interfaces import IMasterSelectWidget
+
+
     class MasterSelect(BaseMasterSelect):
         grok.implements(IMasterSelectWidget)
+
         def getSlaves(self):
             for slave in self.field.slave_fields:
                 yield slave.copy()
@@ -89,6 +93,10 @@ class ContactBaseWidget(object):
     input_template = ViewPageTemplateFile('templates/contact_input.pt')
     hidden_template = ViewPageTemplateFile('templates/contact_hidden.pt')
     rtf_template = ViewPageTemplateFile('templates/contact_rtf.pt')
+    request = NotImplemented
+    name = NotImplemented
+    mode = NotImplemented
+    actions = NotImplemented
 
     # JavaScript template
     js_template = """\
@@ -179,6 +187,25 @@ function (event, data, formatted) {
 
         return content
 
+    def select2_autocomplete_url(self):
+        """Generate the URL that returns autocomplete results for this form
+        """
+        form_url = self.request.getURL()
+
+        return "%s/++widget++%s/@@pat-select2-search" % (
+            form_url, self.name )
+
+    def select2Configuration(self):
+        url = self.select2_autocomplete_url()
+        return json_dumps({"multiple": False,
+                           "closeOnSelect": True,
+                           "placeholder": "Choisissez une valeur",
+                           "minimumInputLength": self.minChars,
+                           "vocabularyUrl": url,
+                           "width": "20em",
+                           "onSelected": "ccw_select2_selected_new_value",
+                           })
+
 
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget, MasterSelect):
     implements(IContactAutocompleteSelectionWidget)
@@ -202,17 +229,24 @@ def ContactAutocompleteMultiFieldWidget(field, request):
 
 
 class AutocompleteSearch(BaseAutocompleteSearch):
+    searchable_text_param = 'q'
+
     def __call__(self):
         # We want to check that the user was indeed allowed to access the
         # form for this widget. We can only this now, since security isn't
         # applied yet during traversal.
         self.validate_access()
 
-        query = self.request.get('q', None)
+        self.set_headers()
+        terms = self.get_terms()
+        return self.format_terms(terms)
+
+    def get_terms(self):
+        query = self.request.get(self.searchable_text_param, None)
         path = self.request.get('path', None)
         if not query:
             if path is None:
-                return ''
+                return []
             else:
                 query = ''
 
@@ -233,8 +267,23 @@ class AutocompleteSearch(BaseAutocompleteSearch):
         if getattr(source, 'do_post_sort', True):
             terms = sorted(set(terms), key=lambda t: t.title)
 
+        return terms
+
+    def set_headers(self):
         response = self.request.response
         response.setHeader('Content-type', 'text/plain')
 
+    def format_terms(self, terms):
         return u'\n'.join([u"|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra))
-                          for t in terms])
+                           for t in terms])
+
+
+class PatAutocompleteSearch(AutocompleteSearch):
+    searchable_text_param = 'query'
+
+    def set_headers(self):
+        response = self.request.response
+        response.setHeader('Content-type', 'application/json')
+
+    def format_terms(self, terms):
+        return json_dumps({'results': [{'id': t.token, 'text': t.title} for t in terms]})

@@ -15,11 +15,19 @@
            z3c.form.interfaces.IFormLayer"
       />
 
+  <!-- permission is checked by code -->
   <browser:page
       name="autocomplete-search"
       for=".interfaces.IContactAutocompleteWidget"
       permission="zope.Public"
       class=".widgets.AutocompleteSearch"
+      />
+
+  <browser:page
+      name="pat-select2-search"
+      for=".interfaces.IContactAutocompleteWidget"
+      permission="zope.Public"
+      class=".widgets.PatAutocompleteSearch"
       />
 
   <!-- overrides the template registered for

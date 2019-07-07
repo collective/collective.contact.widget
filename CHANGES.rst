@@ -4,8 +4,8 @@ Changelog
 1.11 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Limit catalog results (with sort_limit) because solr sends None for higher limit results.
+  [sgeulette]
 
 1.10 (2017-10-05)
 -----------------

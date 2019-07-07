@@ -121,8 +121,12 @@ class ContactSource(ObjPathSource):
             limit = catalog_query.pop('sort_limit', limit)
 
         try:
-            results = (self.getTermByBrain(brain, real_value=False)
-                       for brain in self.catalog(**catalog_query))
+            if 'sort_limit' in catalog_query:  # must limit results because solr sends None for higher limit results
+                results = (self.getTermByBrain(brain, real_value=False)
+                           for brain in self.catalog(**catalog_query)[:catalog_query['sort_limit']])
+            else:
+                results = (self.getTermByBrain(brain, real_value=False)
+                           for brain in self.catalog(**catalog_query))
         except ParseError:
             return []
 
@@ -153,7 +157,7 @@ class ContactSource(ObjPathSource):
 
             if not related_uids:
                 return []
-            
+
             def get_results():
                 counter = 0
                 for r in results:

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.11 (unreleased)
+1.11 (2019-09-20)
 -----------------
 
 - Limit catalog results (with sort_limit) because solr sends None for higher limit results.

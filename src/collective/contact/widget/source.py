@@ -93,7 +93,7 @@ class ContactSource(ObjPathSource):
             value = brain._unrestrictedGetObject()
         else:
             value = brain.getPath()[len(self.portal_path):]
-        full_title = safe_unicode(brain.get_full_title or brain.Title or brain.id)
+        full_title = safe_unicode(brain.contact_source or brain.Title or brain.id)
         return Term(value, token=brain.getPath(), title=full_title, brain=brain)
 
     def tokenToPath(self, token):

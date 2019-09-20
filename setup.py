@@ -44,6 +44,7 @@ setup(
     install_requires=[
         'five.grok',
         'setuptools',
+        'collective.contact.core >= 1.27',
         'plone.api',
         'plone.formwidget.contenttree >= 1.0.11',
         'plone.formwidget.autocomplete',

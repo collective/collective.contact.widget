@@ -6,6 +6,8 @@ Changelog
 
 - Limit catalog results (with sort_limit) because solr sends None for higher limit results.
   [sgeulette]
+- Use contact_source metadata in widget result
+  [sgeulette]
 
 1.10 (2017-10-05)
 -----------------

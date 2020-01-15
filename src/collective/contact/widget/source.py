@@ -94,7 +94,7 @@ class ContactSource(ObjPathSource):
             value = brain._unrestrictedGetObject()
         else:
             value = brain.getPath()[len(self.portal_path):]
-        full_title = safe_unicode(brain.get_full_title or brain.Title or brain.id)
+        full_title = safe_unicode(brain.contact_source or brain.Title or brain.id)
         return Term(value, token=brain.getPath(), title=full_title, brain=brain)
 
     def tokenToPath(self, token):
@@ -126,8 +126,12 @@ class ContactSource(ObjPathSource):
             limit = catalog_query.pop('sort_limit', limit)
 
         try:
-            results = (self.getTermByBrain(brain, real_value=False)
-                       for brain in self.catalog(**catalog_query))
+            if 'sort_limit' in catalog_query:  # must limit results because solr sends None for higher limit results
+                results = (self.getTermByBrain(brain, real_value=False)
+                           for brain in self.catalog(**catalog_query)[:catalog_query['sort_limit']])
+            else:
+                results = (self.getTermByBrain(brain, real_value=False)
+                           for brain in self.catalog(**catalog_query))
         except ParseError:
             return []
 

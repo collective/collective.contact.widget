@@ -1,22 +1,21 @@
 from Acquisition import aq_get
+from collective.contact.widget import _
+from collective.contact.widget import schema
+from collective.contact.widget.interfaces import IContactChoice
+from collective.contact.widget.interfaces import IContactChoiceField
+from collective.contact.widget.interfaces import IContactList
 from plone.app.dexterity.browser.types import TypeSchemaContext
+from plone.schemaeditor.fields import FieldFactory
+from plone.schemaeditor.interfaces import IFieldEditFormSchema
+from plone.supermodel.exportimport import BaseHandler
+from Products.CMFCore.utils import getToolByName
 from zope.component import adapter
 from zope.component.hooks import getSite
-from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
-from zope.schema.interfaces import IVocabularyFactory
-from zope.interface import implementer
 from zope.i18n import translate
-
-from Products.CMFCore.utils import getToolByName
-from plone.schemaeditor.fields import FieldFactory
-from plone.supermodel.exportimport import BaseHandler
-from plone.schemaeditor.interfaces import IFieldEditFormSchema
-
-from collective.contact.widget.interfaces import (
-        IContactChoice, IContactList,
-        IContactChoiceField)
-from collective.contact.widget import schema
-from collective.contact.widget import _
+from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
 
 
 class ContactHandler(BaseHandler):

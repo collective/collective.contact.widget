@@ -1,12 +1,11 @@
-from zope.interface import Interface
-from zope.interface import implementer
-from zope import schema
-from zope.schema.interfaces import IField
-
-from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
-from z3c.relationfield.interfaces import IRelationChoice, IRelationList
-
 from collective.contact.widget import _
+from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
+from z3c.relationfield.interfaces import IRelationChoice
+from z3c.relationfield.interfaces import IRelationList
+from zope import schema
+from zope.interface import implementer
+from zope.interface import Interface
+from zope.schema.interfaces import IField
 
 
 class IContactContent(Interface):

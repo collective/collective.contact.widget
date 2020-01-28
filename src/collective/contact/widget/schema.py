@@ -1,9 +1,10 @@
+from .interfaces import IContactChoice
+from .interfaces import IContactList
+from .source import ContactSourceBinder
+from z3c.relationfield.schema import RelationChoice
+from z3c.relationfield.schema import RelationList
 from zope.interface import implementer
 from zope.schema._bootstrapinterfaces import RequiredMissing
-from z3c.relationfield.schema import RelationChoice, RelationList
-
-from .interfaces import IContactChoice, IContactList
-from .source import ContactSourceBinder
 
 
 @implementer(IContactList)

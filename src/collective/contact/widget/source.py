@@ -1,13 +1,14 @@
-from copy import deepcopy
-
-from collective.contact.widget import logger
-
 from Acquisition import aq_inner
-from Products.CMFPlone.utils import getToolByName, safe_unicode
-from Products.ZCTextIndex.ParseTree import ParseError
+from collective.contact.widget import logger
+from copy import deepcopy
 from plone import api
-from plone.formwidget.contenttree.source import PathSourceBinder, ObjPathSource, CustomFilter
+from plone.formwidget.contenttree.source import CustomFilter
+from plone.formwidget.contenttree.source import ObjPathSource
+from plone.formwidget.contenttree.source import PathSourceBinder
 from plone.uuid.interfaces import IUUID
+from Products.CMFPlone.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
+from Products.ZCTextIndex.ParseTree import ParseError
 from zc.relation.interfaces import ICatalog
 from zope.component import getUtility
 from zope.component.hooks import getSite

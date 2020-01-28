@@ -1,4 +1,5 @@
-from zope.interface import Interface, implements
+from zope.interface import Interface
+from zope.interface import implementer
 from zope import schema
 from zope.schema.interfaces import IField
 
@@ -71,5 +72,7 @@ class IContactChoiceField(IContactSourceTypes, IContactReviewStates, IField):
     """
     """
 
+@implementer(IContactChoiceField)
 class ContactChoiceField(object):
-    implements(IContactChoiceField)
+    """
+    """

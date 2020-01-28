@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 from zope.schema._bootstrapinterfaces import RequiredMissing
 from z3c.relationfield.schema import RelationChoice, RelationList
 
@@ -6,8 +6,8 @@ from .interfaces import IContactChoice, IContactList
 from .source import ContactSourceBinder
 
 
+@implementer(IContactList)
 class ContactList(RelationList):
-    implements(IContactList)
     source_types = None
     review_state = None
 
@@ -36,8 +36,8 @@ class ContactList(RelationList):
             raise RequiredMissing(self.__name__)
 
 
+@implementer(IContactChoice)
 class ContactChoice(RelationChoice):
-    implements(IContactChoice)
     source_types = None
     review_state = None
 

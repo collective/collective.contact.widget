@@ -1,32 +1,33 @@
 <i18n:domain i18n:domain="collective.contact.widget"
-             xmlns:tal="http://xml.zope.org/namespaces/tal"
-             xmlns:metal="http://xml.zope.org/namespaces/metal"
-             xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-    <div tal:attributes="id string:${view/id}-autocomplete">
-        <div tal:attributes="id string:${view/id}-input-fields" class="autocompleteInputWidget"
-             tal:content="structure view/renderQueryWidget">
-        </div>
-        <div class="querySelectSearchInput" style="float:left; margin-right: 1em;"
-             tal:condition="not:view/readonly">
-          <tal:block replace="structure view/subform/render" />
-        </div>
-        <tal:actions
-            tal:condition="not:view/readonly"
-            tal:repeat="action view/actions">
-        <div class="addnew-block">
-          <span tal:content="action/prelabel" tal:condition="action/prelabel" />
-          <a target="_new"
-             tal:attributes="class action/klass | string:addnew;
-                             href action/url;"
-             href="@@add-contact" i18n:translate=""
-             tal:content="action/label">Add content type</a>
-        </div>
-        </tal:actions>
-        <div class="visualClear"><!--  --></div>
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+  <div tal:attributes="id string:${view/id}-autocomplete">
+    <div tal:attributes="id string:${view/id}-input-fields" class="autocompleteInputWidget"
+       tal:content="structure view/renderQueryWidget">
     </div>
-    <script type="text/javascript" tal:content="structure view/js"></script>
-    <!-- MasterSelect javascript -->
-    <script type="text/javascript"
-                      tal:content="structure view/getInlineJS|nothing">
-    </script>
+    <div class="querySelectSearchInput" style="margin-right: 1em;"
+       tal:condition="not:view/readonly">
+      <tal:block replace="structure view/subform/render"/>
+    </div>
+    <tal:actions
+       tal:condition="not:view/readonly"
+       tal:repeat="action view/actions">
+      <div class="addnew-block">
+        <span tal:content="action/prelabel" tal:condition="action/prelabel"></span>
+        <a tal:attributes="href action/url"
+          class="add-contact btn btn-lg btn-primary pat-plone-modal"
+          data-pat-plone-modal='{"width": "80%", "onRender": "ccwMockupPrefillTitle", "actionOptions": {"displayInModal": false, "reloadWindowOnClose": false, "isForm": true, "onSuccess": "ccw_mockup_fill_autocomplete"}}'
+          href="@@add-contact"
+           i18n:translate=""
+           tal:content="action/label">Add content type</a>
+      </div>
+
+    </tal:actions>
+    <div class="visualClear"><!--  --></div>
+  </div>
+  <script type="text/javascript" tal:content="structure view/js"></script>
+  <!-- MasterSelect javascript -->
+  <script type="text/javascript"
+     tal:content="structure view/getInlineJS|nothing">
+  </script>
 </i18n:domain>

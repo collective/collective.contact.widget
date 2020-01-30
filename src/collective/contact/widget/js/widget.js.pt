@@ -5,16 +5,6 @@
 <script type="text/javascript">
 var ccw = {};
 $(document).ready(function() {
-  $(document).bind('formOverlayLoadSuccess', function(e, req, myform, api, pb, ajax_parent) {
-    ajax_parent.find('div').slice(0, 1).prepend(ajax_parent.find('.portalMessage').detach());
-  });
-  $(document).bind('loadInsideOverlay', function(e, el, responseText, errorText, api) {
-    var el = $(el);
-    var o = el.closest('.overlay-ajax');
-    var pbo = o.data('pbo');
-    var overlay_counter = parseInt(pbo.nt.substring(3, pbo.nt.length));
-    o.css({zIndex: 9998+overlay_counter});
-  });
   ccw.get_contact_infos = function(el){
       /*Get path, title and url of contact from contact page
       */
@@ -25,11 +15,11 @@ $(document).ready(function() {
       else{
           return null;
       }
-  }
-  ccw.fill_autocomplete = function (el, pbo, noform) {
-    var data = ccw.get_contact_infos(el);
+  };
+  ccw.fillAutoComplete = function (responseElement, linkElement) {
+    var data = ccw.get_contact_infos(responseElement);
     if (data !== null) {
-        var input_box = pbo.source.parents('div.field').find('.querySelectSearch input');
+        var input_box = linkElement.parents('div.field').find('.querySelectSearch input');
         formwidget_autocomplete_new_value(input_box, data[0], data[1]);
         input_box.flushCache();
         // trigger change event on newly added input element
@@ -38,14 +28,45 @@ $(document).ready(function() {
         ccw.add_contact_preview(input, url);
         input.trigger('change');
     }
+  };
+  ccw.fill_autocomplete = function (el, pbo, noform) {
+      /* jquery tools onSuccess callback */
+    ccw.fillAutoComplete(el, pbo.source);
     return noform;
   };
+  ccw.mockup_fill_autocomplete = function (mockupModal, response, state, xhr, form) {
+      /* mockup modal onSuccess callback */
+      var responseElt = $(response);
+      var linkElement = mockupModal.$el;
+      ccw.fillAutoComplete(responseElt, linkElement);
+  };
+  window.ccw_mockup_fill_autocomplete = ccw.mockup_fill_autocomplete;
+
   var pendingCall = {timeStamp: null, procID: null};
   ccw.add_contact_preview = function (input, url) {
     if (url) {
         input.siblings('.label')
             .wrapInner('<a href="'+url+'" target="_new" class="link-tooltip">');
     }
+  };
+  window.ccwMockupPrefillTitle = function(modal){
+    var searchInput = modal.$el.parents('.field').find('.querySelectSearchInput').find('input')
+  	var value = searchInput.val();
+    var modalForm = modal.$modal.find('form');
+  	if (value) {
+      modalForm.find("input[id$='-title']").val(value);
+    	modalForm.find('#form-widgets-lastname').each(function(){
+   		var lastnameInput = jQuery(this);
+   		var firstnameInput = modalForm.find('#form-widgets-firstname');
+   		var splitname = value.split(' ');
+   		if(splitname.length === 1){
+   			lastnameInput.val(splitname[0]);
+   		} else if(splitname.length > 1){
+   			firstnameInput.val(splitname[0]);
+   			lastnameInput.val(splitname.slice(1, splitname.length).join(' '));
+   		}
+   	})
+   }
   };
 
   $(document).on('mouseleave', '.link-tooltip', function() {
@@ -55,6 +76,8 @@ $(document).ready(function() {
     }
   });
   $(document).on('mouseenter', '.link-tooltip', function() {
+    var common_content_filter = '#content>*:not(div.configlet),dl.portalMessage.error,dl.portalMessage.warning,dl.portalMessage.info';
+
     var trigger = $(this);
     // don't open tooltip in tooltip
     if (trigger.closest('.tooltip').length) {
@@ -66,8 +89,7 @@ $(document).ready(function() {
       }
       var timeStamp = new Date();
       var tooltipCall = function() {
-          var tip = $('<div class="tooltip pb-ajax" style="display:none">%(wait_msg)s</div>')
-                .insertAfter(trigger);
+          $('<div class="tooltip pb-ajax" style="display:none">%(wait_msg)s</div>').insertAfter(trigger);
           trigger.tooltip({relative: true, position: "center right"});
           var tooltip = trigger.tooltip();
           tooltip.show();
@@ -77,12 +99,12 @@ $(document).ready(function() {
             tooltip.getTip().html($('<div />').append(
                     data.replace(/<script(.|\s)*?\/script>/gi, ""))
                 .find(common_content_filter));
-            if (pendingCall.timeStamp == timeStamp) {
+            if (pendingCall.timeStamp === timeStamp) {
                 tooltip.show();
             }
             pendingCall.procID = null;
           });
-      }
+      };
       pendingCall = {timeStamp: timeStamp,
                      procID: setTimeout(tooltipCall, 500)};
     }

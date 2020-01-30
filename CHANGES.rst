@@ -1,10 +1,10 @@
 Changelog
 =========
 
-1.12 (unreleased)
------------------
+2.0 (unreleased)
+----------------
 
-- Nothing changed yet.
+- Plone 5 compatible.
 
 
 1.11 (2019-09-20)

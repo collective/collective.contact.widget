@@ -1,25 +1,35 @@
+from collective.contact.widget import _
+from collective.contact.widget.interfaces import IContactAutocompleteMultiSelectionWidget
+from collective.contact.widget.interfaces import IContactAutocompleteSelectionWidget
+from collective.contact.widget.interfaces import IContactAutocompleteWidget
+from collective.contact.widget.interfaces import IContactContent
+from collective.contact.widget.interfaces import IContactWidgetSettings
+from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.layout.viewlets.interfaces import IBelowContent
+from plone.app.layout.viewlets.interfaces import IHtmlHeadLinks
+from plone.formwidget.autocomplete.widget import AutocompleteMultiSelectionWidget
+from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
+from plone.formwidget.autocomplete.widget import AutocompleteSelectionWidget
+from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import safe_unicode
+from Products.Five.browser import BrowserView
 from z3c.form.interfaces import IFieldWidget
-import z3c.form.interfaces
 from z3c.form.widget import FieldWidget
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.component.interfaces import ComponentLookupError
 from zope.i18n import translate
-from zope.interface import implementer, implements, Interface
-from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from five import grok
+from zope.interface import implementer
+from zope.interface import Interface
 
-from Products.CMFPlone.utils import base_hasattr, safe_unicode
-from plone.app.layout.viewlets.interfaces import IBelowContent
-from plone.app.layout.viewlets.interfaces import IHtmlHeadLinks
-from plone.formwidget.autocomplete.widget import (
-    AutocompleteMultiSelectionWidget,
-    AutocompleteSelectionWidget)
-from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
+import z3c.form.interfaces
+
+
 try:
     from plone.formwidget.masterselect.widget import MasterSelect as BaseMasterSelect
     from plone.formwidget.masterselect.interfaces import IMasterSelectWidget
+    @implementer(IMasterSelectWidget)
     class MasterSelect(BaseMasterSelect):
-        grok.implements(IMasterSelectWidget)
         def getSlaves(self):
             for slave in self.field.slave_fields:
                 yield slave.copy()
@@ -27,19 +37,9 @@ except ImportError:
     class MasterSelect(object):
         pass
 
-from collective.contact.widget import _
-from collective.contact.widget.interfaces import (
-    IContactAutocompleteWidget,
-    IContactAutocompleteSelectionWidget,
-    IContactAutocompleteMultiSelectionWidget,
-    IContactContent,
-    IContactWidgetSettings,
-)
 
 
-class PatchLoadInsideOverlay(grok.Viewlet):
-    grok.context(Interface)
-    grok.viewletmanager(IHtmlHeadLinks)
+class PatchLoadInsideOverlay(ViewletBase):
     wait_msg = _(u"please wait")
     tooltip_template = ViewPageTemplateFile('js/widget.js.pt')
 
@@ -48,10 +48,7 @@ class PatchLoadInsideOverlay(grok.Viewlet):
             'wait_msg': translate(self.wait_msg, context=self.request)}
 
 
-class TermViewlet(grok.Viewlet):
-    grok.name('term-contact')
-    grok.context(IContactContent)
-    grok.viewletmanager(IBelowContent)
+class TermViewlet(ViewletBase):
 
     @property
     def token(self):
@@ -79,8 +76,8 @@ class TermViewlet(grok.Viewlet):
             '|'.join([self.token, self.title, self.portal_type, self.url]))
 
 
+@implementer(IContactAutocompleteWidget)
 class ContactBaseWidget(object):
-    implements(IContactAutocompleteWidget)
     noValueLabel = _(u'(nothing)')
     autoFill = False
     maxResults = 50
@@ -180,14 +177,15 @@ function (event, data, formatted) {
         return content
 
 
+@implementer(IContactAutocompleteSelectionWidget)
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget, MasterSelect):
-    implements(IContactAutocompleteSelectionWidget)
     display_template = ViewPageTemplateFile('templates/contact_display_single.pt')
 
 
+@implementer(IContactAutocompleteMultiSelectionWidget)
 class ContactAutocompleteMultiSelectionWidget(ContactBaseWidget, AutocompleteMultiSelectionWidget):
-    implements(IContactAutocompleteMultiSelectionWidget)
-
+    """
+    """
 
 @implementer(IFieldWidget)
 def ContactAutocompleteFieldWidget(field, request):
@@ -222,7 +220,7 @@ class AutocompleteSearch(BaseAutocompleteSearch):
         # during traversal before.
         self.context.update()
         source = self.context.bound_source
-        if path is not None:
+        if path is not None and len(path) > 0:
             query = "path:%s %s" % (source.tokenToPath(path), query)
 
         if query or relations:

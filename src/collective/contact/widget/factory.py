@@ -1,22 +1,21 @@
 from Acquisition import aq_get
-from zope import component
-from zope.component.hooks import getSite
-from zope import interface
-from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
-from zope.schema.interfaces import IVocabularyFactory
-from zope.interface.declarations import implements
-from zope.i18n import translate
-
-from Products.CMFCore.utils import getToolByName
-from plone.schemaeditor.fields import FieldFactory
-from plone.supermodel.exportimport import BaseHandler
-from plone.schemaeditor.interfaces import IFieldEditFormSchema
-
-from collective.contact.widget.interfaces import (
-        IContactChoice, IContactList,
-        IContactChoiceField)
-from collective.contact.widget import schema
 from collective.contact.widget import _
+from collective.contact.widget import schema
+from collective.contact.widget.interfaces import IContactChoice
+from collective.contact.widget.interfaces import IContactChoiceField
+from collective.contact.widget.interfaces import IContactList
+from plone.app.dexterity.browser.types import TypeSchemaContext
+from plone.schemaeditor.fields import FieldFactory
+from plone.schemaeditor.interfaces import IFieldEditFormSchema
+from plone.supermodel.exportimport import BaseHandler
+from Products.CMFCore.utils import getToolByName
+from zope.component import adapter
+from zope.component.hooks import getSite
+from zope.i18n import translate
+from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
 
 
 class ContactHandler(BaseHandler):
@@ -39,36 +38,36 @@ ContactListFactory = FieldFactory(schema.ContactList, _(u"Contact list"))
 ContactListHandler = ContactHandler(schema.ContactList)
 
 
-@interface.implementer(IFieldEditFormSchema)
-@component.adapter(IContactChoice)
+@implementer(IFieldEditFormSchema)
+@adapter(IContactChoice)
 def getContactChoiceFieldSchema(field):
     return IContactChoiceField
 
 
+@implementer(IContactChoiceField)
+@adapter(IContactChoice)
 class ContactChoiceField(object):
-    interface.implements(IContactChoiceField)
-    component.adapts(IContactChoice)
 
     def __init__(self, field):
         self.__dict__['field'] = field
 
 
-@interface.implementer(IFieldEditFormSchema)
-@component.adapter(IContactList)
+@implementer(IFieldEditFormSchema)
+@adapter(IContactList)
 def getContactListChoiceFieldSchema(field):
     return IContactChoiceField
 
 
+@implementer(IContactChoiceField)
+@adapter(IContactList)
 class ContactListChoiceField(object):
-    interface.implements(IContactChoiceField)
-    component.adapts(IContactList)
 
     def __init__(self, field):
         self.__dict__['field'] = field
 
 
+@implementer(IVocabularyFactory)
 class ContactTypesVocabulary(object):
-    implements(IVocabularyFactory)
 
     def __call__(self, context):
         contact_types = ('held_position', 'organization',
@@ -81,3 +80,11 @@ class ContactTypesVocabulary(object):
                            token=contact_type,
                            title=translate(ttool[contact_type].Title(), context=request))
                 for contact_type in contact_types])
+
+
+# allow contact fields on dexterity types editor
+if TypeSchemaContext.allowedFields is not None:
+    TypeSchemaContext.allowedFields = TypeSchemaContext.allowedFields + [
+        u'collective.contact.widget.schema.ContactChoice',
+        u'collective.contact.widget.schema.ContactList',
+    ]

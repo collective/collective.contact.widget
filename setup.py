@@ -46,7 +46,6 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'five.grok',
         'setuptools',
         'collective.contact.core >= 1.27',
         'plone.api',

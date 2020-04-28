@@ -4,7 +4,8 @@ Changelog
 1.12 (unreleased)
 -----------------
 
-- Nothing changed yet.
+- Add Spanish translation
+  [macagua]
 
 
 1.11 (2019-09-20)

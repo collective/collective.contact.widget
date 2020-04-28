@@ -31,3 +31,12 @@ If you run this javascript expression :
 contactswidget.setup_relation_dependency('form.widgets.company', 'form.widgets.manager', 'position')
 the vocabulary of 'manager' field will be restricted to the held_positions of selected company.
 
+
+Translations
+============
+
+This product has been translated into
+
+- Spanish.
+
+- French.

@@ -1,0 +1,10 @@
+[main]
+host = https://www.transifex.com
+
+[plone-collective.collective-contact-widget-pot]
+file_filter = src/collective/contact/widget/locales/<lang>/LC_MESSAGES/collective.contact.widget.po
+minimum_perc = 0
+source_file = src/collective/contact/widget/locales/collective.contact.widget.pot
+source_lang = en
+type = PO
+

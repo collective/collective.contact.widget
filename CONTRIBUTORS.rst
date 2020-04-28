@@ -4,4 +4,5 @@
 - Frédéric Péters
 - Thomas Desvenain, thomas.desvenain@gmail.com
 - Eric Bréhault, ebrehault@gmail.com
+- Leonardo Caballero, leonardocaballero@gmail.com
 

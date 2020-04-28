@@ -40,3 +40,37 @@ This product has been translated into
 - Spanish.
 
 - French.
+
+You can contribute for any message missing or other new languages, join us at 
+`Plone Collective Team <https://www.transifex.com/plone/plone-collective/>`_ 
+into *Transifex.net* service with all world Plone translators community.
+
+
+Contribute
+==========
+
+Have an idea? Found a bug? Let us know by `opening a ticket`_.
+
+- Issue Tracker: https://github.com/collective/collective.contact.widget/issues
+- Source Code: https://github.com/collective/collective.contact.widgete
+- Documentation: https://github.com/collective/collective.contact.demo/blob/master/README.md
+
+.. _`opening a ticket`: https://github.com/collective/collective.contact.widget/issues
+
+
+Tests
+=====
+
+This add-on is tested using Travis CI. The current status of the add-on is :
+
+.. image:: https://img.shields.io/travis/collective/collective.contact.widget/master.svg
+    :target: http://travis-ci.org/collective/collective.contact.widget
+
+.. image:: http://img.shields.io/pypi/v/collective.contact.widget.svg
+    :target: https://pypi.python.org/pypi/collective.contact.facetednav
+
+
+License
+=======
+
+The project is licensed under the GPLv2.

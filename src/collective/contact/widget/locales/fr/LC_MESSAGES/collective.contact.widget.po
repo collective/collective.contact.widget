@@ -19,7 +19,11 @@ msgstr ""
 msgid "(nothing)"
 msgstr "(aucune)"
 
-#: ../factory.py:35
+#: ../templates/contact_input.pt:8
+msgid "Choose a filter:"
+msgstr "Choisissez un filtre:"
+
+#: ../factory.py:36
 msgid "Contact"
 msgstr "Contact"
 
@@ -39,6 +43,11 @@ msgstr "Types de contacts"
 #: ../widgets.py:94
 msgid "Fill your search here..."
 msgstr "Saisissez votre recherche..."
+
+
+#: ../templates/contact_input.pt:10
+msgid "No filter"
+msgstr "Aucun filtre"
 
 #: ../interfaces.py:43
 msgid "Review states"

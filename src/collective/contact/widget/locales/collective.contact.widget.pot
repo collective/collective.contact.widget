@@ -21,7 +21,11 @@ msgstr ""
 msgid "(nothing)"
 msgstr ""
 
-#: ../factory.py:35
+#: ../templates/contact_input.pt:8
+msgid "Choose a filter:"
+msgstr ""
+
+#: ../factory.py:36
 msgid "Contact"
 msgstr ""
 
@@ -39,6 +43,11 @@ msgstr ""
 
 #: ../widgets.py:94
 msgid "Fill your search here..."
+msgstr ""
+
+
+#: ../templates/contact_input.pt:10
+msgid "No filter"
 msgstr ""
 
 #: ../interfaces.py:43

@@ -3,6 +3,16 @@
              xmlns:metal="http://xml.zope.org/namespaces/metal"
              xmlns:i18n="http://xml.zope.org/namespaces/i18n">
     <div tal:attributes="id string:${view/id}-autocomplete">
+        <div tal:define="voc view/field/prefilter_vocubulary"
+             tal:condition="voc">
+            <label for="prefilter-select" i18n:translate="">Choose a filter:</label>
+            <select name="prefilters" id="prefilter-select">
+                <option value="" i18n:translate="">No filter</option>
+                <tal:loop tal:repeat="term voc">
+                <option tal:attributes="value term/value" tal:content="term/title"></option>
+                </tal:loop>
+            </select>
+        </div>
         <div tal:attributes="id string:${view/id}-input-fields" class="autocompleteInputWidget"
              tal:content="structure view/renderQueryWidget">
         </div>

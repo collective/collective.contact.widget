@@ -10,6 +10,7 @@ class ContactList(RelationList):
     implements(IContactList)
     source_types = None
     review_state = None
+    prefilter_vocubulary = None
 
     def __init__(self, *args, **kwargs):
         self.addlink = kwargs.pop('addlink', True)
@@ -17,6 +18,8 @@ class ContactList(RelationList):
                                        self.source_types or None)
         self.review_state = kwargs.pop('review_state',
                                        self.review_state or None)
+        self.prefilter_vocubulary = kwargs.pop('prefilter_vocubulary',
+                                               self.prefilter_vocubulary or None)
         if not 'value_type' in kwargs:
             kwargs['value_type'] = ContactChoice(source_types=self.source_types,
                                                  review_state=self.review_state)

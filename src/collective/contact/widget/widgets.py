@@ -1,3 +1,5 @@
+import json
+
 from z3c.form.interfaces import IFieldWidget
 import z3c.form.interfaces
 from z3c.form.widget import FieldWidget
@@ -105,7 +107,8 @@ class ContactBaseWidget(object):
                 matchSubset: false,
                 formatItem: %(formatItem)s,
                 formatResult: %(formatResult)s,
-                parse: %(parseFunction)s
+                parse: %(parseFunction)s,
+                extraParams: {'prefilter': function() {return $('#prefilter-select').val() || '';}}
             }).result(%(js_callback)s);
             %(js_extra)s
         });
@@ -226,7 +229,16 @@ class AutocompleteSearch(BaseAutocompleteSearch):
             query = "path:%s %s" % (source.tokenToPath(path), query)
 
         if query or relations:
-            terms = source.search(query, relations=relations)
+            prefilter = {}
+            try:
+                prefilter_param = json.loads(self.request.get('prefilter'))
+                if type(prefilter_param) == dict and len(prefilter_param) > 0:
+                    prefilter = prefilter_param
+            except ValueError:
+                pass
+
+            terms = source.search(query, relations=relations, prefilter=prefilter)
+
         else:
             terms = ()
 

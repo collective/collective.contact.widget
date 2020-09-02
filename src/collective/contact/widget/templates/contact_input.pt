@@ -3,7 +3,7 @@
              xmlns:metal="http://xml.zope.org/namespaces/metal"
              xmlns:i18n="http://xml.zope.org/namespaces/i18n">
     <div tal:attributes="id string:${view/id}-autocomplete">
-        <div tal:define="voc view/field/prefilter_vocubulary"
+        <div tal:define="voc view/field/prefilter_vocabulary"
              tal:condition="voc">
             <label for="prefilter-select" i18n:translate="">Choose a filter:</label>
             <select name="prefilters" id="prefilter-select">

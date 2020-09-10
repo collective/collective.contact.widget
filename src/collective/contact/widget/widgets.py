@@ -8,6 +8,9 @@ from zope.component.interfaces import ComponentLookupError
 from zope.i18n import translate
 from zope.interface import implementer, implements, Interface
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
+from zope.schema.interfaces import IContextSourceBinder
+from zope.schema.interfaces import IVocabulary
+from zope.schema.interfaces import IVocabularyFactory
 from five import grok
 
 from Products.CMFPlone.utils import base_hasattr, safe_unicode
@@ -17,6 +20,7 @@ from plone.formwidget.autocomplete.widget import (
     AutocompleteMultiSelectionWidget,
     AutocompleteSelectionWidget)
 from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
+
 try:
     from plone.formwidget.masterselect.widget import MasterSelect as BaseMasterSelect
     from plone.formwidget.masterselect.interfaces import IMasterSelectWidget
@@ -181,6 +185,18 @@ function (event, data, formatted) {
                 closeOnClick=self.close_on_click and 'true' or 'false'))
 
         return content
+
+    def prefilter_terms(self):
+        if isinstance(self.field.prefilter_vocabulary, basestring):
+            vocabulary = getUtility(IVocabularyFactory, name=self.field.prefilter_vocabulary)
+            return vocabulary(self.context)
+        elif IVocabulary.providedBy(self.field.prefilter_vocabulary):
+            return self.field.prefilter_vocabulary
+        elif IContextSourceBinder.providedBy(self.field.prefilter_vocabulary):
+            source = self.field.prefilter_vocabulary
+            return source(self.context)
+        else:
+            return []
 
 
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget, MasterSelect):

@@ -198,6 +198,12 @@ function (event, data, formatted) {
         else:
             return []
 
+    def prefilter_default_value(self):
+        if callable(self.field.prefilter_default_value):
+            return self.field.prefilter_default_value(self.context)
+        else:
+            return None
+
 
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget, MasterSelect):
     implements(IContactAutocompleteSelectionWidget)

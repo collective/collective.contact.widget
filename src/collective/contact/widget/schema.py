@@ -11,6 +11,7 @@ class ContactList(RelationList):
     source_types = None
     review_state = None
     prefilter_vocabulary = None
+    prefilter_default_value = None  # context-aware function
 
     def __init__(self, *args, **kwargs):
         self.addlink = kwargs.pop('addlink', True)
@@ -20,6 +21,8 @@ class ContactList(RelationList):
                                        self.review_state or None)
         self.prefilter_vocabulary = kwargs.pop('prefilter_vocabulary',
                                                self.prefilter_vocabulary or None)
+        self.prefilter_default_value = kwargs.pop('prefilter_default_value',
+                                                  self.prefilter_default_value or None)
         if not 'value_type' in kwargs:
             kwargs['value_type'] = ContactChoice(source_types=self.source_types,
                                                  review_state=self.review_state)

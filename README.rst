@@ -17,8 +17,8 @@ You can add contact fields to your schema, like this ::
 
 		manager = ContactList(
 	        title=_(u"Project Manager"),
-	        source=ContactSourceBinder(portal_type=("held_position",),
-	                                   relations={'position': '/contacts/ecreall'}),
+	        value_type=ContactChoice(source=ContactSourceBinder(portal_type=("held_position",),
+	                                                            relations={'position': '/contacts/ecreall'})),
 	        )
 
 Example code means that 'manager' is a multi-valued contact field which

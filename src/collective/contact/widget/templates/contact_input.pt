@@ -5,12 +5,11 @@
     <div tal:attributes="id string:${view/id}-autocomplete">
         <div tal:define="voc view/prefilter_terms"
              tal:condition="voc">
+            <label for="prefilter-select" i18n:translate="">Filter:</label>
             <select tal:define="default_value view/prefilter_default_value"
                     name="prefilters" id="prefilter-select">
                 <tal:loop tal:repeat="term voc">
-                <option tal:condition="python: term.value == default_value" tal:attributes="value term/value"
-                        tal:content="term/title" selected="selected"></option>
-                <option tal:condition="python: term.value != default_value" tal:attributes="value term/value"
+                <option tal:attributes="value term/value; selected python: term.value == default_value"
                         tal:content="term/title"></option>
                 </tal:loop>
             </select>

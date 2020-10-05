@@ -112,7 +112,7 @@ class ContactBaseWidget(object):
                 formatItem: %(formatItem)s,
                 formatResult: %(formatResult)s,
                 parse: %(parseFunction)s,
-                extraParams: {'prefilter': function() {return $('#prefilter-select').val() || '';}}
+                extraParams: {'prefilter': function() {return $('#formfield-%(id)s .prefilter-select').val() || '';}}
             }).result(%(js_callback)s);
             %(js_extra)s
         });

@@ -10,6 +10,8 @@ class ContactList(RelationList):
     implements(IContactList)
     source_types = None
     review_state = None
+    prefilter_vocabulary = None
+    prefilter_default_value = None  # context-aware function
 
     def __init__(self, *args, **kwargs):
         self.addlink = kwargs.pop('addlink', True)
@@ -17,7 +19,11 @@ class ContactList(RelationList):
                                        self.source_types or None)
         self.review_state = kwargs.pop('review_state',
                                        self.review_state or None)
-        if not 'value_type' in kwargs:
+        self.prefilter_vocabulary = kwargs.pop('prefilter_vocabulary',
+                                               self.prefilter_vocabulary or None)
+        self.prefilter_default_value = kwargs.pop('prefilter_default_value',
+                                                  self.prefilter_default_value or None)
+        if 'value_type' not in kwargs:
             kwargs['value_type'] = ContactChoice(source_types=self.source_types,
                                                  review_state=self.review_state)
 
@@ -40,6 +46,8 @@ class ContactChoice(RelationChoice):
     implements(IContactChoice)
     source_types = None
     review_state = None
+    prefilter_vocabulary = None
+    prefilter_default_value = None  # context-aware function
 
     def __init__(self, slave_fields=(), *args, **kwargs):
         self.slave_fields = slave_fields
@@ -48,6 +56,10 @@ class ContactChoice(RelationChoice):
                                        self.source_types or None)
         self.review_state = kwargs.pop('review_state',
                                        self.review_state or None)
+        self.prefilter_vocabulary = kwargs.pop('prefilter_vocabulary',
+                                               self.prefilter_vocabulary or None)
+        self.prefilter_default_value = kwargs.pop('prefilter_default_value',
+                                                  self.prefilter_default_value or None)
         if not ('values' in kwargs or 'vocabulary' in kwargs or 'source' in kwargs):
             kwargs['source'] = ContactSourceBinder(
                 review_state=self.review_state,

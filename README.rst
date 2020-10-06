@@ -15,16 +15,27 @@ You can add contact fields to your schema, like this ::
             source=ContactSourceBinder(portal_type=("organization",),
             )
 
-		manager = ContactChoice(
+		manager = ContactList(
 	        title=_(u"Project Manager"),
-	        source=ContactSourceBinder(portal_type=("held_position",),
-	                                   relations={'position': '/contacts/ecreall'}),
+	        value_type=ContactChoice(source=ContactSourceBinder(portal_type=("held_position",),
+	                                                            relations={'position': '/contacts/ecreall'})),
 	        )
 
 Example code means that 'manager' is a multi-valued contact field which
 vocabulary gets held_position objects of site.
 The vocabulary is restricted to objects that have a 'position' relation to '/contacts/ecreall' object
 (i.e. which are held_positions in ecreall company).
+
+You can add another filtering option like this
+	    company = ContactChoice(
+            title=_(u"Company"),
+            source=ContactSourceBinder(portal_type=("organization",),
+            prefilter_vocabulary='vocabulary or source',
+            prefilter_default_value='context aware method',
+            )
+
+The prefilter vocabulary is displayed in the widget. The user can select a specific directory by example.
+Each term value contains a criteria, like u'{"path": "/Plone/directory1"}' (beware to use " in dict !).
 
 If you run this javascript expression :
 
@@ -41,8 +52,8 @@ This product has been translated into
 
 - French.
 
-You can contribute for any message missing or other new languages, join us at 
-`Plone Collective Team <https://www.transifex.com/plone/plone-collective/>`_ 
+You can contribute for any message missing or other new languages, join us at
+`Plone Collective Team <https://www.transifex.com/plone/plone-collective/>`_
 into *Transifex.net* service with all world Plone translators community.
 
 

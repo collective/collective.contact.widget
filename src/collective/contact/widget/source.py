@@ -104,7 +104,7 @@ class ContactSource(ObjPathSource):
     def tokenToUrl(self, token):
         return token.replace(self.portal_path, self.portal_url, 1)
 
-    def search(self, query, relations=None, limit=50):
+    def search(self, query, relations=None, limit=50, prefilter=None):
         """Copy from plone.formwidget.contenttree.source,
         to be able to use a modified version of parse_query.
         """
@@ -119,6 +119,9 @@ class ContactSource(ObjPathSource):
         if self.relations:
             # we apply limit after restriction on relations
             limit = catalog_query.pop('sort_limit', limit)
+
+        if prefilter:
+            catalog_query.update(prefilter)
 
         try:
             if 'sort_limit' in catalog_query:  # must limit results because solr sends None for higher limit results

@@ -3,27 +3,27 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: collective.contact.widget\n"
-"POT-Creation-Date: 2014-03-18 07:34+0000\n"
+"POT-Creation-Date: 2020-09-11 09:39+0000\n"
 "PO-Revision-Date: 2020-04-28 09:50-0400\n"
 "Last-Translator: Leonardo J. Caballero G. <leonardocaballero@gmail.com>\n"
 "Language-Team: ES <LL@li.org>\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
 "Language-Code: es\n"
 "Language-Name: Spanish\n"
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: collective.contact.widget\n"
+"Language: es\n"
+"X-Generator: Virtaal 0.7.1\n"
 "X-Is-Fallback-For: es-ar es-bo es-cl es-co es-cr es-do es-ec es-es es-sv es-gt es-hn es-mx es-ni es-pa es-py es-pe es-pr es-us es-uy es-ve\n"
 
-#: ../widgets.py:73
+#: ../widgets.py:90
 msgid "(nothing)"
 msgstr "(ninguno)"
 
-#: ../factory.py:35
+#: ../factory.py:36
 msgid "Contact"
 msgstr "Contacto"
 
@@ -31,7 +31,7 @@ msgstr "Contacto"
 msgid "Contact content types that should be provided by autocompletion"
 msgstr "Tipos de contenido de contacto que se pueden ofrecer por el autocompletado"
 
-#: ../factory.py:37
+#: ../factory.py:38
 msgid "Contact list"
 msgstr "Lista de contactos"
 
@@ -39,9 +39,17 @@ msgstr "Lista de contactos"
 msgid "Contact types"
 msgstr "Tipos de contactos"
 
-#: ../widgets.py:94
+#: ../widgets.py:136
 msgid "Fill your search here..."
 msgstr "Saisissez votre recherche..."
+
+#: ../templates/contact_input.pt:8
+msgid "Filter:"
+msgstr ""
+
+#: ../configure.zcml:22
+msgid "Installs the collective.contact.widget package"
+msgstr ""
 
 #: ../interfaces.py:43
 msgid "Review states"
@@ -51,11 +59,10 @@ msgstr "Estados de flujo de trabajo"
 msgid "Review states that should be visible"
 msgstr "Estados de flujo de trabajo que debería esta visible"
 
-#. Default: "If the item doesn't exist, you can add it to the database :"
-#: ../templates/contact_input.pt:17
-msgid "help_widget_add_new_elt"
-msgstr "Si el elemento no existe, usted puede añadirlo a la base de datos :"
+#: ../configure.zcml:22
+msgid "collective.contact.widget"
+msgstr ""
 
-#: ../widgets.py:32
+#: ../widgets.py:49
 msgid "please wait"
 msgstr "por favor, sea paciente, espero un poco"

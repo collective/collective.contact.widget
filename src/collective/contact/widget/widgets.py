@@ -1,3 +1,5 @@
+import json
+
 from z3c.form.interfaces import IFieldWidget
 import z3c.form.interfaces
 from z3c.form.widget import FieldWidget
@@ -6,6 +8,9 @@ from zope.component.interfaces import ComponentLookupError
 from zope.i18n import translate
 from zope.interface import implementer, implements, Interface
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
+from zope.schema.interfaces import IContextSourceBinder
+from zope.schema.interfaces import IVocabulary
+from zope.schema.interfaces import IVocabularyFactory
 from five import grok
 
 from Products.CMFPlone.utils import base_hasattr, safe_unicode
@@ -15,6 +20,7 @@ from plone.formwidget.autocomplete.widget import (
     AutocompleteMultiSelectionWidget,
     AutocompleteSelectionWidget)
 from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
+
 try:
     from plone.formwidget.masterselect.widget import MasterSelect as BaseMasterSelect
     from plone.formwidget.masterselect.interfaces import IMasterSelectWidget
@@ -105,7 +111,8 @@ class ContactBaseWidget(object):
                 matchSubset: false,
                 formatItem: %(formatItem)s,
                 formatResult: %(formatResult)s,
-                parse: %(parseFunction)s
+                parse: %(parseFunction)s,
+                extraParams: {'prefilter': function() {return $('#formfield-%(id)s .prefilter-select').val() || '';}}
             }).result(%(js_callback)s);
             %(js_extra)s
         });
@@ -179,6 +186,24 @@ function (event, data, formatted) {
 
         return content
 
+    def prefilter_terms(self):
+        if isinstance(self.field.prefilter_vocabulary, basestring):
+            vocabulary = getUtility(IVocabularyFactory, name=self.field.prefilter_vocabulary)
+            return vocabulary(self.context)
+        elif IVocabulary.providedBy(self.field.prefilter_vocabulary):
+            return self.field.prefilter_vocabulary
+        elif IContextSourceBinder.providedBy(self.field.prefilter_vocabulary):
+            source = self.field.prefilter_vocabulary
+            return source(self.context)
+        else:
+            return []
+
+    def prefilter_default_value(self):
+        if callable(self.field.prefilter_default_value):
+            return self.field.prefilter_default_value(self.context)
+        else:
+            return None
+
 
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget, MasterSelect):
     implements(IContactAutocompleteSelectionWidget)
@@ -226,7 +251,16 @@ class AutocompleteSearch(BaseAutocompleteSearch):
             query = "path:%s %s" % (source.tokenToPath(path), query)
 
         if query or relations:
-            terms = source.search(query, relations=relations)
+            prefilter = {}
+            try:
+                prefilter_param = json.loads(self.request.get('prefilter'))
+                if type(prefilter_param) == dict and len(prefilter_param) > 0:
+                    prefilter = prefilter_param
+            except ValueError:
+                pass
+
+            terms = source.search(query, relations=relations, prefilter=prefilter)
+
         else:
             terms = ()
 

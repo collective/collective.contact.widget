@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: collective.contact.widget\n"
-"POT-Creation-Date: 2014-03-18 07:34+0000\n"
+"POT-Creation-Date: 2020-09-11 09:39+0000\n"
 "PO-Revision-Date: 2014-03-18 08:34+0100\n"
 "Last-Translator: Cédric Messiant <cedric.messiant@gmail.com>\n"
 "Language-Team: French\n"
@@ -15,20 +15,19 @@ msgstr ""
 "Domain: collective.contact.widget\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: ../widgets.py:73
+#: ../widgets.py:90
 msgid "(nothing)"
 msgstr "(aucune)"
 
-#: ../factory.py:35
+#: ../factory.py:36
 msgid "Contact"
 msgstr "Contact"
 
 #: ../interfaces.py:34
 msgid "Contact content types that should be provided by autocompletion"
-msgstr ""
-"Types de contenus contact qui peuvent être proposés par l'autocomplétion"
+msgstr "Types de contenus contact qui peuvent être proposés par l'autocomplétion"
 
-#: ../factory.py:37
+#: ../factory.py:38
 msgid "Contact list"
 msgstr "Liste de contacts"
 
@@ -36,9 +35,17 @@ msgstr "Liste de contacts"
 msgid "Contact types"
 msgstr "Types de contacts"
 
-#: ../widgets.py:94
+#: ../widgets.py:136
 msgid "Fill your search here..."
 msgstr "Saisissez votre recherche..."
+
+#: ../templates/contact_input.pt:8
+msgid "Filter:"
+msgstr "Filtre:"
+
+#: ../configure.zcml:22
+msgid "Installs the collective.contact.widget package"
+msgstr "Installe le module collective.contact.widget"
 
 #: ../interfaces.py:43
 msgid "Review states"
@@ -48,11 +55,10 @@ msgstr "États de workflow"
 msgid "Review states that should be visible"
 msgstr "États de workflow qui doivent être visibles"
 
-#. Default: "If the item doesn't exist, you can add it to the database :"
-#: ../templates/contact_input.pt:17
-msgid "help_widget_add_new_elt"
-msgstr "Si l'élément n'existe pas, vous pouvez l'ajouter à la base :"
+#: ../configure.zcml:22
+msgid "collective.contact.widget"
+msgstr "collective.contact.widget"
 
-#: ../widgets.py:32
+#: ../widgets.py:49
 msgid "please wait"
 msgstr "veuillez patienter"

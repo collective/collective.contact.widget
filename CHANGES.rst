@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.12 (unreleased)
+1.12 (2020-10-07)
 -----------------
 
 - Added prefiltering on widgets

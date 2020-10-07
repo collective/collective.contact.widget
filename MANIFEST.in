@@ -1,5 +1,6 @@
 recursive-include src/collective *
 recursive-include docs *
 recursive-include buildout.d *
+prune .tx
 include *
 global-exclude *pyc

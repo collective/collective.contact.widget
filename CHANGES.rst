@@ -4,6 +4,8 @@ Changelog
 1.12 (unreleased)
 -----------------
 
+- Added prefiltering on widgets
+  [daggelpop, sgeulette]
 - Add Transifex.net service integration to manage the translation process.
   [macagua]
 - Add Spanish translation

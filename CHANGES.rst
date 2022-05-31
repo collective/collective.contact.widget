@@ -4,8 +4,10 @@ Changelog
 1.13 (unreleased)
 -----------------
 
-- Nothing changed yet.
-
+- Escaped contact title special characters in `term-contact` viewlet to avoid
+  script insertion (xss). This viewlet stores an hidden field used in a
+  dynamically js generation.
+  [sgeulette]
 
 1.12 (2020-10-07)
 -----------------

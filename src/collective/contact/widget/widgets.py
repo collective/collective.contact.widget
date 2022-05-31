@@ -1,29 +1,38 @@
-import json
-
+from cgi import escape
+from collective.contact.widget import _
+from collective.contact.widget.interfaces import IContactAutocompleteMultiSelectionWidget
+from collective.contact.widget.interfaces import IContactAutocompleteSelectionWidget
+from collective.contact.widget.interfaces import IContactAutocompleteWidget
+from collective.contact.widget.interfaces import IContactContent
+from collective.contact.widget.interfaces import IContactWidgetSettings
+from five import grok
+from plone.app.layout.viewlets.interfaces import IBelowContent
+from plone.app.layout.viewlets.interfaces import IHtmlHeadLinks
+from plone.formwidget.autocomplete.widget import AutocompleteMultiSelectionWidget
+from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
+from plone.formwidget.autocomplete.widget import AutocompleteSelectionWidget
+from Products.CMFPlone.utils import base_hasattr
+from Products.CMFPlone.utils import safe_unicode
 from z3c.form.interfaces import IFieldWidget
-import z3c.form.interfaces
 from z3c.form.widget import FieldWidget
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
 from zope.component.interfaces import ComponentLookupError
 from zope.i18n import translate
-from zope.interface import implementer, implements, Interface
-from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
+from zope.interface import implementer
+from zope.interface import implements
+from zope.interface import Interface
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabulary
 from zope.schema.interfaces import IVocabularyFactory
-from five import grok
 
-from Products.CMFPlone.utils import base_hasattr, safe_unicode
-from plone.app.layout.viewlets.interfaces import IBelowContent
-from plone.app.layout.viewlets.interfaces import IHtmlHeadLinks
-from plone.formwidget.autocomplete.widget import (
-    AutocompleteMultiSelectionWidget,
-    AutocompleteSelectionWidget)
-from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
+import json
+import z3c.form.interfaces
+
 
 try:
-    from plone.formwidget.masterselect.widget import MasterSelect as BaseMasterSelect
     from plone.formwidget.masterselect.interfaces import IMasterSelectWidget
+    from plone.formwidget.masterselect.widget import MasterSelect as BaseMasterSelect
     class MasterSelect(BaseMasterSelect):
         grok.implements(IMasterSelectWidget)
         def getSlaves(self):
@@ -32,15 +41,6 @@ try:
 except ImportError:
     class MasterSelect(object):
         pass
-
-from collective.contact.widget import _
-from collective.contact.widget.interfaces import (
-    IContactAutocompleteWidget,
-    IContactAutocompleteSelectionWidget,
-    IContactAutocompleteMultiSelectionWidget,
-    IContactContent,
-    IContactWidgetSettings,
-)
 
 
 class PatchLoadInsideOverlay(grok.Viewlet):
@@ -70,7 +70,7 @@ class TermViewlet(grok.Viewlet):
         else:
             title = self.context.Title()
         title = title and safe_unicode(title) or u""
-        return title
+        return escape(title, quote=True)
 
     @property
     def portal_type(self):

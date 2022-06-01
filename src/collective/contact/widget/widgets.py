@@ -70,7 +70,7 @@ class TermViewlet(grok.Viewlet):
         else:
             title = self.context.Title()
         title = title and safe_unicode(title) or u""
-        return html.escape(title, quote=True)
+        return html.escape(title)
 
     @property
     def portal_type(self):

@@ -1,4 +1,3 @@
-from cgi import escape
 from collective.contact.widget import _
 from collective.contact.widget.interfaces import IContactAutocompleteMultiSelectionWidget
 from collective.contact.widget.interfaces import IContactAutocompleteSelectionWidget
@@ -26,6 +25,7 @@ from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabulary
 from zope.schema.interfaces import IVocabularyFactory
 
+import html
 import json
 import z3c.form.interfaces
 
@@ -70,7 +70,7 @@ class TermViewlet(grok.Viewlet):
         else:
             title = self.context.Title()
         title = title and safe_unicode(title) or u""
-        return escape(title, quote=True)
+        return html.escape(title, quote=True)
 
     @property
     def portal_type(self):

@@ -49,6 +49,7 @@ setup(
         'five.grok',
         'setuptools',
         'collective.contact.core >= 1.27',
+        'future',
         'plone.api',
         'plone.formwidget.contenttree >= 1.0.11',
         'plone.formwidget.autocomplete',

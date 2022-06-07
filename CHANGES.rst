@@ -8,6 +8,8 @@ Changelog
   script insertion (xss). This viewlet stores an hidden field used in a
   dynamically js generation.
   [sgeulette]
+- Require `future` in `setup.py`.
+  [gbastien]
 
 1.12 (2020-10-07)
 -----------------

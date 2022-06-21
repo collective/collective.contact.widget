@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.13 (unreleased)
+1.13 (2022-06-21)
 -----------------
 
 - Escaped contact title special characters in `term-contact` viewlet to avoid

@@ -2,11 +2,8 @@ from collective.contact.widget import _
 from collective.contact.widget.interfaces import IContactAutocompleteMultiSelectionWidget
 from collective.contact.widget.interfaces import IContactAutocompleteSelectionWidget
 from collective.contact.widget.interfaces import IContactAutocompleteWidget
-from collective.contact.widget.interfaces import IContactContent
 from collective.contact.widget.interfaces import IContactWidgetSettings
-from five import grok
-from plone.app.layout.viewlets.interfaces import IBelowContent
-from plone.app.layout.viewlets.interfaces import IHtmlHeadLinks
+from plone.app.layout.viewlets import common as base
 from plone.formwidget.autocomplete.widget import AutocompleteMultiSelectionWidget
 from plone.formwidget.autocomplete.widget import AutocompleteSearch as BaseAutocompleteSearch
 from plone.formwidget.autocomplete.widget import AutocompleteSelectionWidget
@@ -19,7 +16,6 @@ from zope.component import getUtility
 from zope.interface.interfaces import ComponentLookupError
 from zope.i18n import translate
 from zope.interface import implementer
-from zope.interface import Interface
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabulary
 from zope.schema.interfaces import IVocabularyFactory
@@ -43,9 +39,7 @@ except ImportError:
         pass
 
 
-class PatchLoadInsideOverlay(grok.Viewlet):
-    grok.context(Interface)
-    grok.viewletmanager(IHtmlHeadLinks)
+class PatchLoadInsideOverlay(base.ViewletBase):
     wait_msg = _(u"please wait")
     tooltip_template = ViewPageTemplateFile('js/widget.js.pt')
 
@@ -54,10 +48,7 @@ class PatchLoadInsideOverlay(grok.Viewlet):
             'wait_msg': translate(self.wait_msg, context=self.request)}
 
 
-class TermViewlet(grok.Viewlet):
-    grok.name('term-contact')
-    grok.context(IContactContent)
-    grok.viewletmanager(IBelowContent)
+class TermViewlet(base.ViewletBase):
 
     @property
     def token(self):

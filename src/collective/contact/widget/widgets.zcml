@@ -43,7 +43,7 @@
   <z3c:widgetTemplate
       mode="input"
       widget=".interfaces.IContactAutocompleteMultiSelectionWidget"
-      layer="z3c.form.interfaces.IFormLayer"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
       template="templates/checkbox_input.pt"
       />
 
@@ -52,7 +52,7 @@
   <z3c:widgetTemplate
       mode="input"
       widget=".interfaces.IContactAutocompleteSelectionWidget"
-      layer="z3c.form.interfaces.IFormLayer"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
       template="templates/radio_input.pt"
       />
 

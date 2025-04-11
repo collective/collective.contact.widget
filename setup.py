@@ -46,12 +46,13 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'setuptools',
         'collective.contact.core >= 1.27',
+        'collective.js.tooltipster',
         'future',
         'plone.api',
-        'plone.formwidget.contenttree >= 1.0.11',
         'plone.formwidget.autocomplete',
+        'plone.formwidget.contenttree >= 1.0.11',
+        'setuptools',
         'z3c.relationfield',
     ],
     extras_require={

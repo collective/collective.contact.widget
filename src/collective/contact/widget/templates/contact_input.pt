@@ -14,26 +14,41 @@
                 </tal:loop>
             </select>
         </div>
-        <div tal:attributes="id string:${view/id}-input-fields" class="autocompleteInputWidget"
+        <div tal:attributes="id string:${view/id}-input-fields; data-widget-name view/name" class="autocompleteInputWidget"
              tal:content="structure view/renderQueryWidget">
         </div>
-        <div class="querySelectSearchInput" style="float:left; margin-right: 1em;"
+        <div class="querySelectSearchInput" style="margin: 1em 0em 0.5em 0em; width: 50%; float: left"
              tal:condition="not:view/readonly">
-          <tal:block replace="structure view/subform/render" />
+          <!-- pat-livesearch serializes the elements of its fieldset -->
+          <fieldset class="pat-livesearch border-0 p-0 m-0"
+                    tal:omit-tag="not:view/livesearch"
+                    tal:attributes="data-pat-livesearch view/livesearch_options">
+            <input type="hidden" name="prefilter" class="livesearch-prefilter" form="livesearch-no-form"
+                   tal:condition="view/livesearch" />
+            <!-- only the query field: the Search button of the subform (in a div.formControls)
+                 would be moved to the footer by pat-plone-modal -->
+            <div class="querySelectSearch"
+                 tal:condition="view/livesearch"
+                 tal:content="structure view/subform/widgets/query/render" />
+            <tal:block condition="not:view/livesearch"
+                       replace="structure view/subform/render" />
+          </fieldset>
         </div>
         <tal:actions
             tal:condition="not:view/readonly"
             tal:repeat="action view/actions">
-        <div class="addnew-block">
+        <div class="addnew-block" style="padding: 1em 0em 0.5em 0.5em; width: 50%; float: right">
           <span tal:content="action/prelabel" tal:condition="action/prelabel" />
           <a target="_new"
-             tal:attributes="class action/klass | string:addnew;
-                             href action/url;"
+             tal:attributes="class python:(action.get('klass') or 'addnew') + ' pat-plone-modal';
+                             href action/url;
+                             data-widget-id view/id;
+                             data-pat-plone-modal view/addnew_modal_options;"
              href="@@add-contact" i18n:translate=""
              tal:content="action/label">Add content type</a>
         </div>
         </tal:actions>
-        <div class="visualClear"><!--  --></div>
+        <div class="clearfix"><!--  --></div>
     </div>
     <script type="text/javascript" tal:content="structure view/js"></script>
     <!-- MasterSelect javascript -->

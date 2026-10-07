@@ -22,12 +22,11 @@
       class=".widgets.AutocompleteSearch"
       />
 
-  <browser:viewlet
-      name="patchloadinsideoverlay"
-      class=".widgets.PatchLoadInsideOverlay"
-      for="*"
-      manager="plone.app.layout.viewlets.interfaces.IHtmlHeadLinks"
-      permission="zope2.View"
+  <browser:page
+      name="livesearch-search"
+      for=".interfaces.IContactAutocompleteWidget"
+      permission="zope.Public"
+      class=".widgets.LivesearchSearch"
       />
 
   <browser:viewlet
@@ -55,5 +54,10 @@
       layer="plone.app.z3cform.interfaces.IPloneFormLayer"
       template="templates/radio_input.pt"
       />
+
+  <!-- plone.app.z3cform registers RelationChoiceSelectWidgetConverter for
+       IRelationChoice, which gives None for the sequence value of our radio
+       widgets: nothing was saved -->
+  <adapter factory=".converters.ContactChoiceSelectWidgetConverter" />
 
 </configure>

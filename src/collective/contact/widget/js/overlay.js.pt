@@ -2,57 +2,73 @@
              xmlns:tal="http://xml.zope.org/namespaces/tal"
              xmlns:metal="http://xml.zope.org/namespaces/metal"
              xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-/* Execute prepOverlay only if it hasn't been done yet, this avoid to have a
-   pbo undefined error when you have recursive overlays. */
 $('#<tal:class replace="view/id"/>-autocomplete').find('.<tal:class replace="options/klass"/>').each(function() {
     var addlink = $(this);
-    var addmsg =  $(this).parents('.addnew-block').first();
-    var widget = $(this).parents('.field').first();
-    var input = widget.find('input[type="text"]');
+    var addmsg = addlink.closest('.addnew-block');
+    var input = $('#<tal:class replace="view/id"/>-widgets-query');
     input.attr('placeholder', '<tal:class replace="view/placeholder" i18n:translate=""/>');
-    update_addmsg = function(){
+    // collective.contact.core keeps a copy of the original href and text of
+    // this link to rewrite it when an organization is selected: give it the
+    // clean ones, before we add anything to the href.
+    if (!addlink.data('original_src')) {
+      addlink.data('original_src', addlink.attr('href'));
+      addlink.data('original_text', addlink.text());
+    }
+    // The add forms accept prefill values from the GET request
+    // (allow_prefill_from_GET_request): put the typed text in the link.
+    var amp = String.fromCharCode(38);
+    // Fields to prefill depend on the form the link leads to (types of
+    // collective.contact.core). Only the dexterity add forms (++add++<type>,
+    // 'form' prefix) have a field for the typed text: the title (IBasic) of an
+    // organization or a position, the firstname and lastname of a person. The
+    // held position form (++add++held_position) and the @@add-... forms only
+    // have selection widgets and fields unrelated to the typed text.
+    var prefill_params = function(value, url){
+      var marker = '++add++';
+      var start = url.indexOf(marker);
+      if(!value || start === -1){
+        return {};
+      }
+      var portal_type = url.slice(start + marker.length).split('/')[0].split('?')[0].split('#')[0];
+      if(portal_type === 'organization' || portal_type === 'position'){
+        return {'form.widgets.IBasic.title': value};
+      }
+      if(portal_type === 'person'){
+        var words = $.grep(value.split(' '), function(word){ return word !== ''; });
+        if(words.length === 1){
+          return {'form.widgets.lastname': words[0]};
+        }
+        return {'form.widgets.firstname': words[0], 'form.widgets.lastname': words.slice(1).join(' ')};
+      }
+      return {};
+    };
+    // The href is rewritten by other scripts too: remove what we added the
+    // last time (own_suffix) from the current href before adding the new text.
+    var own_suffix = '';
+    var prefill_href = function(){
+      var href = addlink.attr('href');
+      if(own_suffix && href.slice(-own_suffix.length) === own_suffix){
+        href = href.slice(0, href.length - own_suffix.length);
+      }
+      var query = $.param(prefill_params(input.val().trim(), href));
+      own_suffix = query ? (href.indexOf('?') === -1 ? '?' : amp) + query : '';
+      addlink.attr('href', href + own_suffix);
+    };
+    // capture phase: also just before the click handler of pat-plone-modal
+    addlink[0].addEventListener('click', prefill_href, true);
+    var update_addmsg = function(){
       if(input.val().length>=2){
     	addmsg.show();
+    	prefill_href();
       }
       if(input.val().length===0){
     	addmsg.hide();
+    	prefill_href();
       }
     }
     input.each(update_addmsg) // do not hide if value is set from request
-    input.focusout(update_addmsg);
-    input.keyup(update_addmsg);
-    prefill_title = function(elt, pbo){
-    	var value = input.val();
-    	if(value){
-        $(elt.target).find("input[id$='-title']").val(value);
-	    	$(elt.target).find('#form-widgets-lastname').each(function(){
-	    		var lastname_input = jQuery(this);
-	    		var firstname_input = $(elt.target).find('#form-widgets-firstname');
-	    		var splitname = value.split(' ');
-	    		if(splitname.length==1){
-	    			lastname_input.val(splitname[0]);
-	    		}
-	    		else if(splitname.length>1){
-	    			firstname_input.val(splitname[0]);
-	    			lastname_input.val(splitname.slice(1,splitname.length).join(' '));
-	    		}
-	    	})
-	    }
-    }
-    if (addlink.data('pbo') === undefined) {
-        addlink.prepOverlay({
-          subtype: 'ajax',
-          filter: common_content_filter+',#viewlet-below-content>*',
-          formselector: '<tal:class replace="options/formselector"/>',
-          cssclass: 'overlay-contact-addnew',
-          closeselector: '<tal:class replace="options/closeselector"/>',
-          noform: function(el, pbo) {return ccw.fill_autocomplete(el, pbo, 'close');},
-          config: {
-              <tal:if condition="not:options/closeOnClick">closeOnClick: <tal:closeOnClick replace="options/closeOnClick"/>,
-              closeOnEsc: <tal:closeOnClick replace="options/closeOnClick"/>,</tal:if>
-              onLoad: prefill_title
-          }
-        });
-    }
+    // not keyup/focusout: pat-livesearch does .off('keyup') / .off('focusout')
+    // on the input when it is initialized, which would remove these handlers
+    input.on('input blur', update_addmsg);
 });
 </i18n:domain>

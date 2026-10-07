@@ -233,6 +233,15 @@ class TestAutocompleteSearch(WidgetTestCase):
         # an invalid prefilter is ignored
         self.request.form["prefilter"] = "invalid"
         self.assertIn(self.token_degaulle, [t.token for t in self.search.get_terms()])
+        # a prefilter keeps the matching contacts
+        self.request.form["prefilter"] = '{"portal_type": "person"}'
+        terms = self.search.get_terms()
+        self.assertIn(self.token_degaulle, [t.token for t in terms])
+        self.assertEqual(set(t.portal_type for t in terms), {"person"})
+        # an empty prefilter ("No filter" term) and a json value that isn't an object are ignored
+        for prefilter in ("", '["person"]'):
+            self.request.form["prefilter"] = prefilter
+            self.assertIn("organization", set(t.portal_type for t in self.search.get_terms()))
 
     def test_call(self):
         self.request.form["q"] = "gaulle"

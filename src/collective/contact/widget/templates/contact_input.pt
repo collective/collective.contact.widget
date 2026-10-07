@@ -2,7 +2,19 @@
              xmlns:tal="http://xml.zope.org/namespaces/tal"
              xmlns:metal="http://xml.zope.org/namespaces/metal"
              xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-    <div tal:attributes="id string:${view/id}-autocomplete">
+    <div class="ccw-autocomplete" tal:attributes="id string:${view/id}-autocomplete">
+        <style type="text/css">
+            .ccw-autocomplete .autocompleteInputWidget .option { display: block; }
+            .ccw-autocomplete .autocompleteInputWidget label { display: inline-flex; align-items: center; gap: 0.5em; margin: 0; }
+            .ccw-autocomplete .autocompleteInputWidget label input { display: inline-block; margin: 0; }
+            /* pat-autotoc (section: fieldset) tags every fieldset of a form as a tab section and
+               hides the inactive ones: keep the one of the livesearch visible */
+            .ccw-autocomplete fieldset.pat-livesearch { display: block !important; }
+            .ccw-autocomplete .querySelectSearchInput { position: relative; }
+            .ccw-autocomplete .livesearch-results { position: absolute; top: 100%; left: 0; right: auto; margin-top: 0;
+                                                    width: max-content; min-width: 100%; max-width: 40rem; }
+            .ccw-autocomplete .livesearch-results li.search-result { cursor: pointer; }
+        </style>
         <div tal:define="voc view/prefilter_terms"
              tal:condition="voc">
             <label for="prefilter-select" i18n:translate="">Filter:</label>

@@ -59,5 +59,6 @@
        IRelationChoice, which gives None for the sequence value of our radio
        widgets: nothing was saved -->
   <adapter factory=".converters.ContactChoiceSelectWidgetConverter" />
+  <adapter factory=".converters.ContactListSelectWidgetConverter" />
 
 </configure>

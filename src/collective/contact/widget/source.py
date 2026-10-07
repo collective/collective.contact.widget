@@ -48,9 +48,10 @@ def parse_query(query, path_prefix=""):
     for char in '?-+*()':
         text = text.replace(char, ' ')
     query['SearchableText'] = " AND ".join(x + "*" for x in text.split())
+    # an empty SearchableText matches nothing since ZCatalog 4 (it was ignored before)
+    if query['SearchableText'] == '':
+        del query['SearchableText']
     if 'path' in query:
-        if query['SearchableText'] == '':
-            del query['SearchableText']
 #            query["path"]["depth"] = 1
         query["path"]["query"] = path_prefix + query["path"]["query"]
     return query

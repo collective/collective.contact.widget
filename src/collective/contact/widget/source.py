@@ -1,18 +1,19 @@
-from copy import deepcopy
 from Acquisition import aq_inner
-from zope.component.hooks import getSite
+from collective.contact.widget import logger
+from copy import deepcopy
+from plone import api
+from plone.formwidget.contenttree.source import ObjPathSource
+from plone.formwidget.contenttree.source import PathSourceBinder
+from plone.uuid.interfaces import IUUID
+from Products.CMFPlone.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
+from Products.ZCTextIndex.ParseTree import ParseError
+from zc.relation.interfaces import ICatalog
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.intid.interfaces import IIntIds
 from zope.schema.vocabulary import SimpleTerm
 
-from Products.ZCTextIndex.ParseTree import ParseError
-
-from plone.formwidget.contenttree.source import PathSourceBinder, ObjPathSource
-from Products.CMFPlone.utils import getToolByName, safe_unicode
-from zc.relation.interfaces import ICatalog
-from plone import api
-from plone.uuid.interfaces import IUUID
-from collective.contact.widget import logger
 
 class Term(SimpleTerm):
     def __init__(self, value, token=None, title=None, brain=None):
@@ -52,7 +53,7 @@ def parse_query(query, path_prefix=""):
     if query['SearchableText'] == '':
         del query['SearchableText']
     if 'path' in query:
-#            query["path"]["depth"] = 1
+        # query["path"]["depth"] = 1
         query["path"]["query"] = path_prefix + query["path"]["query"]
     return query
 
@@ -84,8 +85,8 @@ class ContactSource(ObjPathSource):
         # Don't check if the brain satisfy criteria to avoid a LookupError
         # for an existing value on an object that doesn't satisfy the criteria
         # anymore
-        #index_data = self.catalog.getIndexDataForRID(brain.getRID())
-        #return self.selectable_filter(brain, index_data)
+        # index_data = self.catalog.getIndexDataForRID(brain.getRID())
+        # return self.selectable_filter(brain, index_data)
 
         return True
 

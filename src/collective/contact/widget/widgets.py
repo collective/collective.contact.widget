@@ -14,8 +14,8 @@ from z3c.form.interfaces import IFieldWidget
 from z3c.form.widget import FieldWidget
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from zope.component import getUtility
-from zope.interface.interfaces import ComponentLookupError
 from zope.interface import implementer
+from zope.interface.interfaces import ComponentLookupError
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.interfaces import IVocabulary
 from zope.schema.interfaces import IVocabularyFactory
@@ -387,7 +387,6 @@ class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectio
     js_template = LIVESEARCH_JS_TEMPLATE
 
 
-
 @implementer(IContactAutocompleteMultiSelectionWidget)
 class ContactAutocompleteMultiSelectionWidget(ContactBaseWidget, AutocompleteMultiSelectionWidget):
     """
@@ -440,7 +439,7 @@ class AutocompleteSearch(BaseAutocompleteSearch):
             prefilter = {}
             try:
                 prefilter_param = json.loads(self.request.get('prefilter'))
-                if type(prefilter_param) == dict and len(prefilter_param) > 0:
+                if isinstance(prefilter_param, dict) and len(prefilter_param) > 0:
                     prefilter = prefilter_param
             except (ValueError, TypeError):
                 pass

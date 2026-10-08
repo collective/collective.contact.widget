@@ -2,7 +2,6 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="collective.contact.widget">
 
     <i18n:registerTranslations directory="locales" />
@@ -10,13 +9,5 @@
     <include package="plone.formwidget.contenttree" />
     <include file="widgets.zcml" />
     <include file="fields.zcml" />
-
-    <genericsetup:registerProfile
-        name="default"
-        title="collective.contact.widget"
-        directory="profiles/default"
-        description="Installs the collective.contact.widget package"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
 
 </configure>

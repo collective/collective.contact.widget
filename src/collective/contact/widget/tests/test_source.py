@@ -73,6 +73,45 @@ class TestContactSource(unittest.TestCase):
         source = ContactSourceBinder(portal_type=("person",), relations=[{"position": "/mydirectory"}])(self.portal)
         self.assertEqual(source.relations, {"position": "/mydirectory"})
         self.assertNotIn("relations", source.selectable_filter.criteria)
+        # no default term
+        self.assertEqual(list(self.source), [])
+        self.assertEqual(len(self.source), 0)
+        # default terms, given or built by the factory
+        source = ContactSourceBinder(portal_type=("person",), default=self.degaulle)(self.portal)
+        self.assertEqual([t.value for t in source], [self.degaulle])
+        self.assertEqual(len(source), 1)
+        source = ContactSourceBinder(portal_type=("person",), defaultFactory=lambda context: self.degaulle)(self.portal)
+        self.assertEqual([t.value for t in source], [self.degaulle])
+
+    def test_contains(self):
+        self.assertIn(self.degaulle, self.source)
+        # the criteria are not checked: an existing value stays valid
+        self.assertIn(self.directory, self.source)
+        # a value not found in the catalog is kept too
+        self.assertIn(self.portal, self.source)
+
+    def test_getTerm(self):
+        term = self.source.getTerm(self.degaulle)
+        self.assertIsInstance(term, Term)
+        self.assertEqual(term.value, self.degaulle)
+        self.assertEqual(term.token, "%s/mydirectory/degaulle" % self.portal_path)
+        self.assertEqual(term.title, "Général Charles De Gaulle")
+        # the criteria are not checked
+        self.assertEqual(self.source.getTerm(self.directory).value, self.directory)
+
+    def test_getTermByToken(self):
+        token = "%s/mydirectory/degaulle" % self.portal_path
+        term = self.source.getTermByToken(token)
+        self.assertEqual(term.value, self.degaulle)
+        self.assertEqual(term.token, token)
+        # placeholder of a missing value, hidden by the display templates
+        term = self.source.getTermByToken("#error-missing-/mydirectory/unknown")
+        self.assertEqual(term.value, "/mydirectory/unknown")
+        self.assertEqual(term.token, "#error-missing-/mydirectory/unknown")
+        self.assertEqual(term.title, "Hidden or missing item '/mydirectory/unknown'")
+        # unknown token
+        with self.assertRaises(LookupError):
+            self.source.getTermByToken("%s/mydirectory/unknown" % self.portal_path)
 
     def test_isBrainSelectable(self):
         brain = api.content.find(UID=self.degaulle.UID())[0]
@@ -124,6 +163,21 @@ class TestContactSource(unittest.TestCase):
         self.assertEqual(list(source.search("", relations={"position": "/unknown"})), [])
         # nothing is related
         self.assertEqual(list(source.search("", relations={"position": "/mydirectory/degaulle"})), [])
+        # relations given to the source binder, the limit applies after the restriction
+        source = ContactSourceBinder(portal_type=("held_position",), relations={"position": "/mydirectory/armeedeterre"})(
+            self.portal
+        )
+        held_positions = list(source.search(""))
+        self.assertEqual([t.brain.getObject() for t in held_positions], [self.degaulle["adt"]])
+        self.assertEqual(len(list(source.search("", limit=1))), 1)
+        # review state criteria
+        source = ContactSourceBinder(portal_type=("person",), review_state=("active",))(self.portal)
+        self.assertIn(self.degaulle.UID(), [t.brain.UID for t in source.search("gaulle")])
+        source = ContactSourceBinder(portal_type=("person",), review_state=("deactivated",))(self.portal)
+        self.assertEqual(list(source.search("gaulle")), [])
+        # no review state (fields without review_state)
+        source = ContactSourceBinder(portal_type=("person",), review_state=None)(self.portal)
+        self.assertIn(self.degaulle.UID(), [t.brain.UID for t in source.search("gaulle")])
 
 
 class TestContactSourceBinder(unittest.TestCase):

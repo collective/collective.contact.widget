@@ -39,12 +39,14 @@ class TestContactChoice(unittest.TestCase):
             review_state=("active",),
             addlink=False,
             slave_fields=("a",),
+            prefilter_vocabulary="collective.contact.vocabulary.sourcetypes",
             prefilter_default_value=len,
         )
         self.assertEqual(field.source_types, ("person",))
         self.assertEqual(field.review_state, ("active",))
         self.assertFalse(field.addlink)
         self.assertEqual(field.slave_fields, ("a",))
+        self.assertEqual(field.prefilter_vocabulary, "collective.contact.vocabulary.sourcetypes")
         self.assertEqual(field.prefilter_default_value, len)
         self.assertEqual(field.vocabulary.selectable_filter.criteria["portal_type"], ("person",))
         # a given source is kept
@@ -84,12 +86,21 @@ class TestContactList(unittest.TestCase):
         # default value type
         self.assertIsInstance(field.value_type, ContactChoice)
         # given parameters are passed to the default value type
-        field = ContactList(title="Contacts", source_types=("person",), review_state=("active",), addlink=False)
+        field = ContactList(
+            title="Contacts",
+            source_types=("person",),
+            review_state=("active",),
+            addlink=False,
+            prefilter_vocabulary="collective.contact.vocabulary.sourcetypes",
+            prefilter_default_value=len,
+        )
         self.assertEqual(field.source_types, ("person",))
         self.assertEqual(field.review_state, ("active",))
         self.assertFalse(field.addlink)
         self.assertEqual(field.value_type.source_types, ("person",))
         self.assertEqual(field.value_type.review_state, ("active",))
+        self.assertEqual(field.prefilter_vocabulary, "collective.contact.vocabulary.sourcetypes")
+        self.assertEqual(field.prefilter_default_value, len)
         # a given value type is kept
         value_type = ContactChoice(title="Contact")
         self.assertIs(ContactList(title="Contacts", value_type=value_type).value_type, value_type)

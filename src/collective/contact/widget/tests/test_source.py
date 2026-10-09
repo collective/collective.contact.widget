@@ -30,7 +30,7 @@ class TestTerm(unittest.TestCase):
         self.assertEqual(self.term.portal_type, "person")
 
     def test_extra(self):
-        self.assertEqual(self.term.extra, u"")
+        self.assertEqual(self.term.extra, "")
 
 
 class TestParseQuery(unittest.TestCase):
@@ -94,12 +94,12 @@ class TestContactSource(unittest.TestCase):
         self.assertEqual(term.token, brain.getPath())
 
     def test_tokenToPath(self):
-        self.assertEqual(self.source.tokenToPath("%s/mydirectory/degaulle" % self.portal_path),
-                         "/mydirectory/degaulle")
+        self.assertEqual(self.source.tokenToPath("%s/mydirectory/degaulle" % self.portal_path), "/mydirectory/degaulle")
 
     def test_tokenToUrl(self):
-        self.assertEqual(self.source.tokenToUrl("%s/mydirectory/degaulle" % self.portal_path),
-                         self.degaulle.absolute_url())
+        self.assertEqual(
+            self.source.tokenToUrl("%s/mydirectory/degaulle" % self.portal_path), self.degaulle.absolute_url()
+        )
 
     def test_search(self):
         # search on text
@@ -135,4 +135,4 @@ class TestContactSourceBinder(unittest.TestCase):
         binder = ContactSourceBinder(portal_type=("person",))
         self.assertIs(binder.path_source, ContactSource)
         self.assertIsInstance(binder(portal), ContactSource)
-        self.assertIsInstance(RelationChoice(source=binder, title=u"x"), RelationChoice)
+        self.assertIsInstance(RelationChoice(source=binder, title="x"), RelationChoice)

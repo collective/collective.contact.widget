@@ -30,7 +30,7 @@ class Term(SimpleTerm):
 
     @property
     def extra(self):
-        return u""
+        return ""
 
 
 def parse_query(query, path_prefix=""):
@@ -38,21 +38,21 @@ def parse_query(query, path_prefix=""):
     but depth=1 removed.
     """
     query_parts = query.split()
-    query = {'SearchableText': []}
+    query = {"SearchableText": []}
     for part in query_parts:
-        if part.startswith('path:'):
+        if part.startswith("path:"):
             path = part[5:]
-            query['path'] = {'query': path}
+            query["path"] = {"query": path}
         else:
-            query['SearchableText'].append(part)
-    text = " ".join(query['SearchableText'])
-    for char in '?-+*()':
-        text = text.replace(char, ' ')
-    query['SearchableText'] = " AND ".join(x + "*" for x in text.split())
+            query["SearchableText"].append(part)
+    text = " ".join(query["SearchableText"])
+    for char in "?-+*()":
+        text = text.replace(char, " ")
+    query["SearchableText"] = " AND ".join(x + "*" for x in text.split())
     # an empty SearchableText matches nothing since ZCatalog 4 (it was ignored before)
-    if query['SearchableText'] == '':
-        del query['SearchableText']
-    if 'path' in query:
+    if query["SearchableText"] == "":
+        del query["SearchableText"]
+    if "path" in query:
         # query["path"]["depth"] = 1
         query["path"]["query"] = path_prefix + query["path"]["query"]
     return query
@@ -62,19 +62,17 @@ class ContactSource(ObjPathSource):
 
     relations = None
 
-    def __init__(self, context, selectable_filter, navigation_tree_query=None,
-                 default=None, defaultFactory=None, **kw):
+    def __init__(self, context, selectable_filter, navigation_tree_query=None, default=None, defaultFactory=None, **kw):
         """relations params is a dictionary : {relation_name: related_to_path}
         it filters on all results that have a relation with the content
         """
         selectable_filter = deepcopy(selectable_filter)
-        if 'relations' in selectable_filter.criteria:
-            self.relations = selectable_filter.criteria.pop('relations')[0]
+        if "relations" in selectable_filter.criteria:
+            self.relations = selectable_filter.criteria.pop("relations")[0]
         super(ContactSource, self).__init__(
-            context, selectable_filter, navigation_tree_query,
-            default, defaultFactory, **kw
+            context, selectable_filter, navigation_tree_query, default, defaultFactory, **kw
         )
-        portal_url = getToolByName(getSite(), 'portal_url')
+        portal_url = getToolByName(getSite(), "portal_url")
         self.portal_url = portal_url()
         self.portal_path = portal_url.getPortalPath()
 
@@ -94,14 +92,13 @@ class ContactSource(ObjPathSource):
         if real_value:
             value = brain._unrestrictedGetObject()
         else:
-            value = brain.getPath()[len(self.portal_path):]
+            value = brain.getPath()[len(self.portal_path) :]
         full_title = safe_unicode(brain.contact_source or brain.Title or brain.id)
         return Term(value, token=brain.getPath(), title=full_title, brain=brain)
 
     def tokenToPath(self, token):
-        """For token='/Plone/a/b', return '/a/b'
-        """
-        return token.replace(self.portal_path, '', 1)
+        """For token='/Plone/a/b', return '/a/b'"""
+        return token.replace(self.portal_path, "", 1)
 
     def tokenToUrl(self, token):
         return token.replace(self.portal_path, self.portal_url, 1)
@@ -111,27 +108,28 @@ class ContactSource(ObjPathSource):
         to be able to use a modified version of parse_query.
         """
         catalog_query = self.selectable_filter.criteria.copy()
-        if catalog_query.get('review_state', None) == [None]:
-            del catalog_query['review_state']
+        if catalog_query.get("review_state", None) == [None]:
+            del catalog_query["review_state"]
         catalog_query.update(parse_query(query, self.portal_path))
 
-        if limit and 'sort_limit' not in catalog_query:
-            catalog_query['sort_limit'] = limit
+        if limit and "sort_limit" not in catalog_query:
+            catalog_query["sort_limit"] = limit
 
         if self.relations:
             # we apply limit after restriction on relations
-            limit = catalog_query.pop('sort_limit', limit)
+            limit = catalog_query.pop("sort_limit", limit)
 
         if prefilter:
             catalog_query.update(prefilter)
 
         try:
-            if 'sort_limit' in catalog_query:  # must limit results because solr sends None for higher limit results
-                results = (self.getTermByBrain(brain, real_value=False)
-                           for brain in self.catalog(**catalog_query)[:catalog_query['sort_limit']])
+            if "sort_limit" in catalog_query:  # must limit results because solr sends None for higher limit results
+                results = (
+                    self.getTermByBrain(brain, real_value=False)
+                    for brain in self.catalog(**catalog_query)[: catalog_query["sort_limit"]]
+                )
             else:
-                results = (self.getTermByBrain(brain, real_value=False)
-                           for brain in self.catalog(**catalog_query))
+                results = (self.getTermByBrain(brain, real_value=False) for brain in self.catalog(**catalog_query))
         except ParseError:
             return []
 
@@ -149,16 +147,16 @@ class ContactSource(ObjPathSource):
                     continue
 
                 found_relations = catalog.findRelations(
-                    dict(to_id=intids.getId(aq_inner(source_object)),
-                         from_attribute=relation)
+                    dict(to_id=intids.getId(aq_inner(source_object)), from_attribute=relation)
                 )
                 for rel in found_relations:
                     try:
                         obj = intids.queryObject(rel.from_id)
                         related_uids.add(IUUID(obj))
                     except KeyError:
-                        logger.error("Related object is missing for relation to %s: %s",
-                                     source_object, str(rel.__dict__))
+                        logger.error(
+                            "Related object is missing for relation to %s: %s", source_object, str(rel.__dict__)
+                        )
 
             if not related_uids:
                 return []

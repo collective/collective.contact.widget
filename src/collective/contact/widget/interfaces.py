@@ -13,53 +13,47 @@ class IContactContent(Interface):
 
 
 class IContactAutocompleteWidget(IAutocompleteWidget):
-    """Marker interface for the contact autocomplete widget
-    """
+    """Marker interface for the contact autocomplete widget"""
 
 
 class IContactAutocompleteSelectionWidget(IContactAutocompleteWidget):
-    """Marker interface for the multi selection contact autocomplete widget
-    """
+    """Marker interface for the multi selection contact autocomplete widget"""
 
 
 class IContactAutocompleteMultiSelectionWidget(IContactAutocompleteWidget):
-    """Marker interface for the selection contact autocomplete widget
-    """
+    """Marker interface for the selection contact autocomplete widget"""
 
 
 class IContactSourceTypes(Interface):
 
     source_types = schema.Tuple(
-        title=_(u"Contact types"),
-        description=_(u"Contact content types that should be provided by autocompletion"),
-        default=('held_position', 'organization', 'person'),
-        value_type=schema.Choice(vocabulary='collective.contact.vocabulary.sourcetypes'),
-        )
+        title=_("Contact types"),
+        description=_("Contact content types that should be provided by autocompletion"),
+        default=("held_position", "organization", "person"),
+        value_type=schema.Choice(vocabulary="collective.contact.vocabulary.sourcetypes"),
+    )
 
 
 class IContactReviewStates(Interface):
 
     review_state = schema.Tuple(
-        title=_(u"Review states"),
-        description=_(u"Review states that should be visible"),
+        title=_("Review states"),
+        description=_("Review states that should be visible"),
         default=None,
-        value_type=schema.Choice(vocabulary='plone.app.vocabularies.WorkflowStates'),
-        )
+        value_type=schema.Choice(vocabulary="plone.app.vocabularies.WorkflowStates"),
+    )
 
 
 class IContactChoice(IContactSourceTypes, IContactReviewStates, IRelationChoice):
-    """A one to one relation where a choice of target objects is available.
-    """
+    """A one to one relation where a choice of target objects is available."""
 
 
 class IContactList(IContactSourceTypes, IContactReviewStates, IRelationList):
-    """A one to many relation.
-    """
+    """A one to many relation."""
 
 
 class IContactWidgetSettings(Interface):
-    """Contact widget settings
-    """
+    """Contact widget settings"""
 
     def add_contact_infos(self, widget):
         """Return a dict, each key, value will be set
@@ -68,11 +62,9 @@ class IContactWidgetSettings(Interface):
 
 
 class IContactChoiceField(IContactSourceTypes, IContactReviewStates, IField):
-    """
-    """
+    """ """
 
 
 @implementer(IContactChoiceField)
 class ContactChoiceField(object):
-    """
-    """
+    """ """

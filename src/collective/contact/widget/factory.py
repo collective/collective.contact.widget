@@ -21,20 +21,18 @@ from zope.schema.vocabulary import SimpleVocabulary
 class ContactHandler(BaseHandler):
 
     filteredAttributes = BaseHandler.filteredAttributes.copy()
-    filteredAttributes.update({'vocabulary': 'w', 'values': 'w', 'source': 'w',
-                               'vocabularyName': 'rw'})
+    filteredAttributes.update({"vocabulary": "w", "values": "w", "source": "w", "vocabularyName": "rw"})
 
     def read(self, element):
-        """Update source binder considering the new source_types value
-        """
+        """Update source binder considering the new source_types value"""
         field_instance = super(ContactHandler, self).read(element)
         field_instance.update_source()
         return field_instance
 
 
-ContactChoiceFactory = FieldFactory(schema.ContactChoice, _(u"Contact"))
+ContactChoiceFactory = FieldFactory(schema.ContactChoice, _("Contact"))
 ContactChoiceHandler = ContactHandler(schema.ContactChoice)
-ContactListFactory = FieldFactory(schema.ContactList, _(u"Contact list"))
+ContactListFactory = FieldFactory(schema.ContactList, _("Contact list"))
 ContactListHandler = ContactHandler(schema.ContactList)
 
 
@@ -49,7 +47,7 @@ class ContactChoiceField(object):
     component.adapts(IContactChoice)
 
     def __init__(self, field):
-        self.__dict__['field'] = field
+        self.__dict__["field"] = field
 
 
 @interface.implementer(IFieldEditFormSchema)
@@ -63,20 +61,23 @@ class ContactListChoiceField(object):
     component.adapts(IContactList)
 
     def __init__(self, field):
-        self.__dict__['field'] = field
+        self.__dict__["field"] = field
 
 
 @implementer(IVocabularyFactory)
 class ContactTypesVocabulary(object):
 
     def __call__(self, context):
-        contact_types = ('held_position', 'organization',
-                         'person', 'position')  # @TODO: make it more extensible
+        contact_types = ("held_position", "organization", "person", "position")  # @TODO: make it more extensible
 
         site = getSite()
-        ttool = getToolByName(site, 'portal_types')
-        request = aq_get(site, 'REQUEST', None)
-        return SimpleVocabulary([SimpleTerm(contact_type,
-                           token=contact_type,
-                           title=translate(ttool[contact_type].Title(), context=request))
-                for contact_type in contact_types])
+        ttool = getToolByName(site, "portal_types")
+        request = aq_get(site, "REQUEST", None)
+        return SimpleVocabulary(
+            [
+                SimpleTerm(
+                    contact_type, token=contact_type, title=translate(ttool[contact_type].Title(), context=request)
+                )
+                for contact_type in contact_types
+            ]
+        )

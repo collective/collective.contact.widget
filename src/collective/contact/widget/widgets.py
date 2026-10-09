@@ -34,7 +34,9 @@ try:
         def getSlaves(self):
             for slave in self.field.slave_fields:
                 yield slave.copy()
+
 except ImportError:
+
     class MasterSelect(object):
         pass
 
@@ -43,15 +45,15 @@ class TermViewlet(base.ViewletBase):
 
     @property
     def token(self):
-        return '/'.join(self.context.getPhysicalPath())
+        return "/".join(self.context.getPhysicalPath())
 
     @property
     def title(self):
-        if base_hasattr(self.context, 'get_full_title'):
+        if base_hasattr(self.context, "get_full_title"):
             title = self.context.get_full_title()
         else:
             title = self.context.Title()
-        title = title and safe_unicode(title) or u""
+        title = title and safe_unicode(title) or ""
         return html.escape(title)
 
     @property
@@ -63,20 +65,21 @@ class TermViewlet(base.ViewletBase):
         return self.context.absolute_url()
 
     def render(self):
-        return u"""<input type="hidden" name="objpath" value="%s" />""" % (
-            '|'.join([self.token, self.title, self.portal_type, self.url]))
+        return """<input type="hidden" name="objpath" value="%s" />""" % (
+            "|".join([self.token, self.title, self.portal_type, self.url])
+        )
 
 
 @implementer(IContactAutocompleteWidget)
 class ContactBaseWidget(object):
-    noValueLabel = _(u'(nothing)')
+    noValueLabel = _("(nothing)")
     autoFill = False
     maxResults = 50
     close_on_click = True
-    display_template = ViewPageTemplateFile('templates/contact_display.pt')
-    input_template = ViewPageTemplateFile('templates/contact_input.pt')
-    hidden_template = ViewPageTemplateFile('templates/contact_hidden.pt')
-    rtf_template = ViewPageTemplateFile('templates/contact_rtf.pt')
+    display_template = ViewPageTemplateFile("templates/contact_display.pt")
+    input_template = ViewPageTemplateFile("templates/contact_input.pt")
+    hidden_template = ViewPageTemplateFile("templates/contact_hidden.pt")
+    rtf_template = ViewPageTemplateFile("templates/contact_rtf.pt")
 
     # JavaScript template
     js_template = """\
@@ -114,15 +117,14 @@ function (event, data, formatted) {
     }(jQuery));
 }
 """
-    overlay_template = ViewPageTemplateFile('js/overlay.js.pt')
+    overlay_template = ViewPageTemplateFile("js/overlay.js.pt")
 
     # replace the jquery autocomplete by pat-livesearch (see contact_input.pt)
     livesearch = False
     livesearch_min_chars = 3
 
     def livesearch_url(self):
-        return "%s/++widget++%s/@@livesearch-search" % (
-            self.request.getURL(), self.name)
+        return "%s/++widget++%s/@@livesearch-search" % (self.request.getURL(), self.name)
 
     def addnew_modal_options(self):
         """Value of data-pat-plone-modal of the add links (livesearch only):
@@ -131,23 +133,30 @@ function (event, data, formatted) {
         """
         if not self.livesearch:
             return None
-        return json.dumps({'actionOptions': {
-            'onSuccess': 'ccwAddNewSuccess',
-            'displayInModal': False,
-            'reloadWindowOnClose': False,
-        }})
+        return json.dumps(
+            {
+                "actionOptions": {
+                    "onSuccess": "ccwAddNewSuccess",
+                    "displayInModal": False,
+                    "reloadWindowOnClose": False,
+                }
+            }
+        )
 
     def livesearch_options(self):
         """Value of data-pat-livesearch, None if livesearch is not used."""
         if not self.livesearch:
             return None
-        return json.dumps({
-            'ajaxUrl': self.livesearch_url(),
-            'minimumInputLength': self.livesearch_min_chars,
-            'perPage': self.maxResults,
-            'itemTemplate': LIVESEARCH_ITEM_TEMPLATE,
-        })
-    placeholder = _(u"Fill your search here...")
+        return json.dumps(
+            {
+                "ajaxUrl": self.livesearch_url(),
+                "minimumInputLength": self.livesearch_min_chars,
+                "perPage": self.maxResults,
+                "itemTemplate": LIVESEARCH_ITEM_TEMPLATE,
+            }
+        )
+
+    placeholder = _("Fill your search here...")
 
     @property
     def bound_source(self):
@@ -179,24 +188,29 @@ function (event, data, formatted) {
         content = ""
         include_default = False
         for action in self.actions:
-            formselector = action.get('formselector', None)
+            formselector = action.get("formselector", None)
             if formselector is None:
                 include_default = True
             else:
-                closeselector = action.get(
-                    'closeselector', '[name="form.buttons.cancel"]')
-                content += self.overlay_template(**dict(
-                    klass=action['klass'],
-                    formselector=formselector,
-                    closeselector=closeselector,
-                    closeOnClick=self.close_on_click and 'true' or 'false'))
+                closeselector = action.get("closeselector", '[name="form.buttons.cancel"]')
+                content += self.overlay_template(
+                    **dict(
+                        klass=action["klass"],
+                        formselector=formselector,
+                        closeselector=closeselector,
+                        closeOnClick=self.close_on_click and "true" or "false",
+                    )
+                )
 
         if include_default:
-            content += self.overlay_template(**dict(
-                klass='addnew',
-                formselector='#form',
-                closeselector='[name="form.buttons.cancel"]',
-                closeOnClick=self.close_on_click and 'true' or 'false'))
+            content += self.overlay_template(
+                **dict(
+                    klass="addnew",
+                    formselector="#form",
+                    closeselector='[name="form.buttons.cancel"]',
+                    closeOnClick=self.close_on_click and "true" or "false",
+                )
+            )
 
         return content
 
@@ -225,7 +239,8 @@ LIVESEARCH_ITEM_TEMPLATE = (
     '<li class="search-result list-group-item list-group-item-action"'
     ' data-token="<%- token %>" data-title="<%- title %>"'
     ' data-contact-url="<%- contact_url %>">'
-    '<img src="<%- icon %>" /> <%- title %></li>')
+    '<img src="<%- icon %>" /> <%- title %></li>'
+)
 
 LIVESEARCH_JS_TEMPLATE = r"""
     (function($) {
@@ -382,15 +397,15 @@ LIVESEARCH_JS_TEMPLATE = r"""
 
 @implementer(IContactAutocompleteSelectionWidget)
 class ContactAutocompleteSelectionWidget(ContactBaseWidget, AutocompleteSelectionWidget, MasterSelect):
-    display_template = ViewPageTemplateFile('templates/contact_display_single.pt')
+    display_template = ViewPageTemplateFile("templates/contact_display_single.pt")
     livesearch = True
     js_template = LIVESEARCH_JS_TEMPLATE
 
 
 @implementer(IContactAutocompleteMultiSelectionWidget)
 class ContactAutocompleteMultiSelectionWidget(ContactBaseWidget, AutocompleteMultiSelectionWidget):
-    """
-    """
+    """ """
+
     livesearch = True
     js_template = LIVESEARCH_JS_TEMPLATE
 
@@ -410,7 +425,7 @@ def ContactAutocompleteMultiFieldWidget(field, request):
 class AutocompleteSearch(BaseAutocompleteSearch):
 
     def get_query(self):
-        return self.request.get('q', None)
+        return self.request.get("q", None)
 
     def get_terms(self):
         # We want to check that the user was indeed allowed to access the
@@ -419,14 +434,14 @@ class AutocompleteSearch(BaseAutocompleteSearch):
         self.validate_access()
 
         query = self.get_query()
-        path = self.request.get('path', None)
+        path = self.request.get("path", None)
         if not query:
             if path is None:
                 return ()
             else:
-                query = ''
+                query = ""
 
-        relations = self.request.get('relations', None)
+        relations = self.request.get("relations", None)
         # Update the widget before accessing the source.
         # The source was only bound without security applied
         # during traversal before.
@@ -438,7 +453,7 @@ class AutocompleteSearch(BaseAutocompleteSearch):
         if query or relations:
             prefilter = {}
             try:
-                prefilter_param = json.loads(self.request.get('prefilter'))
+                prefilter_param = json.loads(self.request.get("prefilter"))
                 if isinstance(prefilter_param, dict) and len(prefilter_param) > 0:
                     prefilter = prefilter_param
             except (ValueError, TypeError):
@@ -449,17 +464,16 @@ class AutocompleteSearch(BaseAutocompleteSearch):
         else:
             terms = ()
 
-        if getattr(source, 'do_post_sort', True):
+        if getattr(source, "do_post_sort", True):
             terms = sorted(set(terms), key=lambda t: t.title)
         return terms
 
     def __call__(self):
         terms = self.get_terms()
         response = self.request.response
-        response.setHeader('Content-type', 'text/plain')
+        response.setHeader("Content-type", "text/plain")
 
-        return u'\n'.join([u"|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra))
-                          for t in terms])
+        return "\n".join(["|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra)) for t in terms])
 
 
 class LivesearchSearch(AutocompleteSearch):
@@ -468,21 +482,23 @@ class LivesearchSearch(AutocompleteSearch):
     i.e. the name of the subform text input."""
 
     def get_query(self):
-        return (self.request.get('q') or
-                self.request.get('%s.widgets.query' % self.context.name))
+        return self.request.get("q") or self.request.get("%s.widgets.query" % self.context.name)
 
     def __call__(self):
-        terms = list(self.get_terms())[:self.context.maxResults]
+        terms = list(self.get_terms())[: self.context.maxResults]
         portal_url = api.portal.get().absolute_url()
-        items = [{
-            # pat-livesearch goes to `url` on Enter: stay on the page
-            'url': '#livesearch-select',
-            'error': True,  # pat-livesearch does not navigate on click
-            'title': t.title or t.token,
-            'token': t.token,
-            'contact_url': t.url,
-            'icon': '%s/@@iconresolver/contenttype/%s' % (portal_url, t.portal_type),
-        } for t in terms]
+        items = [
+            {
+                # pat-livesearch goes to `url` on Enter: stay on the page
+                "url": "#livesearch-select",
+                "error": True,  # pat-livesearch does not navigate on click
+                "title": t.title or t.token,
+                "token": t.token,
+                "contact_url": t.url,
+                "icon": "%s/@@iconresolver/contenttype/%s" % (portal_url, t.portal_type),
+            }
+            for t in terms
+        ]
         response = self.request.response
-        response.setHeader('Content-type', 'application/json')
-        return json.dumps({'items': items, 'total': len(items)})
+        response.setHeader("Content-type", "application/json")
+        return json.dumps({"items": items, "total": len(items)})

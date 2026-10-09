@@ -49,7 +49,7 @@ class WidgetTestCase(unittest.TestCase):
     def get_widget(self, contact_field=None):
         """Get the widget of a field in a form, like the browser does."""
         if contact_field is None:
-            contact_field = ContactChoice(__name__="contact", title=u"Contact")
+            contact_field = ContactChoice(__name__="contact", title="Contact")
         test_form = form.Form(self.portal, self.request)
         test_form.fields = field.Fields(contact_field)
         test_form.ignoreContext = True
@@ -69,9 +69,8 @@ class TestTermViewlet(WidgetTestCase):
     def test_title(self):
         self.assertEqual(self.viewlet.title, html.escape(self.degaulle.get_full_title()))
         # the title of a content without full title is escaped
-        self.directory.title = u"Contacts & <others>"
-        self.assertEqual(TermViewlet(self.directory, self.request, None, None).title,
-                         u"Contacts &amp; &lt;others&gt;")
+        self.directory.title = "Contacts & <others>"
+        self.assertEqual(TermViewlet(self.directory, self.request, None, None).title, "Contacts &amp; &lt;others&gt;")
 
     def test_portal_type(self):
         self.assertEqual(self.viewlet.portal_type, "person")
@@ -82,9 +81,9 @@ class TestTermViewlet(WidgetTestCase):
     def test_render(self):
         self.assertEqual(
             self.viewlet.render(),
-            u'<input type="hidden" name="objpath" value="%s|%s|person|%s" />' % (
-                self.token_degaulle, html.escape(self.degaulle.get_full_title()),
-                self.degaulle.absolute_url()))
+            '<input type="hidden" name="objpath" value="%s|%s|person|%s" />'
+            % (self.token_degaulle, html.escape(self.degaulle.get_full_title()), self.degaulle.absolute_url()),
+        )
 
 
 class TestContactBaseWidget(WidgetTestCase):
@@ -94,8 +93,10 @@ class TestContactBaseWidget(WidgetTestCase):
         self.widget = self.get_widget()
 
     def test_livesearch_url(self):
-        self.assertEqual(self.widget.livesearch_url(),
-                         "%s/++widget++%s/@@livesearch-search" % (self.request.getURL(), self.widget.name))
+        self.assertEqual(
+            self.widget.livesearch_url(),
+            "%s/++widget++%s/@@livesearch-search" % (self.request.getURL(), self.widget.name),
+        )
 
     def test_addnew_modal_options(self):
         options = json.loads(self.widget.addnew_modal_options())
@@ -150,10 +151,11 @@ class TestContactBaseWidget(WidgetTestCase):
         self.assertEqual(self.widget.prefilter_terms(), [])
         # name of a vocabulary
         self.widget.field.prefilter_vocabulary = "collective.contact.vocabulary.sourcetypes"
-        self.assertEqual([t.token for t in self.widget.prefilter_terms()],
-                         ["held_position", "organization", "person", "position"])
+        self.assertEqual(
+            [t.token for t in self.widget.prefilter_terms()], ["held_position", "organization", "person", "position"]
+        )
         # vocabulary
-        vocabulary = SimpleVocabulary([SimpleTerm(value=u"", title=u"No filter")])
+        vocabulary = SimpleVocabulary([SimpleTerm(value="", title="No filter")])
         self.widget.field.prefilter_vocabulary = vocabulary
         self.assertIs(self.widget.prefilter_terms(), vocabulary)
         # source binder
@@ -167,14 +169,14 @@ class TestContactBaseWidget(WidgetTestCase):
 
     def test_prefilter_default_value(self):
         self.assertIsNone(self.widget.prefilter_default_value())
-        self.widget.field.prefilter_default_value = lambda context: u'{"portal_type":"person"}'
-        self.assertEqual(self.widget.prefilter_default_value(), u'{"portal_type":"person"}')
+        self.widget.field.prefilter_default_value = lambda context: '{"portal_type":"person"}'
+        self.assertEqual(self.widget.prefilter_default_value(), '{"portal_type":"person"}')
 
 
 class TestContactAutocompleteSelectionWidget(WidgetTestCase):
 
     def test_factory(self):
-        contact_field = ContactChoice(__name__="contact", title=u"Contact")
+        contact_field = ContactChoice(__name__="contact", title="Contact")
         widget = ContactAutocompleteFieldWidget(contact_field, self.request)
         self.assertIsInstance(widget, ContactAutocompleteSelectionWidget)
         self.assertTrue(IFieldWidget.providedBy(widget))
@@ -188,7 +190,7 @@ class TestContactAutocompleteSelectionWidget(WidgetTestCase):
 class TestContactAutocompleteMultiSelectionWidget(WidgetTestCase):
 
     def test_factory(self):
-        contact_field = ContactList(__name__="contacts", title=u"Contacts")
+        contact_field = ContactList(__name__="contacts", title="Contacts")
         widget = ContactAutocompleteMultiFieldWidget(contact_field, self.request)
         self.assertIsInstance(widget, ContactAutocompleteMultiSelectionWidget)
         self.assertTrue(IFieldWidget.providedBy(widget))

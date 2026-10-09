@@ -1,3 +1,10 @@
+.. image:: https://github.com/collective/collective.contact.widget/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/collective/collective.contact.widget/actions/workflows/main.yml
+.. image:: https://coveralls.io/repos/github/collective/collective.contact.widget/badge.svg
+    :target: https://coveralls.io/github/collective/collective.contact.widget
+.. image:: http://img.shields.io/pypi/v/collective.contact.widget.svg
+    :target: https://pypi.python.org/pypi/collective.contact.facetednav
+
 =========================
 collective.contact.widget
 =========================
@@ -74,18 +81,6 @@ Have an idea? Found a bug? Let us know by `opening a ticket`_.
 - Documentation: https://github.com/collective/collective.contact.demo/blob/master/README.md
 
 .. _`opening a ticket`: https://github.com/collective/collective.contact.widget/issues
-
-
-Tests
-=====
-
-This add-on is tested using Travis CI. The current status of the add-on is :
-
-.. image:: https://img.shields.io/travis/collective/collective.contact.widget/master.svg
-    :target: http://travis-ci.org/collective/collective.contact.widget
-
-.. image:: http://img.shields.io/pypi/v/collective.contact.widget.svg
-    :target: https://pypi.python.org/pypi/collective.contact.facetednav
 
 
 License

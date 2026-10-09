@@ -43,8 +43,7 @@ class TestContactChoiceSelectWidgetConverter(ConverterTestCase):
 
     def setUp(self):
         super(TestContactChoiceSelectWidgetConverter, self).setUp()
-        self.widget = self.get_widget(ContactChoice(title=u"Contact", source_types=("person",)),
-                                  [self.token_degaulle])
+        self.widget = self.get_widget(ContactChoice(title="Contact", source_types=("person",)), [self.token_degaulle])
         self.converter = getMultiAdapter((self.widget.field, self.widget), IDataConverter)
 
     def test_converter(self):
@@ -63,15 +62,18 @@ class TestContactListSelectWidgetConverter(ConverterTestCase):
 
     def setUp(self):
         super(TestContactListSelectWidgetConverter, self).setUp()
-        self.widget = self.get_widget(ContactList(title=u"Contacts", source_types=("person",)),
-                                  [self.token_degaulle, self.token_pepper])
+        self.widget = self.get_widget(
+            ContactList(title="Contacts", source_types=("person",)), [self.token_degaulle, self.token_pepper]
+        )
         self.converter = getMultiAdapter((self.widget.field, self.widget), IDataConverter)
 
     def test_converter(self):
         self.assertIsInstance(self.converter, ContactListSelectWidgetConverter)
-        self.assertEqual(self.converter.toWidgetValue([self.degaulle, self.pepper]),
-                         [self.token_degaulle, self.token_pepper])
+        self.assertEqual(
+            self.converter.toWidgetValue([self.degaulle, self.pepper]), [self.token_degaulle, self.token_pepper]
+        )
         self.assertEqual(self.converter.toWidgetValue([]), [])
-        self.assertEqual(self.converter.toFieldValue([self.token_degaulle, self.token_pepper]),
-                         [self.degaulle, self.pepper])
+        self.assertEqual(
+            self.converter.toFieldValue([self.token_degaulle, self.token_pepper]), [self.degaulle, self.pepper]
+        )
         self.assertEqual(self.converter.toFieldValue([]), [])

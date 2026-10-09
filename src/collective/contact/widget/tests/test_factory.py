@@ -21,7 +21,7 @@ from zope.schema.interfaces import IVocabularyFactory
 import unittest
 
 
-MODEL = u"""\
+MODEL = """\
 <model xmlns="http://namespaces.plone.org/supermodel/schema">
   <schema>
     <field name="contact" type="collective.contact.widget.schema.ContactChoice">
@@ -66,7 +66,7 @@ class TestContactHandler(unittest.TestCase):
 class TestContactChoiceField(unittest.TestCase):
 
     def test_init(self):
-        field = ContactChoice(title=u"Contact")
+        field = ContactChoice(title="Contact")
         wrapper = ContactChoiceField(field)
         self.assertTrue(IContactChoiceField.providedBy(wrapper))
         self.assertIs(wrapper.field, field)
@@ -75,7 +75,7 @@ class TestContactChoiceField(unittest.TestCase):
 class TestContactListChoiceField(unittest.TestCase):
 
     def test_init(self):
-        field = ContactList(title=u"Contacts")
+        field = ContactList(title="Contacts")
         wrapper = ContactListChoiceField(field)
         self.assertTrue(IContactChoiceField.providedBy(wrapper))
         self.assertIs(wrapper.field, field)
@@ -86,13 +86,13 @@ class TestFieldSchemas(unittest.TestCase):
     layer = COLLECTIVE_CONTACT_WIDGET_INTEGRATION
 
     def test_getContactChoiceFieldSchema(self):
-        field = ContactChoice(title=u"Contact")
+        field = ContactChoice(title="Contact")
         self.assertEqual(getContactChoiceFieldSchema(field), IContactChoiceField)
         # registered adapter
         self.assertEqual(getAdapter(field, IFieldEditFormSchema), IContactChoiceField)
 
     def test_getContactListChoiceFieldSchema(self):
-        field = ContactList(title=u"Contacts")
+        field = ContactList(title="Contacts")
         self.assertEqual(getContactListChoiceFieldSchema(field), IContactChoiceField)
         self.assertEqual(getAdapter(field, IFieldEditFormSchema), IContactChoiceField)
 

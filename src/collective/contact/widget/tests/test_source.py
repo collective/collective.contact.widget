@@ -6,7 +6,7 @@ from collective.contact.widget.testing import COLLECTIVE_CONTACT_WIDGET_INTEGRAT
 from plone import api
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
-from plone.formwidget.contenttree.source import ObjPathSource
+from z3c.formwidget.query.interfaces import IQuerySource
 from z3c.relationfield.schema import RelationChoice
 
 import unittest
@@ -65,7 +65,7 @@ class TestContactSource(unittest.TestCase):
 
     def test_init(self):
         self.assertIsInstance(self.source, ContactSource)
-        self.assertIsInstance(self.source, ObjPathSource)
+        self.assertTrue(IQuerySource.providedBy(self.source))
         self.assertEqual(self.source.portal_url, self.portal.absolute_url())
         self.assertEqual(self.source.portal_path, self.portal_path)
         self.assertIsNone(self.source.relations)

@@ -1,10 +1,12 @@
 Changelog
 =========
 
-2.0 (unreleased)
-----------------
+2.0.0 (unreleased)
+------------------
 
 - Migrate to Plone 6 / drop Plone 4 compatibility
+  [laulaz, chris-adam]
+- Migrate to Plone 6.2: drop `plone.formwidget.contenttree` and `plone.formwidget.autocomplete`, based on the work started by @laulaz on `python3`.
   [laulaz, chris-adam]
 
 1.13 (2022-06-21)

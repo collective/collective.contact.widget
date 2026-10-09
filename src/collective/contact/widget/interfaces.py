@@ -1,5 +1,4 @@
 from collective.contact.widget import _
-from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
 from z3c.relationfield.interfaces import IRelationChoice
 from z3c.relationfield.interfaces import IRelationList
 from zope import schema
@@ -12,7 +11,7 @@ class IContactContent(Interface):
     """Base class for collective.contact.core content types"""
 
 
-class IContactAutocompleteWidget(IAutocompleteWidget):
+class IContactAutocompleteWidget(Interface):
     """Marker interface for the contact autocomplete widget"""
 
 

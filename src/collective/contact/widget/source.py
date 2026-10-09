@@ -1,17 +1,22 @@
+from Acquisition import aq_base
 from Acquisition import aq_inner
 from collective.contact.widget import logger
 from copy import deepcopy
 from plone import api
-from plone.formwidget.contenttree.source import ObjPathSource
-from plone.formwidget.contenttree.source import PathSourceBinder
+from plone.base.utils import safe_text
 from plone.uuid.interfaces import IUUID
-from Products.CMFPlone.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
+from Products.CMFCore.interfaces import IContentish
+from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.utils import getToolByName
 from Products.ZCTextIndex.ParseTree import ParseError
+from z3c.formwidget.query.interfaces import IQuerySource
 from zc.relation.interfaces import ICatalog
 from zope.component import getUtility
 from zope.component.hooks import getSite
+from zope.globalrequest import getRequest
+from zope.interface import implementer
 from zope.intid.interfaces import IIntIds
+from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleTerm
 
 
@@ -58,7 +63,57 @@ def parse_query(query, path_prefix=""):
     return query
 
 
-class ContactSource(ObjPathSource):
+def closest_content(context=None):
+    """Try to find a usable context, with increasing agression.
+    Copied from plone.formwidget.contenttree.utils."""
+    # Normally, we should be given a useful context (e.g the page)
+    c = _valid_context(context)
+    if c is not None:
+        return c
+    # Subforms (e.g. DataGridField) may not have a context set, find out
+    # what page is being published
+    c = _valid_context(getattr(getRequest(), "PUBLISHED", None))
+    if c is not None:
+        return c
+    # During widget traversal nothing is being published yet, use getSite()
+    c = _valid_context(getSite())
+    if c is not None:
+        return c
+    raise ValueError("Cannot find suitable context to bind to source")
+
+
+def _valid_context(context):
+    """Walk up until finding a content item."""
+    # Avoid loops. The object id is used as context may not be hashable
+    seen = set()
+    while context is not None and id(aq_base(context)) not in seen:
+        seen.add(id(aq_base(context)))
+        if IContentish.providedBy(context) or IFolderish.providedBy(context):
+            return context
+        parent = getattr(context, "__parent__", None)
+        if parent is None:
+            parent = getattr(context, "context", None)
+        context = parent
+    return None
+
+
+class CustomFilter(object):
+    """Catalog criteria of a source (plone.formwidget.contenttree's, without its unused __call__)."""
+
+    def __init__(self, **kw):
+        self.criteria = {}
+        for key, value in list(kw.items()):
+            if not isinstance(value, (list, tuple, set, frozenset)) and not key == "path":
+                self.criteria[key] = [value]
+            elif isinstance(value, (set, frozenset)):
+                self.criteria[key] = list(value)
+            else:
+                self.criteria[key] = value
+
+
+@implementer(IQuerySource)
+class ContactSource(object):
+    """Source of contents, by physical path (was plone.formwidget.contenttree's ObjPathSource)."""
 
     relations = None
 
@@ -69,12 +124,63 @@ class ContactSource(ObjPathSource):
         selectable_filter = deepcopy(selectable_filter)
         if "relations" in selectable_filter.criteria:
             self.relations = selectable_filter.criteria.pop("relations")[0]
-        super(ContactSource, self).__init__(
-            context, selectable_filter, navigation_tree_query, default, defaultFactory, **kw
-        )
+        self.context = context
+        self.selectable_filter = selectable_filter
+        self.navigation_tree_query = navigation_tree_query
+        self.catalog = getToolByName(context, "portal_catalog")
         portal_url = getToolByName(getSite(), "portal_url")
         self.portal_url = portal_url()
         self.portal_path = portal_url.getPortalPath()
+        self._default_terms = []
+        if default is not None:
+            self._default_terms = [self.getTerm(default)]
+        elif defaultFactory is not None:
+            self._default_terms = [self.getTerm(defaultFactory(context))]
+
+    def __iter__(self):
+        return iter(self._default_terms)
+
+    def __len__(self):
+        return len(self._default_terms)
+
+    def __contains__(self, value):
+        try:
+            brain = self._getBrainByValue(value)
+            # a missing or invisible item is kept
+            if brain is None:
+                return True
+            return self.isBrainSelectable(brain)
+        except (KeyError, IndexError):
+            return False
+
+    def getTermByToken(self, token):
+        if token.startswith("#error-missing-"):
+            return self._placeholderTerm(token.partition("#error-missing-")[2])
+        brain = self._getBrainByToken(token)
+        if not self.isBrainSelectable(brain):
+            raise LookupError(token)
+        return self.getTermByBrain(brain)
+
+    def getTerm(self, value):
+        brain = self._getBrainByValue(value)
+        if brain is None:
+            return self._placeholderTerm(value)
+        if not self.isBrainSelectable(brain):
+            raise LookupError('Value "%s" does not match criteria for field' % value)
+        return self.getTermByBrain(brain)
+
+    def _getBrainByToken(self, token):
+        rid = self.catalog.getrid(token)
+        if not rid:
+            return None
+        return self.catalog._catalog[rid]
+
+    def _getBrainByValue(self, value):
+        return self._getBrainByToken("/".join(value.getPhysicalPath()))
+
+    def _placeholderTerm(self, value):
+        """Term to keep a value whose brain can't be found (hidden in the display templates)."""
+        return SimpleTerm(str(value), token="#error-missing-" + value, title="Hidden or missing item '%s'" % value)
 
     def isBrainSelectable(self, brain):
         if brain is None:
@@ -93,7 +199,7 @@ class ContactSource(ObjPathSource):
             value = brain._unrestrictedGetObject()
         else:
             value = brain.getPath()[len(self.portal_path) :]
-        full_title = safe_unicode(brain.contact_source or brain.Title or brain.id)
+        full_title = safe_text(brain.contact_source or brain.Title or brain.id)
         return Term(value, token=brain.getPath(), title=full_title, brain=brain)
 
     def tokenToPath(self, token):
@@ -171,6 +277,31 @@ class ContactSource(ObjPathSource):
                             return
 
             return get_results()
+
+
+# separate base class: collective.contact.contactlist calls super(ContactSourceBinder, self).__call__(context)
+@implementer(IContextSourceBinder)
+class PathSourceBinder(object):
+
+    def __init__(self, navigation_tree_query=None, default=None, defaultFactory=None, **kw):
+        self.selectable_filter = CustomFilter(**kw)
+        self.navigation_tree_query = navigation_tree_query
+        self.default = default
+        self.defaultFactory = defaultFactory
+
+    def __call__(self, context):
+        return self.path_source(
+            closest_content(context),
+            selectable_filter=self.selectable_filter,
+            navigation_tree_query=self.navigation_tree_query,
+            default=self.default,
+            defaultFactory=self.defaultFactory,
+        )
+
+    def __contains__(self, value):
+        # If used without being properly bound (looks at DataGridField), bind
+        # now and pass through to the bound version
+        return self(None).__contains__(value)
 
 
 class ContactSourceBinder(PathSourceBinder):

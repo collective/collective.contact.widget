@@ -1,4 +1,5 @@
 from AccessControl import Unauthorized
+from Acquisition.interfaces import IAcquirer
 from collective.contact.widget.interfaces import IContactAutocompleteMultiSelectionWidget
 from collective.contact.widget.interfaces import IContactAutocompleteSelectionWidget
 from collective.contact.widget.interfaces import IContactAutocompleteWidget
@@ -115,6 +116,11 @@ class TestContactBaseWidget(WidgetTestCase):
     def setUp(self):
         super(TestContactBaseWidget, self).setUp()
         self.widget = self.get_widget()
+
+    def test_security(self):
+        # public object for the ++widget++<name>/@@livesearch-search traversal, not an IAcquirer
+        self.assertIsNone(self.widget.__roles__)
+        self.assertFalse(IAcquirer.providedBy(self.widget))
 
     def test_livesearch_url(self):
         self.assertEqual(

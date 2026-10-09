@@ -15,3 +15,14 @@ parts/
 src/*
 !src/collective
 var/
+.plone-version
+.plone*
+checkversion*.html
+pyvenv.cfg
+CACHEDIR.TAG
+.python-version
+lib/
+local/
+share/
+eggs/
+downloads/

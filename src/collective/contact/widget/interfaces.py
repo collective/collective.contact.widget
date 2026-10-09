@@ -1,11 +1,11 @@
-from zope.interface import Interface, implements
-from zope import schema
-from zope.schema.interfaces import IField
-
-from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
-from z3c.relationfield.interfaces import IRelationChoice, IRelationList
-
 from collective.contact.widget import _
+from plone.formwidget.autocomplete.interfaces import IAutocompleteWidget
+from z3c.relationfield.interfaces import IRelationChoice
+from z3c.relationfield.interfaces import IRelationList
+from zope import schema
+from zope.interface import implementer
+from zope.interface import Interface
+from zope.schema.interfaces import IField
 
 
 class IContactContent(Interface):
@@ -30,21 +30,21 @@ class IContactAutocompleteMultiSelectionWidget(IContactAutocompleteWidget):
 class IContactSourceTypes(Interface):
 
     source_types = schema.Tuple(
-       title=_(u"Contact types"),
-       description=_(u"Contact content types that should be provided by autocompletion"),
-       default=('held_position', 'organization', 'person'),
-       value_type=schema.Choice(vocabulary='collective.contact.vocabulary.sourcetypes'),
-       )
+        title=_(u"Contact types"),
+        description=_(u"Contact content types that should be provided by autocompletion"),
+        default=('held_position', 'organization', 'person'),
+        value_type=schema.Choice(vocabulary='collective.contact.vocabulary.sourcetypes'),
+        )
 
 
 class IContactReviewStates(Interface):
 
     review_state = schema.Tuple(
-       title=_(u"Review states"),
-       description=_(u"Review states that should be visible"),
-       default=None,
-       value_type=schema.Choice(vocabulary='plone.app.vocabularies.WorkflowStates'),
-       )
+        title=_(u"Review states"),
+        description=_(u"Review states that should be visible"),
+        default=None,
+        value_type=schema.Choice(vocabulary='plone.app.vocabularies.WorkflowStates'),
+        )
 
 
 class IContactChoice(IContactSourceTypes, IContactReviewStates, IRelationChoice):
@@ -71,5 +71,8 @@ class IContactChoiceField(IContactSourceTypes, IContactReviewStates, IField):
     """
     """
 
+
+@implementer(IContactChoiceField)
 class ContactChoiceField(object):
-    implements(IContactChoiceField)
+    """
+    """

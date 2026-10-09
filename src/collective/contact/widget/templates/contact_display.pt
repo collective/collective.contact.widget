@@ -21,7 +21,7 @@
            target="_new"
            tal:define="url python:view.tokenToUrl(term.token)"
            tal:omit-tag="python:not url"
-           tal:attributes="href url"
+           tal:attributes="href url; data-base_url url"
            tal:condition="python:not(term.token.startswith('#error-'))"
            />
     </li>

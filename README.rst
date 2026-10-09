@@ -57,6 +57,13 @@ You can contribute for any message missing or other new languages, join us at
 into *Transifex.net* service with all world Plone translators community.
 
 
+Versions
+========
+
+- Version 2.x is for Plone 6.1+ only
+- Version 1.x is for Plone 4
+
+
 Contribute
 ==========
 

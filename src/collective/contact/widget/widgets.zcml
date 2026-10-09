@@ -22,12 +22,27 @@
       class=".widgets.AutocompleteSearch"
       />
 
+  <browser:page
+      name="livesearch-search"
+      for=".interfaces.IContactAutocompleteWidget"
+      permission="zope.Public"
+      class=".widgets.LivesearchSearch"
+      />
+
+  <browser:viewlet
+      name="term-contact"
+      class=".widgets.TermViewlet"
+      for=".interfaces.IContactContent"
+      manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+      permission="zope2.View"
+      />
+
   <!-- overrides the template registered for
        z3c.form.interfaces.ICheckBoxWidget -->
   <z3c:widgetTemplate
       mode="input"
       widget=".interfaces.IContactAutocompleteMultiSelectionWidget"
-      layer="z3c.form.interfaces.IFormLayer"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
       template="templates/checkbox_input.pt"
       />
 
@@ -36,8 +51,14 @@
   <z3c:widgetTemplate
       mode="input"
       widget=".interfaces.IContactAutocompleteSelectionWidget"
-      layer="z3c.form.interfaces.IFormLayer"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
       template="templates/radio_input.pt"
       />
+
+  <!-- plone.app.z3cform registers RelationChoiceSelectWidgetConverter for
+       IRelationChoice, which gives None for the sequence value of our radio
+       widgets: nothing was saved -->
+  <adapter factory=".converters.ContactChoiceSelectWidgetConverter" />
+  <adapter factory=".converters.ContactListSelectWidgetConverter" />
 
 </configure>

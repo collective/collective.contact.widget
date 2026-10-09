@@ -19,7 +19,7 @@ long_description = (
 
 setup(
     name='collective.contact.widget',
-    version='1.14.dev0',
+    version='2.0.dev0',
     description="Contact widget",
     long_description=long_description,
     # Get more from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -27,12 +27,12 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Plone",
-        "Framework :: Plone :: 4.2",
-        "Framework :: Plone :: 4.3",
+        "Framework :: Plone :: 6.1",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.13",
     ],
     keywords='plone contact widget field',
     author='Vincent Fretin',
@@ -46,7 +46,6 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'five.grok',
         'setuptools',
         'collective.contact.core >= 1.27',
         'future',
@@ -58,6 +57,7 @@ setup(
     extras_require={
         'test': [
             'ecreall.helpers.testing',
+            'plone.app.robotframework',
             'plone.app.testing',
         ],
     },

@@ -1,3 +1,8 @@
+.. image:: https://github.com/collective/collective.contact.widget/actions/workflows/main.yml/badge.svg
+    :target: https://github.com/collective/collective.contact.widget/actions/workflows/main.yml
+.. image:: https://coveralls.io/repos/github/collective/collective.contact.widget/badge.svg
+    :target: https://coveralls.io/github/collective/collective.contact.widget
+
 =========================
 collective.contact.widget
 =========================
@@ -79,10 +84,8 @@ Have an idea? Found a bug? Let us know by `opening a ticket`_.
 Tests
 =====
 
-This add-on is tested using Travis CI. The current status of the add-on is :
+This add-on is tested using GitHub Actions (status badges at the top of this file).
 
-.. image:: https://img.shields.io/travis/collective/collective.contact.widget/master.svg
-    :target: http://travis-ci.org/collective/collective.contact.widget
 
 .. image:: http://img.shields.io/pypi/v/collective.contact.widget.svg
     :target: https://pypi.python.org/pypi/collective.contact.facetednav

@@ -31,7 +31,10 @@ class TestContactChoice(unittest.TestCase):
         # default source
         source = field.vocabulary
         self.assertIsInstance(source, ContactSourceBinder)
-        self.assertEqual(source.selectable_filter.criteria["portal_type"], ("held_position", "person", "organization"))
+        self.assertEqual(
+            source.selectable_filter.criteria["portal_type"],
+            ("held_position", "person", "organization"),
+        )
         # given parameters
         field = ContactChoice(
             title="Contact",
@@ -46,9 +49,13 @@ class TestContactChoice(unittest.TestCase):
         self.assertEqual(field.review_state, ("active",))
         self.assertFalse(field.addlink)
         self.assertEqual(field.slave_fields, ("a",))
-        self.assertEqual(field.prefilter_vocabulary, "collective.contact.vocabulary.sourcetypes")
+        self.assertEqual(
+            field.prefilter_vocabulary, "collective.contact.vocabulary.sourcetypes"
+        )
         self.assertEqual(field.prefilter_default_value, len)
-        self.assertEqual(field.vocabulary.selectable_filter.criteria["portal_type"], ("person",))
+        self.assertEqual(
+            field.vocabulary.selectable_filter.criteria["portal_type"], ("person",)
+        )
         # a given source is kept
         binder = ContactSourceBinder(portal_type=("organization",))
         self.assertIs(ContactChoice(title="Contact", source=binder).vocabulary, binder)
@@ -58,12 +65,16 @@ class TestContactChoice(unittest.TestCase):
         field._bound_source = object()
         field.source_types = ("organization",)
         field.update_source()
-        self.assertEqual(field.vocabulary.selectable_filter.criteria["portal_type"], ("organization",))
+        self.assertEqual(
+            field.vocabulary.selectable_filter.criteria["portal_type"],
+            ("organization",),
+        )
         self.assertFalse(hasattr(field, "_bound_source"))
         field.source_types = None
         field.update_source()
         self.assertEqual(
-            field.vocabulary.selectable_filter.criteria["portal_type"], ("held_position", "person", "organization")
+            field.vocabulary.selectable_filter.criteria["portal_type"],
+            ("held_position", "person", "organization"),
         )
 
 
@@ -99,18 +110,25 @@ class TestContactList(unittest.TestCase):
         self.assertFalse(field.addlink)
         self.assertEqual(field.value_type.source_types, ("person",))
         self.assertEqual(field.value_type.review_state, ("active",))
-        self.assertEqual(field.prefilter_vocabulary, "collective.contact.vocabulary.sourcetypes")
+        self.assertEqual(
+            field.prefilter_vocabulary, "collective.contact.vocabulary.sourcetypes"
+        )
         self.assertEqual(field.prefilter_default_value, len)
         # a given value type is kept
         value_type = ContactChoice(title="Contact")
-        self.assertIs(ContactList(title="Contacts", value_type=value_type).value_type, value_type)
+        self.assertIs(
+            ContactList(title="Contacts", value_type=value_type).value_type, value_type
+        )
 
     def test_update_source(self):
         field = ContactList(title="Contacts")
         field.value_type._bound_source = object()
         field.source_types = ("person",)
         field.update_source()
-        self.assertEqual(field.value_type.vocabulary.selectable_filter.criteria["portal_type"], ("person",))
+        self.assertEqual(
+            field.value_type.vocabulary.selectable_filter.criteria["portal_type"],
+            ("person",),
+        )
         self.assertFalse(hasattr(field.value_type, "_bound_source"))
         field.source_types = None
         field.update_source()

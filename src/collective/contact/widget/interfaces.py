@@ -27,9 +27,13 @@ class IContactSourceTypes(Interface):
 
     source_types = schema.Tuple(
         title=_("Contact types"),
-        description=_("Contact content types that should be provided by autocompletion"),
+        description=_(
+            "Contact content types that should be provided by autocompletion"
+        ),
         default=("held_position", "organization", "person"),
-        value_type=schema.Choice(vocabulary="collective.contact.vocabulary.sourcetypes"),
+        value_type=schema.Choice(
+            vocabulary="collective.contact.vocabulary.sourcetypes"
+        ),
     )
 
 
@@ -65,5 +69,5 @@ class IContactChoiceField(IContactSourceTypes, IContactReviewStates, IField):
 
 
 @implementer(IContactChoiceField)
-class ContactChoiceField(object):
+class ContactChoiceField:
     """ """

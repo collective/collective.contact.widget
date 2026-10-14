@@ -1,6 +1,8 @@
 from AccessControl import Unauthorized
 from Acquisition.interfaces import IAcquirer
-from collective.contact.widget.interfaces import IContactAutocompleteMultiSelectionWidget
+from collective.contact.widget.interfaces import (
+    IContactAutocompleteMultiSelectionWidget,
+)
 from collective.contact.widget.interfaces import IContactAutocompleteSelectionWidget
 from collective.contact.widget.interfaces import IContactAutocompleteWidget
 from collective.contact.widget.schema import ContactChoice
@@ -85,17 +87,22 @@ class WidgetTestCase(unittest.TestCase):
 class TestTermViewlet(WidgetTestCase):
 
     def setUp(self):
-        super(TestTermViewlet, self).setUp()
+        super().setUp()
         self.viewlet = TermViewlet(self.degaulle, self.request, None, None)
 
     def test_token(self):
         self.assertEqual(self.viewlet.token, self.token_degaulle)
 
     def test_title(self):
-        self.assertEqual(self.viewlet.title, html.escape(self.degaulle.get_full_title()))
+        self.assertEqual(
+            self.viewlet.title, html.escape(self.degaulle.get_full_title())
+        )
         # the title of a content without full title is escaped
         self.directory.title = "Contacts & <others>"
-        self.assertEqual(TermViewlet(self.directory, self.request, None, None).title, "Contacts &amp; &lt;others&gt;")
+        self.assertEqual(
+            TermViewlet(self.directory, self.request, None, None).title,
+            "Contacts &amp; &lt;others&gt;",
+        )
 
     def test_portal_type(self):
         self.assertEqual(self.viewlet.portal_type, "person")
@@ -107,14 +114,18 @@ class TestTermViewlet(WidgetTestCase):
         self.assertEqual(
             self.viewlet.render(),
             '<input type="hidden" name="objpath" value="%s|%s|person|%s" />'
-            % (self.token_degaulle, html.escape(self.degaulle.get_full_title()), self.degaulle.absolute_url()),
+            % (
+                self.token_degaulle,
+                html.escape(self.degaulle.get_full_title()),
+                self.degaulle.absolute_url(),
+            ),
         )
 
 
 class TestContactBaseWidget(WidgetTestCase):
 
     def setUp(self):
-        super(TestContactBaseWidget, self).setUp()
+        super().setUp()
         self.widget = self.get_widget()
 
     def test_security(self):
@@ -125,7 +136,9 @@ class TestContactBaseWidget(WidgetTestCase):
     def test_livesearch_url(self):
         self.assertEqual(
             self.widget.livesearch_url(),
-            "%s/++widget++%s/@@livesearch-search" % (self.request.getURL(), self.widget.name),
+            "{}/++widget++{}/@@livesearch-search".format(
+                self.request.getURL(), self.widget.name
+            ),
         )
 
     def test_addnew_modal_options(self):
@@ -146,10 +159,14 @@ class TestContactBaseWidget(WidgetTestCase):
         self.assertIsNone(self.widget.livesearch_options())
 
     def test_bound_source(self):
-        self.assertEqual(self.widget.bound_source.portal_url, self.portal.absolute_url())
+        self.assertEqual(
+            self.widget.bound_source.portal_url, self.portal.absolute_url()
+        )
 
     def test_tokenToUrl(self):
-        self.assertEqual(self.widget.tokenToUrl(self.token_degaulle), self.degaulle.absolute_url())
+        self.assertEqual(
+            self.widget.tokenToUrl(self.token_degaulle), self.degaulle.absolute_url()
+        )
         self.assertEqual(self.widget.tokenToUrl("--NOVALUE--"), "")
 
     def test_render(self):
@@ -170,39 +187,60 @@ class TestContactBaseWidget(WidgetTestCase):
         url_degaulle = self.degaulle.absolute_url()
         url_pepper = self.pepper.absolute_url()
         # input mode: the selected contacts are checked, with a link to them
-        rendered = self.get_widget(contacts, [self.token_degaulle, self.token_pepper]).render()
+        rendered = self.get_widget(
+            contacts, [self.token_degaulle, self.token_pepper]
+        ).render()
         self.assertEqual(rendered.count('type="checkbox"'), 2)
         self.assertEqual(rendered.count('checked="checked"'), 2)
-        self.assertIn('<a class="link-tooltip" target="_new" href="%s"' % url_degaulle, rendered)
+        self.assertIn(
+            '<a class="link-tooltip" target="_new" href="%s"' % url_degaulle, rendered
+        )
         self.assertIn(">Général Charles De Gaulle</a>", rendered)
         rendered = self.get_widget(tokens=[self.token_degaulle]).render()
         self.assertIn('type="radio"', rendered)
-        self.assertIn('<a class="link-tooltip" target="_new" href="%s"' % url_degaulle, rendered)
+        self.assertIn(
+            '<a class="link-tooltip" target="_new" href="%s"' % url_degaulle, rendered
+        )
         # display mode: links to the selected contacts
-        rendered = self.get_widget(tokens=[self.token_degaulle], mode=DISPLAY_MODE).render()
+        rendered = self.get_widget(
+            tokens=[self.token_degaulle], mode=DISPLAY_MODE
+        ).render()
         self.assertTrue(rendered.startswith('<span id="form-widgets-contact"'))
-        self.assertIn('<a class="link-tooltip" target="_new" href="%s"' % url_degaulle, rendered)
+        self.assertIn(
+            '<a class="link-tooltip" target="_new" href="%s"' % url_degaulle, rendered
+        )
         self.assertIn(">Général Charles De Gaulle</a>", rendered)
-        rendered = self.get_widget(contacts, [self.token_degaulle, self.token_pepper], DISPLAY_MODE).render()
+        rendered = self.get_widget(
+            contacts, [self.token_degaulle, self.token_pepper], DISPLAY_MODE
+        ).render()
         self.assertTrue(rendered.startswith('<ul id="form-widgets-contacts"'))
         self.assertEqual(rendered.count("<li>"), 2)
         self.assertIn('href="%s"' % url_degaulle, rendered)
         self.assertIn('href="%s"' % url_pepper, rendered)
         # missing contacts are hidden
         missing = "#error-missing-/mydirectory/unknown"
-        rendered = self.get_widget(contacts, [self.token_degaulle, missing], DISPLAY_MODE).render()
+        rendered = self.get_widget(
+            contacts, [self.token_degaulle, missing], DISPLAY_MODE
+        ).render()
         self.assertIn('href="%s"' % url_degaulle, rendered)
         self.assertNotIn("unknown", rendered)
-        self.assertNotIn("unknown", self.get_widget(tokens=[missing], mode=DISPLAY_MODE).render())
+        self.assertNotIn(
+            "unknown", self.get_widget(tokens=[missing], mode=DISPLAY_MODE).render()
+        )
         # hidden mode: the selected contacts
-        rendered = self.get_widget(contacts, [self.token_degaulle, self.token_pepper], HIDDEN_MODE).render()
+        rendered = self.get_widget(
+            contacts, [self.token_degaulle, self.token_pepper], HIDDEN_MODE
+        ).render()
         self.assertEqual(rendered.count('type="hidden"'), 2)
         self.assertIn('value="%s"' % self.token_degaulle, rendered)
         self.assertIn('value="%s"' % self.token_pepper, rendered)
         # rtf mode: the titles, separated by commas
         widget = self.get_widget(contacts, [self.token_degaulle, self.token_pepper])
         widget.mode = "rtf"
-        self.assertEqual(" ".join(widget.render().split()), "Général Charles De Gaulle , Mister Pepper")
+        self.assertEqual(
+            " ".join(widget.render().split()),
+            "Général Charles De Gaulle , Mister Pepper",
+        )
 
     def test_js_extra(self):
         self.widget.render()
@@ -217,9 +255,12 @@ class TestContactBaseWidget(WidgetTestCase):
         # no prefilter
         self.assertEqual(self.widget.prefilter_terms(), [])
         # name of a vocabulary
-        self.widget.field.prefilter_vocabulary = "collective.contact.vocabulary.sourcetypes"
+        self.widget.field.prefilter_vocabulary = (
+            "collective.contact.vocabulary.sourcetypes"
+        )
         self.assertEqual(
-            [t.token for t in self.widget.prefilter_terms()], ["held_position", "organization", "person", "position"]
+            [t.token for t in self.widget.prefilter_terms()],
+            ["held_position", "organization", "person", "position"],
         )
         # vocabulary
         vocabulary = SimpleVocabulary([SimpleTerm(value="", title="No filter")])
@@ -236,15 +277,21 @@ class TestContactBaseWidget(WidgetTestCase):
 
     def test_prefilter_default_value(self):
         self.assertIsNone(self.widget.prefilter_default_value())
-        self.widget.field.prefilter_default_value = lambda context: '{"portal_type":"person"}'
-        self.assertEqual(self.widget.prefilter_default_value(), '{"portal_type":"person"}')
+        self.widget.field.prefilter_default_value = (
+            lambda context: '{"portal_type":"person"}'
+        )
+        self.assertEqual(
+            self.widget.prefilter_default_value(), '{"portal_type":"person"}'
+        )
 
 
 class TestMasterSelect(WidgetTestCase):
 
     def test_getSlaves(self):
         slave = {"name": "position", "action": "hide", "hide_values": ("",)}
-        widget = self.get_widget(ContactChoice(__name__="contact", title="Contact", slave_fields=(slave,)))
+        widget = self.get_widget(
+            ContactChoice(__name__="contact", title="Contact", slave_fields=(slave,))
+        )
         self.assertIsInstance(widget, MasterSelect)
         # copies of the slave fields of the field
         slaves = list(widget.getSlaves())
@@ -282,7 +329,7 @@ class TestContactAutocompleteMultiSelectionWidget(WidgetTestCase):
 class TestAutocompleteSearch(WidgetTestCase):
 
     def setUp(self):
-        super(TestAutocompleteSearch, self).setUp()
+        super().setUp()
         self.widget = self.get_widget()
         self.search = AutocompleteSearch(self.widget, self.request)
 
@@ -311,7 +358,7 @@ class TestAutocompleteSearch(WidgetTestCase):
         self.request.form["prefilter"] = '{"portal_type": "organization"}'
         terms = self.search.get_terms()
         self.assertTrue(terms)
-        self.assertEqual(set(t.portal_type for t in terms), {"organization"})
+        self.assertEqual({t.portal_type for t in terms}, {"organization"})
         # an invalid prefilter is ignored
         self.request.form["prefilter"] = "invalid"
         self.assertIn(self.token_degaulle, [t.token for t in self.search.get_terms()])
@@ -319,31 +366,46 @@ class TestAutocompleteSearch(WidgetTestCase):
         self.request.form["prefilter"] = '{"portal_type": "person"}'
         terms = self.search.get_terms()
         self.assertIn(self.token_degaulle, [t.token for t in terms])
-        self.assertEqual(set(t.portal_type for t in terms), {"person"})
+        self.assertEqual({t.portal_type for t in terms}, {"person"})
         # an empty prefilter ("No filter" term) and a json value that isn't an object are ignored
         for prefilter in ("", '["person"]'):
             self.request.form["prefilter"] = prefilter
-            self.assertIn("organization", set(t.portal_type for t in self.search.get_terms()))
+            self.assertIn(
+                "organization", {t.portal_type for t in self.search.get_terms()}
+            )
         # no prefilter parameter (jQuery autocomplete setOptions replaces the extraParams)
         del self.request.form["prefilter"]
-        self.assertIn("organization", set(t.portal_type for t in self.search.get_terms()))
+        self.assertIn("organization", {t.portal_type for t in self.search.get_terms()})
         # restriction on the relations of an object
         self.request.form.pop("path")
         self.request.form["q"] = "gaulle"
-        self.request.form["relations"] = {"position": "/mydirectory/armeedeterre/general_adt"}
-        self.assertEqual([t.token for t in self.search.get_terms()], ["%s/gadt" % self.token_degaulle])
+        self.request.form["relations"] = {
+            "position": "/mydirectory/armeedeterre/general_adt"
+        }
+        self.assertEqual(
+            [t.token for t in self.search.get_terms()],
+            ["%s/gadt" % self.token_degaulle],
+        )
         del self.request.form["relations"]
         # the source can keep the order of its results
         widget = self.get_widget(
             ContactChoice(
-                __name__="unsorted", title="Contact", source=UnsortedContactSourceBinder(portal_type=("person",))
+                __name__="unsorted",
+                title="Contact",
+                source=UnsortedContactSourceBinder(portal_type=("person",)),
             )
         )
         self.request.form.pop("q")
         self.request.form["path"] = self.directory_path
         tokens = [t.token for t in AutocompleteSearch(widget, self.request).get_terms()]
         # catalog order, not sorted by title
-        self.assertEqual(tokens, ["%s/%s" % (self.directory_path, i) for i in ("degaulle", "pepper", "rambo", "draper")])
+        self.assertEqual(
+            tokens,
+            [
+                f"{self.directory_path}/{i}"
+                for i in ("degaulle", "pepper", "rambo", "draper")
+            ],
+        )
         # the user must be allowed to open the form of the widget
         setRoles(self.portal, TEST_USER_ID, ["Member"])
         self.request.URL = self.portal.absolute_url() + "/@@overview-controlpanel"
@@ -353,7 +415,9 @@ class TestAutocompleteSearch(WidgetTestCase):
     def test_call(self):
         self.request.form["q"] = "gaulle"
         result = self.search()
-        self.assertTrue(self.request.response.getHeader("Content-type").startswith("text/plain"))
+        self.assertTrue(
+            self.request.response.getHeader("Content-type").startswith("text/plain")
+        )
         lines = [line.split("|") for line in result.splitlines()]
         line = [x for x in lines if x[0] == self.token_degaulle][0]
         self.assertEqual(line[2:], ["person", self.degaulle.absolute_url(), ""])
@@ -365,7 +429,7 @@ class TestAutocompleteSearch(WidgetTestCase):
 class TestLivesearchSearch(WidgetTestCase):
 
     def setUp(self):
-        super(TestLivesearchSearch, self).setUp()
+        super().setUp()
         self.widget = self.get_widget()
         self.search = LivesearchSearch(self.widget, self.request)
 
@@ -380,13 +444,18 @@ class TestLivesearchSearch(WidgetTestCase):
     def test_call(self):
         self.request.form["q"] = "gaulle"
         result = json.loads(self.search())
-        self.assertEqual(self.request.response.getHeader("Content-type"), "application/json")
+        self.assertEqual(
+            self.request.response.getHeader("Content-type"), "application/json"
+        )
         self.assertEqual(result["total"], len(result["items"]))
         item = [i for i in result["items"] if i["token"] == self.token_degaulle][0]
         self.assertEqual(item["contact_url"], self.degaulle.absolute_url())
         self.assertEqual(item["url"], "#livesearch-select")
         self.assertTrue(item["error"])
-        self.assertEqual(item["icon"], "%s/@@iconresolver/contenttype/person" % self.portal.absolute_url())
+        self.assertEqual(
+            item["icon"],
+            "%s/@@iconresolver/contenttype/person" % self.portal.absolute_url(),
+        )
         self.assertTrue(item["title"])
         # results are limited
         self.widget.maxResults = 1

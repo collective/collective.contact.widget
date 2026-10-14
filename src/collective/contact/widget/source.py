@@ -22,7 +22,7 @@ from zope.schema.vocabulary import SimpleTerm
 
 class Term(SimpleTerm):
     def __init__(self, value, token=None, title=None, brain=None):
-        super(Term, self).__init__(value, token, title)
+        super().__init__(value, token, title)
         self.brain = brain
 
     @property
@@ -64,7 +64,7 @@ def parse_query(query, path_prefix=""):
 
 
 def closest_content(context=None):
-    """Try to find a usable context, with increasing agression.
+    """Try to find a usable context, with increasing aggression.
     Copied from plone.formwidget.contenttree.utils."""
     # Normally, we should be given a useful context (e.g the page)
     c = _valid_context(context)
@@ -97,13 +97,16 @@ def _valid_context(context):
     return None
 
 
-class CustomFilter(object):
+class CustomFilter:
     """Catalog criteria of a source (plone.formwidget.contenttree's, without its unused __call__)."""
 
     def __init__(self, **kw):
         self.criteria = {}
         for key, value in list(kw.items()):
-            if not isinstance(value, (list, tuple, set, frozenset)) and not key == "path":
+            if (
+                not isinstance(value, (list, tuple, set, frozenset))
+                and not key == "path"
+            ):
                 self.criteria[key] = [value]
             elif isinstance(value, (set, frozenset)):
                 self.criteria[key] = list(value)
@@ -112,12 +115,20 @@ class CustomFilter(object):
 
 
 @implementer(IQuerySource)
-class ContactSource(object):
+class ContactSource:
     """Source of contents, by physical path (was plone.formwidget.contenttree's ObjPathSource)."""
 
     relations = None
 
-    def __init__(self, context, selectable_filter, navigation_tree_query=None, default=None, defaultFactory=None, **kw):
+    def __init__(
+        self,
+        context,
+        selectable_filter,
+        navigation_tree_query=None,
+        default=None,
+        defaultFactory=None,
+        **kw,
+    ):
         """relations params is a dictionary : {relation_name: related_to_path}
         it filters on all results that have a relation with the content
         """
@@ -180,7 +191,11 @@ class ContactSource(object):
 
     def _placeholderTerm(self, value):
         """Term to keep a value whose brain can't be found (hidden in the display templates)."""
-        return SimpleTerm(str(value), token="#error-missing-" + value, title="Hidden or missing item '%s'" % value)
+        return SimpleTerm(
+            str(value),
+            token="#error-missing-" + value,
+            title="Hidden or missing item '%s'" % value,
+        )
 
     def isBrainSelectable(self, brain):
         if brain is None:
@@ -229,13 +244,20 @@ class ContactSource(object):
             catalog_query.update(prefilter)
 
         try:
-            if "sort_limit" in catalog_query:  # must limit results because solr sends None for higher limit results
+            if (
+                "sort_limit" in catalog_query
+            ):  # must limit results because solr sends None for higher limit results
                 results = (
                     self.getTermByBrain(brain, real_value=False)
-                    for brain in self.catalog(**catalog_query)[: catalog_query["sort_limit"]]
+                    for brain in self.catalog(**catalog_query)[
+                        : catalog_query["sort_limit"]
+                    ]
                 )
             else:
-                results = (self.getTermByBrain(brain, real_value=False) for brain in self.catalog(**catalog_query))
+                results = (
+                    self.getTermByBrain(brain, real_value=False)
+                    for brain in self.catalog(**catalog_query)
+                )
         except ParseError:
             return []
 
@@ -253,7 +275,10 @@ class ContactSource(object):
                     continue
 
                 found_relations = catalog.findRelations(
-                    dict(to_id=intids.getId(aq_inner(source_object)), from_attribute=relation)
+                    dict(
+                        to_id=intids.getId(aq_inner(source_object)),
+                        from_attribute=relation,
+                    )
                 )
                 for rel in found_relations:
                     try:
@@ -261,7 +286,9 @@ class ContactSource(object):
                         related_uids.add(IUUID(obj))
                     except KeyError:
                         logger.error(
-                            "Related object is missing for relation to %s: %s", source_object, str(rel.__dict__)
+                            "Related object is missing for relation to %s: %s",
+                            source_object,
+                            str(rel.__dict__),
                         )
 
             if not related_uids:
@@ -281,9 +308,11 @@ class ContactSource(object):
 
 # separate base class: collective.contact.contactlist calls super(ContactSourceBinder, self).__call__(context)
 @implementer(IContextSourceBinder)
-class PathSourceBinder(object):
+class PathSourceBinder:
 
-    def __init__(self, navigation_tree_query=None, default=None, defaultFactory=None, **kw):
+    def __init__(
+        self, navigation_tree_query=None, default=None, defaultFactory=None, **kw
+    ):
         self.selectable_filter = CustomFilter(**kw)
         self.navigation_tree_query = navigation_tree_query
         self.default = default

@@ -1,7 +1,5 @@
-.. image:: https://github.com/collective/collective.contact.widget/actions/workflows/main.yml/badge.svg
-    :target: https://github.com/collective/collective.contact.widget/actions/workflows/main.yml
-.. image:: https://coveralls.io/repos/github/collective/collective.contact.widget/badge.svg
-    :target: https://coveralls.io/github/collective/collective.contact.widget
+.. image:: https://github.com/collective/collective.contact.widget/actions/workflows/meta.yml/badge.svg?branch=master
+    :target: https://github.com/collective/collective.contact.widget/actions/workflows/meta.yml
 .. image:: http://img.shields.io/pypi/v/collective.contact.widget.svg
     :target: https://pypi.python.org/pypi/collective.contact.facetednav
 

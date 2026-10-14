@@ -20,7 +20,6 @@ from zope.schema.interfaces import IVocabularyFactory
 
 import unittest
 
-
 MODEL = """\
 <model xmlns="http://namespaces.plone.org/supermodel/schema">
   <schema>
@@ -56,11 +55,17 @@ class TestContactHandler(unittest.TestCase):
         contact = schema["contact"]
         self.assertIsInstance(contact, ContactChoice)
         self.assertEqual(contact.source_types, ("organization",))
-        self.assertEqual(contact.vocabulary.selectable_filter.criteria["portal_type"], ("organization",))
+        self.assertEqual(
+            contact.vocabulary.selectable_filter.criteria["portal_type"],
+            ("organization",),
+        )
         contacts = schema["contacts"]
         self.assertIsInstance(contacts, ContactList)
         self.assertEqual(contacts.source_types, ("person",))
-        self.assertEqual(contacts.value_type.vocabulary.selectable_filter.criteria["portal_type"], ("person",))
+        self.assertEqual(
+            contacts.value_type.vocabulary.selectable_filter.criteria["portal_type"],
+            ("person",),
+        )
 
 
 class TestContactChoiceField(unittest.TestCase):
@@ -106,9 +111,17 @@ class TestContactTypesVocabulary(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
     def test_call(self):
-        factory = getUtility(IVocabularyFactory, name="collective.contact.vocabulary.sourcetypes")
+        factory = getUtility(
+            IVocabularyFactory, name="collective.contact.vocabulary.sourcetypes"
+        )
         self.assertIsInstance(factory, ContactTypesVocabulary)
         vocabulary = factory(self.portal)
-        self.assertEqual([t.token for t in vocabulary], ["held_position", "organization", "person", "position"])
-        self.assertEqual([t.value for t in vocabulary], ["held_position", "organization", "person", "position"])
+        self.assertEqual(
+            [t.token for t in vocabulary],
+            ["held_position", "organization", "person", "position"],
+        )
+        self.assertEqual(
+            [t.value for t in vocabulary],
+            ["held_position", "organization", "person", "position"],
+        )
         self.assertTrue(all(t.title for t in vocabulary))

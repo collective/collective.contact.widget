@@ -4,7 +4,6 @@ from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.testing.zope import WSGI_SERVER_FIXTURE
 
-
 # collective.contact.core depends on this package and provides the contact
 # content types and example contents (mydirectory, ...) needed to test it.
 COLLECTIVE_CONTACT_WIDGET_INTEGRATION = IntegrationTesting(

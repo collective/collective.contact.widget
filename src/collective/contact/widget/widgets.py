@@ -4,7 +4,9 @@ from AccessControl.class_init import InitializeClass
 from Acquisition import Explicit
 from Acquisition.interfaces import IAcquirer
 from collective.contact.widget import _
-from collective.contact.widget.interfaces import IContactAutocompleteMultiSelectionWidget
+from collective.contact.widget.interfaces import (
+    IContactAutocompleteMultiSelectionWidget,
+)
 from collective.contact.widget.interfaces import IContactAutocompleteSelectionWidget
 from collective.contact.widget.interfaces import IContactAutocompleteWidget
 from collective.contact.widget.interfaces import IContactWidgetSettings
@@ -30,7 +32,6 @@ import html
 import json
 import z3c.form.interfaces
 
-
 try:
     from plone.formwidget.masterselect.interfaces import IMasterSelectWidget
     from plone.formwidget.masterselect.widget import MasterSelect as BaseMasterSelect
@@ -43,7 +44,7 @@ try:
 
 except ImportError:
 
-    class MasterSelect(object):
+    class MasterSelect:
         pass
 
 
@@ -96,7 +97,9 @@ class ContactBaseWidget(Explicit):
     livesearch_min_chars = 3
 
     def livesearch_url(self):
-        return "%s/++widget++%s/@@livesearch-search" % (self.request.getURL(), self.name)
+        return "{}/++widget++{}/@@livesearch-search".format(
+            self.request.getURL(), self.name
+        )
 
     def addnew_modal_options(self):
         """Value of data-pat-plone-modal of the add links (livesearch only):
@@ -133,7 +136,7 @@ class ContactBaseWidget(Explicit):
     @property
     def bound_source(self):
         try:
-            return super(ContactBaseWidget, self).bound_source
+            return super().bound_source
         except ComponentLookupError:
             return []
 
@@ -174,7 +177,9 @@ class ContactBaseWidget(Explicit):
             if formselector is None:
                 include_default = True
             else:
-                closeselector = action.get("closeselector", '[name="form.buttons.cancel"]')
+                closeselector = action.get(
+                    "closeselector", '[name="form.buttons.cancel"]'
+                )
                 content += self.overlay_template(
                     **dict(
                         klass=action["klass"],
@@ -198,7 +203,9 @@ class ContactBaseWidget(Explicit):
 
     def prefilter_terms(self):
         if isinstance(self.field.prefilter_vocabulary, str):
-            vocabulary = getUtility(IVocabularyFactory, name=self.field.prefilter_vocabulary)
+            vocabulary = getUtility(
+                IVocabularyFactory, name=self.field.prefilter_vocabulary
+            )
             return vocabulary(self.context)
         elif IVocabulary.providedBy(self.field.prefilter_vocabulary):
             return self.field.prefilter_vocabulary
@@ -381,7 +388,9 @@ LIVESEARCH_JS_TEMPLATE = r"""
 
 
 @implementer(IContactAutocompleteSelectionWidget)
-class ContactAutocompleteSelectionWidget(ContactBaseWidget, QuerySourceRadioWidget, MasterSelect):
+class ContactAutocompleteSelectionWidget(
+    ContactBaseWidget, QuerySourceRadioWidget, MasterSelect
+):
     klass = "autocomplete-selection-widget"
     input_type = "radio"
     multiple = False
@@ -391,7 +400,9 @@ class ContactAutocompleteSelectionWidget(ContactBaseWidget, QuerySourceRadioWidg
 
 
 @implementer(IContactAutocompleteMultiSelectionWidget)
-class ContactAutocompleteMultiSelectionWidget(ContactBaseWidget, QuerySourceCheckboxWidget):
+class ContactAutocompleteMultiSelectionWidget(
+    ContactBaseWidget, QuerySourceCheckboxWidget
+):
     klass = "autocomplete-multiselection-widget"
     input_type = "checkbox"
     multiple = True
@@ -459,7 +470,7 @@ class AutocompleteSearch(BrowserView):
         self.context.update()
         source = self.context.bound_source
         if path is not None:
-            query = "path:%s %s" % (source.tokenToPath(path), query)
+            query = f"path:{source.tokenToPath(path)} {query}"
 
         if query or relations:
             prefilter = {}
@@ -484,7 +495,12 @@ class AutocompleteSearch(BrowserView):
         response = self.request.response
         response.setHeader("Content-type", "text/plain")
 
-        return "\n".join(["|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra)) for t in terms])
+        return "\n".join(
+            [
+                "|".join((t.token, t.title or t.token, t.portal_type, t.url, t.extra))
+                for t in terms
+            ]
+        )
 
 
 class LivesearchSearch(AutocompleteSearch):
@@ -493,7 +509,9 @@ class LivesearchSearch(AutocompleteSearch):
     i.e. the name of the subform text input."""
 
     def get_query(self):
-        return self.request.get("q") or self.request.get("%s.widgets.query" % self.context.name)
+        return self.request.get("q") or self.request.get(
+            "%s.widgets.query" % self.context.name
+        )
 
     def __call__(self):
         terms = list(self.get_terms())[: self.context.maxResults]
@@ -506,7 +524,9 @@ class LivesearchSearch(AutocompleteSearch):
                 "title": t.title or t.token,
                 "token": t.token,
                 "contact_url": t.url,
-                "icon": "%s/@@iconresolver/contenttype/%s" % (portal_url, t.portal_type),
+                "icon": "{}/@@iconresolver/contenttype/{}".format(
+                    portal_url, t.portal_type
+                ),
             }
             for t in terms
         ]

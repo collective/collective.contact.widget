@@ -21,11 +21,13 @@ from zope.schema.vocabulary import SimpleVocabulary
 class ContactHandler(BaseHandler):
 
     filteredAttributes = BaseHandler.filteredAttributes.copy()
-    filteredAttributes.update({"vocabulary": "w", "values": "w", "source": "w", "vocabularyName": "rw"})
+    filteredAttributes.update(
+        {"vocabulary": "w", "values": "w", "source": "w", "vocabularyName": "rw"}
+    )
 
     def read(self, element):
         """Update source binder considering the new source_types value"""
-        field_instance = super(ContactHandler, self).read(element)
+        field_instance = super().read(element)
         field_instance.update_source()
         return field_instance
 
@@ -43,7 +45,7 @@ def getContactChoiceFieldSchema(field):
 
 
 @implementer(IContactChoiceField)
-class ContactChoiceField(object):
+class ContactChoiceField:
     component.adapts(IContactChoice)
 
     def __init__(self, field):
@@ -57,7 +59,7 @@ def getContactListChoiceFieldSchema(field):
 
 
 @implementer(IContactChoiceField)
-class ContactListChoiceField(object):
+class ContactListChoiceField:
     component.adapts(IContactList)
 
     def __init__(self, field):
@@ -65,10 +67,15 @@ class ContactListChoiceField(object):
 
 
 @implementer(IVocabularyFactory)
-class ContactTypesVocabulary(object):
+class ContactTypesVocabulary:
 
     def __call__(self, context):
-        contact_types = ("held_position", "organization", "person", "position")  # @TODO: make it more extensible
+        contact_types = (
+            "held_position",
+            "organization",
+            "person",
+            "position",
+        )  # @TODO: make it more extensible
 
         site = getSite()
         ttool = getToolByName(site, "portal_types")
@@ -76,7 +83,9 @@ class ContactTypesVocabulary(object):
         return SimpleVocabulary(
             [
                 SimpleTerm(
-                    contact_type, token=contact_type, title=translate(ttool[contact_type].Title(), context=request)
+                    contact_type,
+                    token=contact_type,
+                    title=translate(ttool[contact_type].Title(), context=request),
                 )
                 for contact_type in contact_types
             ]

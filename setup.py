@@ -1,13 +1,16 @@
-# -*- coding: utf-8 -*-
 """Installer for the collective.contact.widget package."""
 
 from setuptools import find_packages
 from setuptools import setup
 
-
 long_description = (
     open("README.rst").read() + "\n" + "Contributors\n"
-    "============\n" + "\n" + open("CONTRIBUTORS.rst").read() + "\n" + open("CHANGES.rst").read() + "\n"
+    "============\n"
+    + "\n"
+    + open("CONTRIBUTORS.rst").read()
+    + "\n"
+    + open("CHANGES.rst").read()
+    + "\n"
 )
 
 
@@ -31,6 +34,7 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
     ],
     keywords="plone contact widget field",
     author="Vincent Fretin",
@@ -44,16 +48,29 @@ setup(
     zip_safe=False,
     python_requires=">=3.10",
     install_requires=[
-        "setuptools",
-        "collective.contact.core >= 1.27",
         "plone.api",
+        "plone.app.layout",
+        "plone.base",
+        "plone.schemaeditor",
+        "plone.supermodel",
+        "plone.uuid",
+        "Products.CMFCore",
+        "Products.ZCTextIndex",
+        "z3c.form",
         "z3c.formwidget.query",
         "z3c.relationfield",
+        "zc.relation",
+        "Zope",
+        "zope.intid",
     ],
     extras_require={
         "test": [
+            "collective.contact.core",
             "plone.app.robotframework",
             "plone.app.testing",
+            "plone.app.z3cform",
+            "plone.testing",
+            "robotsuite",
         ],
     },
     entry_points="""

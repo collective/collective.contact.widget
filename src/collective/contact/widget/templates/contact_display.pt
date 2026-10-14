@@ -1,28 +1,36 @@
-<ul id="" class=""
-      tal:attributes="id view/id;
-                      class view/klass;
-                      style view/style;
-                      title view/title;
-                      lang view/lang;
-                      onclick view/onclick;
-                      ondblclick view/ondblclick;
-                      onmousedown view/onmousedown;
-                      onmouseup view/onmouseup;
-                      onmouseover view/onmouseover;
-                      onmousemove view/onmousemove;
-                      onmouseout view/onmouseout;
-                      onkeypress view/onkeypress;
-                      onkeydown view/onkeydown;
-                      onkeyup view/onkeyup"
-        >
-    <li tal:repeat="term view/terms">
-        <a tal:content="term/title"
-           class="link-tooltip"
-           target="_new"
-           tal:define="url python:view.tokenToUrl(term.token)"
-           tal:omit-tag="python:not url"
-           tal:attributes="href url; data-base_url url"
-           tal:condition="python:not(term.token.startswith('#error-'))"
-           />
-    </li>
+<ul class=""
+    id=""
+    tal:attributes="
+      id view/id;
+      class view/klass;
+      style view/style;
+      title view/title;
+      lang view/lang;
+      onclick view/onclick;
+      ondblclick view/ondblclick;
+      onmousedown view/onmousedown;
+      onmouseup view/onmouseup;
+      onmouseover view/onmouseover;
+      onmousemove view/onmousemove;
+      onmouseout view/onmouseout;
+      onkeypress view/onkeypress;
+      onkeydown view/onkeydown;
+      onkeyup view/onkeyup;
+    "
+>
+  <li tal:repeat="term view/terms">
+    <a class="link-tooltip"
+       target="_new"
+       tal:define="
+         url python:view.tokenToUrl(term.token);
+       "
+       tal:condition="python:not(term.token.startswith('#error-'))"
+       tal:content="term/title"
+       tal:omit-tag="python:not url"
+       tal:attributes="
+         href url;
+         data-base_url url;
+       "
+    ></a>
+  </li>
 </ul>

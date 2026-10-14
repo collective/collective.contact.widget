@@ -3,3 +3,4 @@ recursive-include docs *
 prune .tx
 include *
 global-exclude *pyc
+exclude *-mxdev.txt

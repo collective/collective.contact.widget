@@ -1,7 +1,8 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:z3c="http://namespaces.zope.org/z3c">
+    xmlns:z3c="http://namespaces.zope.org/z3c"
+    >
 
   <adapter
       factory=".widgets.ContactAutocompleteMultiFieldWidget"
@@ -18,41 +19,41 @@
   <browser:page
       name="autocomplete-search"
       for=".interfaces.IContactAutocompleteWidget"
-      permission="zope.Public"
       class=".widgets.AutocompleteSearch"
+      permission="zope.Public"
       />
 
   <browser:page
       name="livesearch-search"
       for=".interfaces.IContactAutocompleteWidget"
-      permission="zope.Public"
       class=".widgets.LivesearchSearch"
+      permission="zope.Public"
       />
 
   <browser:viewlet
       name="term-contact"
-      class=".widgets.TermViewlet"
       for=".interfaces.IContactContent"
       manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+      class=".widgets.TermViewlet"
       permission="zope2.View"
       />
 
   <!-- overrides the template registered for
        z3c.form.interfaces.ICheckBoxWidget -->
   <z3c:widgetTemplate
-      mode="input"
       widget=".interfaces.IContactAutocompleteMultiSelectionWidget"
-      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
       template="templates/checkbox_input.pt"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+      mode="input"
       />
 
   <!-- overrides the template registered for
        z3c.form.interfaces.IRadioWidget -->
   <z3c:widgetTemplate
-      mode="input"
       widget=".interfaces.IContactAutocompleteSelectionWidget"
-      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
       template="templates/radio_input.pt"
+      layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+      mode="input"
       />
 
   <!-- plone.app.z3cform registers RelationChoiceSelectWidgetConverter for

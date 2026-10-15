@@ -31,7 +31,7 @@ collective.contact.core @ file://{toxinidir}/sources/collective.contact.core
 
 [pre_commit]
 zpretty_extra_lines = """
-        exclude: \\.js\\.pt$
+        exclude: \\.js\\.pt$|/widget/templates/
 """
 i18ndude_extra_lines = """
         exclude: \\.js\\.pt$

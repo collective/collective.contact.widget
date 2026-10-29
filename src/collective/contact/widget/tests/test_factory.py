@@ -20,8 +20,7 @@ from zope.schema.interfaces import IVocabularyFactory
 
 import unittest
 
-
-MODEL = u"""\
+MODEL = """\
 <model xmlns="http://namespaces.plone.org/supermodel/schema">
   <schema>
     <field name="contact" type="collective.contact.widget.schema.ContactChoice">
@@ -56,17 +55,23 @@ class TestContactHandler(unittest.TestCase):
         contact = schema["contact"]
         self.assertIsInstance(contact, ContactChoice)
         self.assertEqual(contact.source_types, ("organization",))
-        self.assertEqual(contact.vocabulary.selectable_filter.criteria["portal_type"], ("organization",))
+        self.assertEqual(
+            contact.vocabulary.selectable_filter.criteria["portal_type"],
+            ("organization",),
+        )
         contacts = schema["contacts"]
         self.assertIsInstance(contacts, ContactList)
         self.assertEqual(contacts.source_types, ("person",))
-        self.assertEqual(contacts.value_type.vocabulary.selectable_filter.criteria["portal_type"], ("person",))
+        self.assertEqual(
+            contacts.value_type.vocabulary.selectable_filter.criteria["portal_type"],
+            ("person",),
+        )
 
 
 class TestContactChoiceField(unittest.TestCase):
 
     def test_init(self):
-        field = ContactChoice(title=u"Contact")
+        field = ContactChoice(title="Contact")
         wrapper = ContactChoiceField(field)
         self.assertTrue(IContactChoiceField.providedBy(wrapper))
         self.assertIs(wrapper.field, field)
@@ -75,7 +80,7 @@ class TestContactChoiceField(unittest.TestCase):
 class TestContactListChoiceField(unittest.TestCase):
 
     def test_init(self):
-        field = ContactList(title=u"Contacts")
+        field = ContactList(title="Contacts")
         wrapper = ContactListChoiceField(field)
         self.assertTrue(IContactChoiceField.providedBy(wrapper))
         self.assertIs(wrapper.field, field)
@@ -86,13 +91,13 @@ class TestFieldSchemas(unittest.TestCase):
     layer = COLLECTIVE_CONTACT_WIDGET_INTEGRATION
 
     def test_getContactChoiceFieldSchema(self):
-        field = ContactChoice(title=u"Contact")
+        field = ContactChoice(title="Contact")
         self.assertEqual(getContactChoiceFieldSchema(field), IContactChoiceField)
         # registered adapter
         self.assertEqual(getAdapter(field, IFieldEditFormSchema), IContactChoiceField)
 
     def test_getContactListChoiceFieldSchema(self):
-        field = ContactList(title=u"Contacts")
+        field = ContactList(title="Contacts")
         self.assertEqual(getContactListChoiceFieldSchema(field), IContactChoiceField)
         self.assertEqual(getAdapter(field, IFieldEditFormSchema), IContactChoiceField)
 
@@ -106,9 +111,17 @@ class TestContactTypesVocabulary(unittest.TestCase):
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
     def test_call(self):
-        factory = getUtility(IVocabularyFactory, name="collective.contact.vocabulary.sourcetypes")
+        factory = getUtility(
+            IVocabularyFactory, name="collective.contact.vocabulary.sourcetypes"
+        )
         self.assertIsInstance(factory, ContactTypesVocabulary)
         vocabulary = factory(self.portal)
-        self.assertEqual([t.token for t in vocabulary], ["held_position", "organization", "person", "position"])
-        self.assertEqual([t.value for t in vocabulary], ["held_position", "organization", "person", "position"])
+        self.assertEqual(
+            [t.token for t in vocabulary],
+            ["held_position", "organization", "person", "position"],
+        )
+        self.assertEqual(
+            [t.value for t in vocabulary],
+            ["held_position", "organization", "person", "position"],
+        )
         self.assertTrue(all(t.title for t in vocabulary))

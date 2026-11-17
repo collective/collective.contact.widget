@@ -29,7 +29,9 @@ test_environment_variables = """
 test_matrix = {"6.2" = ["*"]}
 test_deps_additional = """
 collective.contact.core @ file://{toxinidir}/sources/collective.contact.core
+    collective.fingerpointing @ file://{toxinidir}/sources/collective.fingerpointing
     collective.js.tooltipster @ file://{toxinidir}/sources/collective.js.tooltipster
+    imio.helpers @ file://{toxinidir}/sources/imio.helpers
     plone.formwidget.masterselect @ file://{toxinidir}/sources/plone.formwidget.masterselect
 """
 

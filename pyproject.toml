@@ -4,7 +4,70 @@
 [build-system]
 requires = ["setuptools>=68.2,<83", "wheel"]
 
+# START-MARKER-MANUAL-CONFIG
+# Anything from here until END-MARKER-MANUAL-CONFIG
+# will be kept by plone.meta
 
+[project]
+name = "collective.contact.widget"
+version = "2.0.0.dev0"
+description = "Contact widget"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Plone",
+    "Framework :: Plone :: 6.2",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+]
+license = "GPL-2.0-only"
+dynamic = ["readme"]
+requires-python = ">=3.11"
+authors = [
+    {name = "Vincent Fretin",email = "vincentfretin@ecreall.com"},
+]
+dependencies = [
+    "Products.CMFCore",
+    "Products.ZCTextIndex",
+    "Zope",
+    "plone.api",
+    "plone.app.layout",
+    "plone.base",
+    "plone.schemaeditor",
+    "plone.supermodel",
+    "plone.uuid",
+    "z3c.form",
+    "z3c.formwidget.query",
+    "z3c.relationfield",
+    "zc.relation",
+    "zope.intid",
+]
+keywords = ["plone", "contact", "widget", "field"]
+
+[project.optional-dependencies]
+test = [
+    "collective.contact.core",
+    "plone.app.robotframework",
+    "plone.app.testing",
+    "plone.app.z3cform",
+    "plone.testing",
+    "robotsuite",
+]
+
+[project.urls]
+Source = "https://github.com/collective/collective.contact.widget"
+Issues = "https://github.com/collective/collective.contact.widget/issues"
+Changelog = "https://github.com/collective/collective.contact.widget/blob/master/CHANGES.rst"
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.rst", "CHANGES.rst"]}
+# END-MARKER-MANUAL-CONFIG
 
 ##
 # Add extra configuration options in .meta.toml:
